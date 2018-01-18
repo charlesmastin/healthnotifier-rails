@@ -1,0 +1,18 @@
+<p>We have successfully processed your payment of <%= number_to_currency(payment.amount / 100) %> for invoice <%= invoice.uuid %>. Our customer support staff will follow up to make any necessary changes to your account within 24 hours. Thank you for your continued use of HealthNotifier.</p>
+
+<hr />
+<dl>
+    <dt>Invoice Id</dt>
+    <dd><%= invoice.uuid %></dd>
+    <dt>Invoice Name</dt>
+    <dd><%= invoice.title %></dd>
+    <dt>Invoice Amount</dt>
+    <dd><%= number_to_currency(invoice.amount / 100) %></dd>
+    <dt>Invoice Due Date</dt>
+    <dd><%= invoice.due_date.strftime('%m/%d/%-Y') %></dd>
+    <dt>Invoice Paid</dt>
+    <dd><%= payment.created_at.strftime('%m/%d/%-Y') %></dd>
+    <dt>Invoice Description</dt>
+    <dd><%= simple_format invoice.description.html_safe %></dd>
+</dl>
+

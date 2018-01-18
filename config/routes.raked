@@ -1,0 +1,118 @@
+                               Prefix Verb                URI Pattern                                                            Controller#Action
+                                 root GET                 /                                                                      static#home
+                                 home GET                 /home(.:format)                                                        static#home
+                      api_auth_create POST                /api/v1/auth/login(.:format)                                           api/sessions#create
+                     api_auth_destroy DELETE              /api/v1/auth/logout(.:format)                                          api/sessions#destroy
+                  api_session_manager POST|DELETE         /api/v1/sessions(.:format)                                             api/sessions#manager
+                 api_v1_auth_reminder POST                /api/v1/auth/reminder(.:format)                                        api/accounts#password_reminder
+                    api_auth_reminder POST                /api/v1/accounts/password-reminder(.:format)                           api/accounts#password_reminder
+                       api_v1_account POST                /api/v1/account(.:format)                                              api/accounts#create
+                                      DELETE              /api/v1/account/:uid(.:format)                                         api/accounts#delete
+                   api_account_create POST                /api/v1/accounts(.:format)                                             api/accounts#create
+                   api_account_delete DELETE              /api/v1/accounts/:uid(.:format)                                        api/accounts#delete
+                                      GET                 /api/v1/lifesquare/:id/webview(.:format)                               api/lifesquares#webview
+               api_lifesquare_webview GET                 /api/v1/lifesquares/:id/webview(.:format)                              api/lifesquares#webview
+    api_lifesquare_scan_my_lifesquare GET                 /api/v1/lifesquare/my-lifesquare(.:format)                             api/lifesquares#scan {:mine=>true}
+                                      GET                 /api/v1/lifesquare/:id(.:format)                                       api/lifesquares#scan
+                  api_lifesquare_scan GET                 /api/v1/lifesquares/:id(.:format)                                      api/lifesquares#scan
+                api_lifesquare_nearby GET                 /api/v1/lifesquares/nearby(.:format)                                   api/lifesquares#nearby
+                api_lifesquare_search GET                 /api/v1/lifesquares/search(.:format)                                   api/lifesquares#search
+                 api_lifesquare_image GET                 /api/v1/lifesquares/:id/image(.:format)                                api/lifesquares#image
+                    api_document_view GET                 /api/v1/document/view/:uid(.:format)                                   api/documents#collection_view
+                      api_v1_document POST                /api/v1/document(.:format)                                             api/documents#create
+                                      GET                 /api/v1/document/:uid(.:format)                                        api/documents#get
+                                      DELETE              /api/v1/document/:uid(.:format)                                        api/documents#delete
+                  api_document_upload POST                /api/v1/documents(.:format)                                            api/documents#create
+                  api_document_delete DELETE              /api/v1/documents/:uid(.:format)                                       api/documents#delete
+                     api_document_get GET                 /api/v1/documents/:uid(.:format)                                       api/documents#get
+                    api_file_retrieve GET                 /api/v1/file/retrieve/:uid(.:format)                                   api/documents#retrieve_file
+                api_file_retrieve_new GET                 /api/v1/files/:uid(.:format)                                           api/documents#retrieve_file
+             api_provider_credentials POST                /api/v1/provider-credentials(.:format)                                 api/providers#register
+                      api_v1_patients GET                 /api/v1/patients(.:format)                                             api/patients#index
+                    api_patients_list GET                 /api/v1/profiles(.:format)                                             api/patients#index
+                     api_patient_show GET                 /api/v1/profiles/:uid(.:format)                                        api/patients#show
+                   api_patient_delete DELETE              /api/v1/profiles/:uid(.:format)                                        api/patients#delete
+                    api_patient_photo GET|POST|PUT|DELETE /api/v1/profiles/:uuid/profile-photo(.:format)                         api/patients#profile_photo
+        api_coverage_cancel_recurring DELETE|PUT          /api/v1/profiles/:uuid/cancel-recurring-coverage(.:format)             api/patients#coverage_cancel_recurring
+               api_patient_emr_lookup GET|POST            /api/v1/profiles/emr-lookup(.:format)                                  api/patients#emr_patient_search
+         api_patient_reprint_stickers POST                /api/v1/profiles/reprint-stickers(.:format)                            api/patients#reprint_stickers
+             patient_request_stickers POST                /api/v1/profiles/request-stickers(.:format)                            api/patients#request_stickers
+          api_patient_charge_coverage POST                /api/v1/profiles/charge-coverage(.:format)                             api/patients#charge_coverage
+                                      GET                 /api/v1/profiles/:uuid/:collection_name(.:format)                      patients#collection_index {:format=>"json", :collection_name=>/patient_(allergies|languages|residences|contacts|therapies|health_events|care_providers|medical_facilities|health_attributes|insurances|pharmacies|immunizations)/}
+                                      POST|PUT            /api/v1/profiles/:uuid/:collection_name(.:format)                      patients#collection_write {:format=>"json", :collection_name=>/patient_(allergies|languages|residences|contacts|therapies|health_events|care_providers|medical_facilities|health_attributes|insurances|pharmacies|immunizations)/}
+                             patients GET                 /api/v1/profiles(.:format)                                             patients#index
+                                      POST                /api/v1/profiles(.:format)                                             patients#create
+                          new_patient GET                 /api/v1/profiles/new(.:format)                                         patients#new
+                              patient GET                 /api/v1/profiles/:id(.:format)                                         patients#show
+                                      PATCH               /api/v1/profiles/:id(.:format)                                         patients#update
+                                      PUT                 /api/v1/profiles/:id(.:format)                                         patients#update
+                                      DELETE              /api/v1/profiles/:id(.:format)                                         patients#destroy
+               patient_validate_promo GET                 /api/v1/validate-promo(.:format)                                       api/patients#validate_promo
+            api_v1_term_lookup_search GET                 /api/v1/term-lookup/search(.:format)                                   api/term_lookup#search
+ api_v1_term_lookup_medication_detail GET                 /api/v1/term-lookup/medication_detail(.:format)                        api/term_lookup#medication_detail
+                      api_tellafriend POST                /api/v1/tellafriend(.:format)                                          accounts#tellafriend
+               patient_search_network GET                 /api/v1/network/search(.:format)                                       patients#search_network
+               patient_invite_network POST                /api/v1/network/invite(.:format)                                       patients#invite_network
+                 patient_join_network POST                /api/v1/network/join(.:format)                                         patients#join_network
+               patient_accept_network POST|PUT            /api/v1/network/accept(.:format)                                       patients#accept_network
+               patient_change_network PUT                 /api/v1/network/change(.:format)                                       patients#change_network
+               patient_remove_network DELETE              /api/v1/network/remove(.:format)                                       patients#remove_network
+                      webhooks_stripe POST                /webhooks/stripe(.:format)                                             webhooks#stripe
+                     account_password POST                /accounts/password(.:format)                                           devise/passwords#create
+                 new_account_password GET                 /accounts/password/new(.:format)                                       devise/passwords#new
+                edit_account_password GET                 /accounts/password/edit(.:format)                                      devise/passwords#edit
+                                      PATCH               /accounts/password(.:format)                                           devise/passwords#update
+                                      PUT                 /accounts/password(.:format)                                           devise/passwords#update
+          cancel_account_registration GET                 /accounts/cancel(.:format)                                             registrations#cancel
+                 account_registration POST                /accounts(.:format)                                                    registrations#create
+             new_account_registration GET                 /accounts/sign_up(.:format)                                            registrations#new
+            edit_account_registration GET                 /accounts/edit(.:format)                                               registrations#edit
+                                      PATCH               /accounts(.:format)                                                    registrations#update
+                                      PUT                 /accounts(.:format)                                                    registrations#update
+                                      DELETE              /accounts(.:format)                                                    registrations#destroy
+                 account_confirmation POST                /accounts/confirmation(.:format)                                       devise/confirmations#create
+             new_account_confirmation GET                 /accounts/confirmation/new(.:format)                                   devise/confirmations#new
+                                      GET                 /accounts/confirmation(.:format)                                       devise/confirmations#show
+                       account_unlock POST                /accounts/unlock(.:format)                                             devise/unlocks#create
+                   new_account_unlock GET                 /accounts/unlock/new(.:format)                                         devise/unlocks#new
+                                      GET                 /accounts/unlock(.:format)                                             devise/unlocks#show
+                  new_account_session GET                 /login(.:format)                                                       devise/sessions#new
+                      account_session POST                /login(.:format)                                                       devise/sessions#create
+              destroy_account_session DELETE              /logout(.:format)                                                      devise/sessions#destroy
+                         registration GET                 /signup(.:format)                                                      devise/registrations#new
+                         edit_account GET                 /account/edit(.:format)                                                devise/registrations#edit
+                          sso_pingone POST                /sso/pingone(.:format)                                                 sso#pingone
+                    provider_register GET                 /accounts/provider-credentials(.:format)                               provider#register
+                      accounts_assign GET                 /accounts/assign(.:format)                                             accounts#assign
+           accounts_save_signup_refer PUT                 /accounts/save-signup-refer(.:format)                                  accounts#save_signup_refer
+            accounts_request_stickers GET|POST            /accounts/request-stickers(.:format)                                   accounts#request_stickers
+                accounts_terms_update GET|POST            /accounts/terms-update(.:format)                                       accounts#terms_update
+                accounts_email_friend POST                /accounts/email-friend(.:format)                                       accounts#email_friend
+                          tellafriend GET                 /accounts/tellafriend(.:format)                                        accounts#tellafriend
+                        patient_index GET                 /profiles(.:format)                                                    patients#index
+                          patient_new GET                 /profiles/new(.:format)                                                patients#new
+                         patient_show GET                 /profiles/:uuid(.:format)                                              patients#show
+               patient_continue_setup GET                 /profiles/:uuid/continue-setup(.:format)                               patients#continue_setup
+                      patient_confirm GET                 /profiles/:uuid/confirm(.:format)                                      patients#show
+          patient_finish_confirmation GET                 /profiles/:uuid/finish-confirmation(.:format)                          patients#show
+                patient_edit_personal GET                 /profiles/:uuid/edit-personal(.:format)                                patients#edit_personal
+                 patient_edit_medical GET                 /profiles/:uuid/edit-medical(.:format)                                 patients#edit_medical
+                patient_edit_contacts GET                 /profiles/:uuid/edit-contacts(.:format)                                patients#edit_contacts
+      patient_edit_emergency_contacts GET                 /profiles/:uuid/edit-emergency-contacts(.:format)                      patients#edit_emergency_contacts
+patient_show_email_emergency_contacts GET                 /profiles/:uuid/email-emergency-contacts(.:format)                     patients#show_email_emergency_contacts
+                 patient_show_webview GET                 /profiles/:uuid/webview/:privacy(.:format)                             patients#show_webview
+                 patient_show_network GET                 /profiles/:uuid/network(.:format)                                      patients#show_network
+       patient_show_activate_coverage GET                 /profiles/:uuid/activate-coverage(.:format)                            patients#show_activate_coverage
+        patient_show_coverage_receipt GET                 /profiles/:uuid/coverage-receipt(.:format)                             patients#show_coverage_receipt
+        patient_show_reprint_stickers GET                 /profiles/:uuid/reprint-stickers(.:format)                             patients#show_reprint_stickers
+                        document_show GET                 /documents/:uuid(.:format)                                             documents#show
+                      network_webview GET                 /network/:granter_patient_uuid/:auditor_patient_uuid/webview(.:format) patients#show_webview_network
+                      qrcode_generate GET|POST            /qrcode/generate(.:format)                                             qrcode#generate
+    code_sheet_print_request_generate GET|POST            /code_sheet_print_request/generate(.:format)                           code_sheet_print_request#generate
+    code_sheet_print_request_download POST                /code_sheet_print_request/download(.:format)                           code_sheet_print_request#download
+                          qrcode_list GET                 /qrcode/list(.:format)                                                 qrcode#list
+                                      GET                 /qrcode/show_batch_details/:id(.:format)                               qrcode#show_batch_details
+                     qrcode_campaigns GET                 /qrcode/campaigns(.:format)                                            qrcode#campaigns
+                                      GET                 /code_sheet_print_request/download(.:format)                           code_sheet_print_request#download
+         code_sheet_print_request_add GET|POST            /code_sheet_print_request/add(.:format)                                code_sheet_print_request#add
+                    qrcode_temp_debug GET                 /qrcode/temp_debug(.:format)                                           qrcode#temp_debug

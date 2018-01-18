@@ -1,0 +1,55 @@
+<%= fields_for @batch do |f| %>
+
+<article>
+    <div class="title">
+        <h3>Basics</h3>
+    </div>
+
+    <div class="content">
+        <div class="field">
+            <%= f.label :batch_size %>
+            <%= f.number_field :batch_size, :placeholder => 100 %>
+        </div>
+        <div class="field">
+            <label for="campaign_id">Campaign</label>
+            <select name="campaign_id" id="campaign_id">
+                <% if false %>
+                <option value=""></option>
+                <%= options_for_select(Campaign.all.order('create_date').collect { |p| [ "#{p.id} - #{p.name} - Org(#{p.organization_id})", p.id ] }) %>
+                <% end %>
+                <option value=""></option>
+                <% @organizations.each do |org| %>
+                <optgroup label="<%= org.name %>">
+                    <% org.campaigns.each do |camp| %>
+                    <option value="<%= camp.id %>"><%= camp.name %> - Promo: (<%= camp.promo_code %>)</option>
+                    <% end %>
+                </optgroup>
+                <% end %>
+            </select>
+        </div>
+        <div class="field">
+            <%= f.label :notes %>
+            <%= f.text_area :notes %>
+        </div>
+    </div>
+</article>
+
+<article>
+    <div class="title">
+        <h3>Print Request Settings</h3>
+    </div>
+
+    <div class="content">
+        <div class="field">
+            <label for="sheets_per_lifesquare">Sheets Per Lifesquare</label>
+            <input type="number" value="3" min="1" max="3" id="sheets_per_lifesquare" name="sheets_per_lifesquare" />
+        </div>
+        <div class="field">
+            <label for="instructions">Instructions</label>
+            <textarea id="instructions" name="instructions" placeholder="Use promocode XYZ17 for free activation"></textarea>
+            <small>Renders on stickersheet… to shoehorn things like a promocode, or app store info on there.</small>
+        </div>
+    </div>
+</article>
+
+<% end %>

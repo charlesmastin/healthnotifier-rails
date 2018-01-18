@@ -1,0 +1,7 @@
+<section id="patient-transaction-bar">
+    <div class="inner">
+    <%= render :partial => 'components/patient_avatar', :locals => { :patient => patient, :size => 'small' } %>
+    <h4 class="patient_name"><%= patient.name_extended %></h4>
+    <%= render :partial => 'components/patient_flow_control', :locals => { :patient => patient, :primary => true } %>
+    </div>
+</section>

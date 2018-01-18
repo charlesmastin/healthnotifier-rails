@@ -1,0 +1,39 @@
+<%= fields_for @care_plan do |f| %>
+
+<article>
+    <div class="title">
+        <h3>Basics</h3>
+    </div>
+
+    <div class="content">
+        <div class="field">
+            <%= f.label :name %>
+            <%= f.text_field :name, :placeholder => 'Customer facing name, something easily identifiable' %>
+        </div>
+        <div class="field">
+            <%= f.label :organization %>
+            <%= f.select :organization_id, Organization.all.collect { |p| [ p.name, p.id ] }, include_blank: true %>
+        </div>
+        <div class="field">
+            <%= f.label :description %>
+            <%= f.text_area :description, :placeholder => 'Customer facing descriptive intro, markdown / html.' %>
+        </div>
+    </div>
+</article>
+
+<article>
+    <div class="title">
+        <h3>Misc</h3>
+    </div>
+    <div class="content">
+        <div class="field">
+            <%= f.label :filters %>
+            <%= f.text_area :filters, :placeholder => 'JSON filter set' %>
+        </div>
+        <!-- active -->
+
+    </div>
+</article>
+
+
+<% end %>

@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>HealthNotifier: Admin</title>
+    <meta name="description" content="">
+    <meta name="author" content="HealthNotifier">
+
+    <link href="/favicon.png" rel="shortcut icon" type="image/png" />
+
+    <%= stylesheet_link_tag "application" %>
+
+    <link href="//fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+
+    <%= yield :stylesheets %>
+
+    <%= javascript_include_tag "application" %>
+    <%= yield :js_head %>
+
+    <%= csrf_meta_tags %>
+
+</head>
+<body class="admin">
+    <%= render :partial => "shared/header" %>
+    <%= yield :below_header %>
+    <main id="main">
+        <%= render :partial => 'shared/notifications' %>
+        <%= yield %>
+    </main>
+
+    <%= render :partial => 'shared/timeout_modal' %>
+    
+    <%= yield :js_bootstrap %>
+
+    <script>
+        // TODO: move to a bootstrap js for admin, son
+        $(function(){
+            $('.action-credentials-approve').click(function(e){
+                $.ajax({
+                    url: $(this).attr('data-url'),
+                    type: 'POST',
+                    contentType: 'application/json',
+                    success: function(data){
+                        window.location.reload();
+                    },
+                    error: function(data){
+                        app.alert('Error. Please try again or contact email@domain.com for assistance.');
+                    }
+                });
+                return false;
+            });
+            $('.action-credentials-deny').click(function(e){
+                $.ajax({
+                    url: $(this).attr('data-url'),
+                    type: 'POST',
+                    contentType: 'application/json',
+                    success: function(data){
+                        window.location.reload();
+                    },
+                    error: function(data){
+                        app.alert('Error. Please try again or contact email@domain.com for assistance.');
+                    }
+                });
+                return false;
+            });
+        });
+    </script>
+</body>
+</html>

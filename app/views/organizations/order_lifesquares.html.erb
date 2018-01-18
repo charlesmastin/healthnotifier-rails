@@ -1,0 +1,72 @@
+<% content_for :below_header do %>
+<section id="patient-transaction-bar" class="organization">
+    <div class="inner">
+    <h4 class="patient_name"><%= @organization.name %> <span class="tag enterprise on-dark">Business</span></h4>
+
+    <div class="actions">
+        <a href="#" id="action-transaction-save" class="button primary">Submit</a>
+        <a href="<%= organization_show_path @organization.uuid %>" class="button">Cancel</a>
+        <a href="#" class="action actions" data-popover="org-actions-<%= @organization.uuid %>"><i class="material-icons">more_vert</i></a>
+    </div>
+    </div>
+</section>
+<% end %>
+
+<% content_for :pagetitle do %>
+<h1>Prepay LifeStickers</h1>
+<% end %>
+
+<div id="bb-view-org-order-lifesquares" data-action="<%= api_org_order_lifesquares_path @organization.uuid %>" class="basic-form requires-payment">
+
+<!-- ONLY SHOW IF UNIT COST IS DEFAULT COST THOUGH -->
+<%= render :partial => 'components/plan_level' %>
+
+<!-- TODO: shipping for in da future, when people need true self-serve -->
+<!-- this is also a provisioning discussion -->
+<section class="pillbox">
+    <article>
+        <div class="title">
+            <h3>Number of<br />LifeStickers</h3>
+        </div>
+        <div class="content">
+            <div class="field">
+                <label class="required" for="quantity">Quantity</label>
+                <input type="number" name="quantity" id="quantity" placeholder="10" class="span2" maxlength="4" size="4" />
+            </div>
+            <div class="field">
+                <label>Unit Cost</label>
+                <div><%= number_to_currency(@unit_cost / 100) %></div>
+                <p style="margin-top: 1rem;">Covers cost of stickers and one year of coverage.</p>
+
+                <!-- <small>If you believe this number is incorrect, please contact your HealthNotifier customer service rep before placing this order.</small> -->
+            </div>
+        </div>
+
+    </article>
+</section>
+
+<%= render :partial => 'components/payment', :locals => { :subscription_end => @coverage_end, :subscription => false, :available_cards => @cards_on_file, :total => @total } %>
+<!--
+<section class="flow-control">
+  <button type="submit" class="button primary">Submit</button>
+  <a href="<%= patient_index_path %>" class="button">Cancel</a>
+</section>
+-->
+</div>
+
+<% content_for :js_head do %>
+<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+<script type="text/javascript">
+  Stripe.setPublishableKey('<%= @publishable_key %>');
+</script>
+<% end %>
+<% content_for :js_bootstrap do %>
+<script>
+    (function() {
+        window.UNIT_COST = <%= @unit_cost %>; // TODO: why is this unused?
+        window.SUCCESS_URL = "<%= organization_show_path @organization.uuid %>";
+        var Organization = app.module('organization');
+        var orderView = new Organization.Views.OrderLifesquares({ el: '#bb-view-org-order-lifesquares' });
+    })();
+</script>
+<% end %>

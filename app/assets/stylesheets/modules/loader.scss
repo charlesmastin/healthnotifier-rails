@@ -1,0 +1,112 @@
+.indicator-big {
+	background: transparent image-url("indicator-big.gif") no-repeat 50% 50%;
+	width: 32px;
+	height: 32px;
+	margin: 1px 0px 0px 24px;
+	float: left;
+}
+
+$lsize: 64px;
+$lpad: 32px;
+$loffset: -($lsize + $lpad) / 2;
+
+#loader {
+    position: fixed;
+    z-index: 10000;
+    left: 50%;
+    top: 50%;
+    display: none;
+    // @include surface-alt-1;
+    .background {
+        background: $green2016;//rgba(0, 0, 0, 0.15);
+        box-sizing: border-box;
+        padding: $lpad;
+        position: relative;
+        left: $loffset;
+        top: $loffset;
+
+        // border-radius: 0.5rem;
+        svg#free-as-in-beer {
+
+        }
+        svg#lifesquare-loader {
+            display: none;
+            transform-style: preserve-3d;
+            width: $lsize;
+            height: $lsize;
+            // animation: spin-zoomy-zoom ease-in-out 4s infinite;
+            // animation: flip-town-usa ease-in-out 4s infinite;
+
+            #logo-1 {
+                animation: flip-town-usa ease-in-out 3s 0s alternate infinite;
+            }
+
+            #logo-2 {
+                animation: flip-town-usa ease-in-out 3s 0.1s alternate infinite;
+            }
+
+            #logo-3 {
+                animation: flip-town-usa ease-in-out 3s 0.2s alternate infinite;
+            }
+
+            #logo-4 {
+                animation: flip-town-usa ease-in-out 3s 0.3s alternate infinite;
+            }
+        }
+    }
+}
+
+@-webkit-keyframes flip-town-usa {
+  0% {
+    // opacity: 0.0;
+    transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+    //transform: rotateY(0);
+  }
+  
+  50% {
+    opacity: 1.0;
+    transform: rotateX(0deg) rotateY(0deg) rotateZ(360deg);
+  }
+  
+  100% {
+    // opacity: 0.0;
+    transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+    //transform: rotateY(180);
+  }
+}
+
+@-webkit-keyframes spin-zoomy-zoom {
+  0% {
+    // opacity: 0.0;
+    transform: rotate(0deg);
+    //transform: rotateY(0);
+  }
+  25% {
+    opacity: 1.0;
+    transform: rotate(90deg);
+  }
+  50% {
+    opacity: 1.0;
+    transform: rotate(180deg);
+  }
+  75% {
+    opacity: 1.0;
+    transform: rotate(270deg);
+  }
+  100% {
+    // opacity: 0.0;
+    transform: rotate(360deg);
+    //transform: rotateY(180);
+  }
+}
+
+#loader-artwork {
+    position: relative;
+    left: -32px;
+    top: -32px;
+    
+    
+    // @include surface-alt-1;
+    // animation: spin-zoomy-zoom 0.5s linear 1;
+
+}

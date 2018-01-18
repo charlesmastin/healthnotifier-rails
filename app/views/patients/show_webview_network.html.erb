@@ -1,0 +1,42 @@
+<section class="page-title">
+    <h1><a href="<%= patient_show_network_inbound_path(@auditor_patient.uuid) %>" data-balloon="View Patient Network" class="baby-got-back"><i class="material-icons">arrow_back</i></a>LifeSticker of <%= @patient.name_extended %></h1>
+</section>
+
+<% if @patient.current_coverage %>
+
+<section class="pillbox webview web">
+    <article class="nav">
+        <ul class="ghetto-webview-tab-controller">
+            <li class="active"><a href="#personal">Personal</a></li>
+            <li><a href="#medical">Medical</a></li>
+            <li><a href="#contacts">Contacts</a></li>
+        </ul>
+    </article>
+    <article class="tab active" id="personal">
+        <div class="content">
+            <%= render :partial => 'shared/patient_personal' %>
+        </div>
+    </article>
+    <article class="tab" id="medical">
+        <div class="content">
+            <%= render :partial => 'shared/patient_medical' %>
+        </div>
+    </article>
+    <article class="tab" id="contacts">
+        <div class="content">
+            <%= render :partial => 'shared/patient_contacts' %>
+        </div>
+    </article>
+</section>
+
+<% else %>
+<h2>Expired Coverage</h2>
+<% end %>
+
+<% content_for :js_bootstrap do %>
+<script>
+	$(function(){
+		$('*[data-platform="native"]').hide();
+	})
+</script>
+<% end %>

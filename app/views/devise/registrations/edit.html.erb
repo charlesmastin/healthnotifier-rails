@@ -1,0 +1,146 @@
+<% content_for :pagetitle do %>
+    <!-- a friendly message if we can identify you -->
+    <h1>Edit Account</h1>
+<% end %>
+
+<aside id="sidebar">
+    <!--
+    <h6>Your LifeStickers</h6>
+    <ul class="actions">
+        <li><a class="small button" href="#">Claim or Assign</a></li>
+        <li><a class="small button" href="#">Order Replacements</a></li>
+        <li><a class="small button" href="#">Renew Subscriptions</a></li>
+    </ul>
+    -->
+
+    <h6>Your Account</h6>
+    <ul class="actions">
+        <% if !current_account.confirmed? %>
+        <!-- TODO: a nice way would be auto submit the form, lul -->
+        <li><a class="small button" href="<%= confirm_account_path %>">Confirm Account</a></li>
+        <% end %>
+        <li><a class="small button action-change-password" href="#">Change Password</a></li>
+        <li><a class="small button" href="<%= logout_path %>" data-method="delete" rel="nofollow">Log Out</a></li>
+        <li class="divider"></li>
+        <li><a class="small button delete-account" href="#">Delete Account</a></li>
+    </ul>
+
+    <% if current_account.provider? %>
+    <h6>Provider Status</h6>
+
+    <p><span class="tag provider-account" style="display: inline-block;position: relative; margin-left: 0.0rem; top: -2px;"><i class="material-icons">verified_user</i>Health care provider</span></p>
+    <!-- show which patient is credentialed -->
+    <!-- readdress business logic re: which date to show (created_at + 1 year)-->
+    <% if current_account.provider_credentials %>
+    
+
+    <p><small>Credentialed until <strong><%= current_account.provider_credentials.expiration.strftime('%m/%d/%-Y') %></strong></small></p>
+    <% else %>
+    <p><small>Credentialed<!--(unable to find time period)--></small></p>
+    <% end %>
+    
+    <% else %>
+
+    <% if current_account.pending_provider_credentials.size > 0 %>
+    <h6>Provider Status</h6>
+    <p>Credentials Review Pending</p>
+    <% else %>
+    <h6>Are you a licensed Medical Professional?</h6>
+    <a class="button small" href="<%= account_provider_register_path %>">Register as a Provider</a>
+    <% end %>
+    <% end %>
+
+</aside>
+
+<section id="main-column">
+<div id="bb-view-account-info">
+<section class="pillbox">
+    <article>
+        <div class="title">
+            <h3>
+                <%= image_tag 'icons/person.png', :alt => '', :size => '32x30' %><br>
+                Details
+            </h3>
+        </div>
+        <%= fields_for @account do |f| %>
+
+        <div class="content basic-form">
+            <div class="row">
+                <div class="field span8 required">
+                    <%= f.label :email, 'Email' %>
+                    <%= f.email_field :email, :class => "span8" %>
+                </div>
+            </div>
+            <div class="row">
+                <div class="field span8">
+                    <%= f.label :mobile_phone, 'Mobile Phone (for Account Recovery)' %>
+                    <%= f.text_field :mobile_phone, :class => "span8", :placeholder => "+1 (415) 209-5050" %>
+                </div>
+            </div>
+            
+            <div id="password-jimmy-wrap" style="display: none;">
+            <div class="row">
+                <div class="field span8 required">
+                    <%= f.label :current_password, 'Current Password' %>
+                    <%= f.password_field :current_password, :class => "span8" %>
+                </div>
+            </div>
+            <div class="row">
+                <div class="field span8 required">
+                    <%= f.label :password, 'New Password' %>
+                    <%= f.password_field :password, :class => "span8" %>
+                    <p class="error-message invalid" data-for="account_password">Password must be at least 8 characters long and include a letter and a number or symbol</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="field span8 required">
+                    <label for="password_confirmation">Repeat New Password</label>
+                    <input type="password" name="password_confirmation" value="" class="span8" id="password_confirmation">
+                    <p class="error-message invalid" data-for="password_confirmation">Password must be at least 8 characters long and include a letter and a number or symbol</p>
+                    <p class="error-message mismatch" data-for="password_confirmation">Passwords do not match</p>
+                </div>
+            </div>
+            </div>
+
+            <% if false %>
+            <div class="field check-wrapper">
+                <%= f.check_box :optin_email_marketing, :id => "optin_email_marketing" %>
+                <%= f.label :optin_email_marketing, 'Send me HealthNotifier news and updates by email', :class => "inline", :for => :optin_email_marketing %>
+            </div>
+            <% end %>
+
+            <% end %>
+        
+        </div>
+    </article>
+</section>
+<section class="flow-control left">
+    <button type="submit" data-url="<%= api_account_update_path(@current_account.uid) %>" class="button primary">Update</button>
+    <a href="<%= patient_index_path %>" class="button">Cancel</a>
+</section>
+</div>
+</section>
+    
+<%= render :partial => "shared/delete_account_modal" %>
+
+
+<% content_for :js_bootstrap do %>
+<script>
+    (function() {
+        var Account = app.module('account');
+        var infoView = new Account.Views.Info({ el: '#bb-view-account-info' });
+        // HOLY HACK TOWN BATMAN, because yea, we aren't instantiating an account instance
+        window.ACCOUNT_MOBILE_PHONE = <%= @account.mobile_phone.to_json.html_safe %>;
+        // outside the scope of the view container, so we bind here, it's a display state change, not really functional otherwise
+        $('a.action-change-password').click(function(e){
+            $('#password-jimmy-wrap').slideDown();
+            setTimeout(function(){
+                $('#account_current_password').focus();
+            }, 250);
+            e.stopImmediatePropagation();
+            return false;
+        });
+
+    })();
+</script>
+<% end %>

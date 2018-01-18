@@ -1,0 +1,15 @@
+<article>
+<%= care_provider.name %> &nbsp;<span class="fine-detail"><% if care_provider.care_provider_class.present? %><%= PatientCareProvider.formatted_care_provider_classes[care_provider[:care_provider_class]] %><% end %></span>
+<% if care_provider.phone1.present? %>
+    <br><%= format_phone(care_provider.phone1) %>
+<% end %>
+<% if care_provider.email.present? %>
+    <br><%= care_provider.email %>
+<% end %>
+<% if care_provider.medical_facility_name.present? %>
+    <br><%= care_provider.medical_facility_name %>
+<% end %>
+<% if (addr = format_address(care_provider,'Ste.')).present? %>
+    <br><%= addr %>
+<% end %>
+</article>

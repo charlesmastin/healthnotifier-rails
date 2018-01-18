@@ -1,0 +1,1 @@
+<p>The LifeSticker for <%= patient.name_extended %> was scanned by <%= scanner.name_extended %><% if scanner.account.mobile_phone %> reachable at <%= scanner.account.mobile_phone %><% end %><% if scanner.account.provider? %> (a licensed health care provider)<% end %><% if geo %> near <%= geo.formatted_address %><% end %>.</p>

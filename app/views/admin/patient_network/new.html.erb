@@ -1,0 +1,484 @@
+<section class="page-title">
+    <h1>PN Enterprise Connection Manager</h1>
+</section>
+
+<%= render :partial => 'admin/sidebar' %>
+
+<section id="main-column">
+
+<!-- <form id="object-form" action="<%= admin_patient_network_create_path %>" method="post"> -->
+<%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+<section class="pillbox auth-form">
+<article>
+    <div class="title">
+        <h3>Auditor</h3>
+    </div>
+
+    <div class="content">
+        <div class="field">
+            <%= label_tag 'auditor_patient_uuid', 'Auditor Patient Id', required: true %>
+            <%= text_field_tag 'auditor_patient_uuid', nil, placeholder: 'Search by email, name', required: true %>
+            <!-- , patient id, lifesquare id -->
+        </div>
+        <div id="auditor_patient_result"></div>
+    </div>
+</article>
+</section>
+
+<section class="pillbox auth-form">
+<article>
+    <div class="title">
+        <h3>Connection<br />Action</h3>
+    </div>
+
+    <div class="content">
+        <div class="field">
+            <%= label_tag 'action', 'Action', required: true %>
+            <div class="granter-scope">
+            <label><%= radio_button_tag 'action', 'request' %> Send Request</label>
+            <label><%= radio_button_tag 'action', 'create' %> Create Connection *</label>
+            <label class="disabled"><%= radio_button_tag 'action', 'update', false, disabled: true %> <span>Update Privacy</span></label>
+            <label class="disabled"><%= radio_button_tag 'action', 'delete', false, disabled: true %> <span>Delete Connection</span></label>
+            </div>
+        </div>
+        <div class="field" id="jw-connection_privacy">
+            <%= label_tag 'connection_privacy', 'Connection Privacy Level', required: true %>
+            <% if false %><%= select_tag 'connection_privacy', options_from_collection_for_select(@privacy_values, :value, :name), required: true %><% end %>
+            <select class="span3" name="connection_privacy" id="connection_privacy">
+                <option value="">&mdash;</option>
+                <%= options_for_select(@privacy_values.map {|item| [item[:name], item[:value]] }) %>
+            </select>
+        </div>
+        <div class="field" id="jw-connection_notify">
+            <%= label_tag 'connection_notify', 'Send notifications?' %>
+            <label class="disabled"><%= check_box_tag 'connection_notify', 'true', true, disabled: true %> Notify each user account</label>
+        </div>
+        <div class="field" id="jw-connection_extra">
+            <%= label_tag 'connection_notification_extra', 'Connection Notification Custom Content' %>
+            <%= text_area_tag 'connection_notification_extra' %>
+            <div><small>This is merged with the existing email template</small></div>
+        </div>
+        <div class="field" id="jw-connection_reason">
+            <%= label_tag 'connection_request_reason', 'Request Reason' %>
+            <%= text_area_tag 'connection_request_reason' %>
+        </div>
+    </div>
+</article>
+</section>
+
+<section class="pillbox auth-form">
+<article>
+    <div class="title">
+        <h3>Granter(s)</h3>
+    </div>
+    <div class="content">
+        <!-- select toggle on MODE son -->
+        <div class="field">
+            <%= label_tag 'granter_scope', 'Granter Scope', required: true %>
+            <div class="granter-scope">
+            <label><%= radio_button_tag 'granter_scope', 'organization' %> Organization</label>
+            <label><%= radio_button_tag 'granter_scope', 'campaign' %> Campaign</label>
+            <label><%= radio_button_tag 'granter_scope', 'patient' %> Patient</label>
+            </div>
+        </div>
+
+        <div class="field" id="jw-granter-organization-id">
+            <%= label_tag 'granter_organization_uuid', 'Granter Organization Id' %>
+            <%= select_tag 'granter_organization_uuid', options_from_collection_for_select(@organizations, "uuid", "name"), :include_blank => true %>
+            <% if false %><%= text_field_tag 'granter_organization_uuid', nil, placeholder: 'Search by name, id' %><% end %>
+            <div style="margin-top: 0.5rem;"><span class="tag dangerous">Will add all patients in organization</span></div>
+        </div>
+
+        <div class="field" id="jw-granter-campaign-id">
+            <%= label_tag 'granter_campaign_uuid', 'Granter Campaign Id' %>
+            <% if false %><%= text_field_tag 'granter_campaign_uuid', nil, placeholder: 'Search by name, id' %><% end %>
+            <select name="granter_campaign_uuid" id="granter_campaign_uuid">
+                <option value=""></option>
+                <% if false %>
+                <%= options_for_select(Campaign.all.order('create_date').collect { |p| [ "#{p.id} - #{p.name} - promo(#{p.promo_code}) - Org(#{p.organization_id})", p.id ] }) %>
+                <% end %>
+                <% @organizations.each do |org| %>
+                <optgroup label="<%= org.name %>">
+                    <% org.campaigns.each do |camp| %>
+                    <option value="<%= camp.uuid %>"><%= camp.name %> - Promo: (<%= camp.promo_code %>)</option>
+                    <% end %>
+                </optgroup>
+                <% end %>
+            </select>
+            <div style="margin-top: 0.5rem;"><span class="tag dangerous">Will add all patients in campaign</span></div>
+        </div>
+
+        <div class="field" id="jw-granter-patient-id">
+            <%= label_tag 'granter_patient_uuid', 'Granter Patient Id' %>
+            <%= text_field_tag 'granter_patient_uuid', nil, placeholder: 'Search by email, name, patient id, lifesquare id' %>
+            <!-- <div><small>Enter UUID only</small></div> -->
+        </div>
+    </div>
+</article>
+</section>
+
+
+
+<section class="flow-control left">
+    <a href="#" id="submit-auto-connections" class="button primary">Submit</a>
+    <!-- <a href="#" id="preview-auto-connections" class="button">Preview</a> -->
+    <a href="#" id="action-cancel" class="button">Cancel</a>
+</section>
+<!-- </form> -->
+
+</section>
+
+
+<% content_for :js_bootstrap do %>
+    <script>
+        (function () {
+            "use strict";
+            var PROCESSING = false;
+            var ACTION = null;
+            var GRANTER_SCOPE = null;
+
+            $('#auditor_patient_id').focus();
+
+            // hide granter details
+            $("#jw-granter-organization-id").hide();
+            $("#jw-granter-campaign-id").hide();
+            $("#jw-granter-patient-id").hide();
+            // wire up change handler brizzle
+            /*
+            $('radio[name="granter_scope"]').change(function(item, bla){
+                console.log(item);
+                console.log(bla);
+            });
+            */
+            // no time to do normal stuffs here, this is cringe worthy, but time to search jquery docs is time lost
+            $("#granter_scope_organization").click(function(){
+                GRANTER_SCOPE = "organization";
+                $("#jw-granter-organization-id").show();
+                $("#jw-granter-campaign-id").hide();
+                $("#jw-granter-patient-id").hide();
+            });
+            $("#granter_scope_campaign").click(function(){
+                GRANTER_SCOPE = "campaign";
+                $("#jw-granter-organization-id").hide();
+                $("#jw-granter-campaign-id").show();
+                $("#jw-granter-patient-id").hide();
+            });
+            $("#granter_scope_patient").click(function(){
+                GRANTER_SCOPE = "patient";
+                $("#jw-granter-organization-id").hide();
+                $("#jw-granter-campaign-id").hide();
+                $("#jw-granter-patient-id").show();
+            });
+
+            // change handler on the ACTION bro- only first 2 are active doh
+            $("#jw-connection_privacy").hide();
+            $("#jw-connection_extra").hide();
+            $("#jw-connection_reason").hide();
+
+            $("#action_request").click(function(){
+                ACTION = "request";
+                $("#jw-connection_privacy").hide();
+                $("#jw-connection_extra").hide();
+                $("#jw-connection_reason").show();
+            });
+
+            $("#action_create").click(function(){
+                ACTION = "create";
+                $("#jw-connection_privacy").show();
+                $("#jw-connection_extra").show();
+                $("#jw-connection_reason").hide();
+            });
+
+            //observer pattern you little snitch snatch slizzle snup
+            // $(document).click(function)
+            $(document).off('click', "#remove-auditor-patient");
+            $(document).on('click', '#remove-auditor-patient', function(e){
+                $('#auditor_patient_result').empty();
+                $('#auditor_patient_uuid').removeAttr('disabled');
+                $('#auditor_patient_uuid').val('');
+            });
+
+            // takes on object returns string of html, LOLOLOLOLOLOL BROLO
+            function renderResultNode(item){
+                var content = '<article class="profile-search-result">';
+                // profile pic bro
+                //if(item.result.profile.photo_uuid){
+                    content += '<article class="user-thumbnail-circle medium">';
+                    content += '<p class="user-thumbnail">';
+                    content += '<img src="/api/v1/profiles/' + item.result.profile.uuid + '/profile-photo?width=128&amp;height=128&uuid=' + item.result.profile.photo_uuid + '" alt="Profile Pic">';
+                    content += '</p>';
+                    content +=  '</article>';
+                //}
+                // Name
+                content += '<article class="details">';
+                content += '<h4>' + item.result.profile.fullname + '</h4>';
+
+                // email
+                content += '<small class="email">' + item.result.account.email + '</small>';
+
+                // provider status
+                if(item.result.account.provider){
+                    content += '<span class="tag provider-account"><i class="material-icons">verified_user</i>Health care provider</span>';
+                }
+
+                content += '</article>';
+
+                content += '</article>';
+                // TODO: cast into a DOM element now? or later
+                return content;
+            }
+
+            function addAutocomplete($el, cb) {
+                // var self = this;
+                $el.autocomplete({
+                    source: function(request, requestCallback) {
+                        function callback(data) {
+                            if (cb) {
+                                cb(data, requestCallback);
+                            } else {
+                                requestCallback(data.items);
+                            }
+                        }
+                        searchNetwork(request.term, callback);
+                    },
+                    // http://stackoverflow.com/questions/16371204/how-to-change-rendering-of-dropdown-in-jquery-ui-autocomplete-attached-to-a-clas
+                    create: function () {
+                        $(this).data('ui-autocomplete')._renderItem = function (ul, item) {
+                            // build dat node bizzle nozzle nuts
+                            
+                            return $('<li>')
+                                .append(renderResultNode(item))
+                                .appendTo(ul);
+                        };
+                    },
+                    
+                    delay: 300,
+                    // disable those pesky hover bits on uh, mobile browsers (lolzors)
+                    open: function(event, ui) {
+                        $('.ui-autocomplete').off('menufocus hover mouseover mouseenter');
+                    }
+                });
+
+                $el.on('focus', function(){
+                    $el.autocomplete('option', 'disabled', false);
+                }).on('blur', function() {
+                    if ($('ul.ui-autocomplete:visible').length === 0) {
+                        $el.autocomplete('option', 'disabled', true);
+                        $el.removeClass('ui-autocomplete-loading');
+                    }
+                });
+
+                $el.on('autocompleteselect', function(event, ui) {
+                    event.target.disabled = true;
+                    $("#auditor_patient_result").empty();
+                    $("#auditor_patient_result").html(renderResultNode(ui.item) + '<div><a id="remove-auditor-patient" href="#" class="button">Remove</a></div>');
+                });
+
+                return $el;
+            };
+
+            function searchNetwork(keywords, callback) {
+                $.ajax('/api/v1/admin/network/search/', {
+                    data: {
+                        keywords: keywords,
+                    },
+                    dataType: 'json',
+                    success: function(data, textStatus, jqXHR) {
+                        callback(data);
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.log('error: ' + textStatus, jqXHR, errorThrown);
+                    },
+                });
+            };
+
+            addAutocomplete($('#auditor_patient_uuid'), function(data, cb) {
+                var items = _.map(data.results, function(item) {
+                  return {
+                    label: item.profile.first_name + " " + item.profile.last_name,
+                    value: item.profile.uuid,
+                    result :item // namespaced so we can swap back to a standard renderer bro bas
+                  };
+                });
+                cb(items);
+              });
+
+
+            function onSubmit(){
+                if(PROCESSING){
+                    return;
+                }
+                var payload = {};
+                // validate that shizzle nizzle
+                if($("#auditor_patient_uuid").val().length == 0){
+                    app.alert("Please choose Auditor");
+                    return;
+                } else {
+                    payload.auditor_patient_uuid = $("#auditor_patient_uuid").val();
+                }
+                if(ACTION == null){
+                    app.alert("Please choose Connection Action");
+                    return;
+                } else {
+                    if(ACTION == "create" && $("#connection_privacy").val() == ""){
+                        app.alert("Please choose Connection Privacy");
+                        return;
+                    } else {
+                        payload.connection_privacy = $("#connection_privacy").val();
+                    }
+                }
+                if(GRANTER_SCOPE == null){
+                    app.alert("Please choose Granter Scope");
+                    return;
+                } else {
+                    if(GRANTER_SCOPE == "organization"){
+                        if($("#granter_organization_uuid").val() == ""){
+                            app.alert("Please choose Granter Organization");
+                            return;
+                        } else {
+                            payload.granter_organization_uuid = $("#granter_organization_uuid").val();
+                        }
+                    }
+                    if(GRANTER_SCOPE == "campaign"){
+                        if($("#granter_campaign_uuid").val() == ""){
+                            app.alert("Please choose Granter Campaign");
+                            return;
+                        } else {
+                            payload.granter_campaign_uuid = $("#granter_campaign_uuid").val();
+                        }
+                    }
+                    if(GRANTER_SCOPE == "patient"){
+                        if($("#granter_patient_uuid").val() == ""){
+                            app.alert("Please choose Granter Patient");
+                            return;
+                        } else {
+                            payload.granter_patient_uuid = $("#granter_patient_uuid").val();
+                        }
+                    }
+                }
+                app.confirm({
+                    title: "Submit",
+                    text: "Even though we passed validation, just double check everything",
+                    type: "warning",
+                    showCancelButton: true,
+                    allowOutsideClick: true,
+                    cancelButtonText: "Cancel",
+                    confirmButtonText: "Submit"
+                }, function () {
+                    // WAIT FOR IT
+                    // TODO: we need a on completed animation callback
+                    // because submit operated so quickly it was unable to toss up the next swallow
+                    setTimeout(function(){
+                        submit(payload);
+                    }, 500);
+                });
+            }
+
+            function onCancel(){
+                if(PROCESSING){
+                    return;
+                } else {
+                    window.location = "/admin/";
+                }
+            }
+
+            function submit(payload){
+                if(PROCESSING){
+                    return;
+                }
+
+                $("#submit-auto-connections").addClass("disabled").attr("disabled", true).text("Submitting…");
+                PROCESSING = true;
+                
+                // lock down the UI now LOCK IT DOWN ALREADY LOCK IT
+                var url;
+                if(ACTION == "create"){
+                    url = "/api/v1/admin/network/create-connections";
+                }
+                if(ACTION == "request"){
+                    url = "/api/v1/admin/network/request-access";
+                }
+                $.ajax(url, {
+                    data: JSON.stringify(payload),
+                    type: "POST",
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    success: function(data, textStatus, jqXHR) {
+                        $("#submit-auto-connections").removeClass("disabled").removeAttr("disabled").text("Submit");
+                        PROCESSING = false;
+                        console.log(data);
+
+                        var granters_count = 0;
+                        var connections_count = 0;
+                        var message = "Success!";
+                        var title = "Success";
+                        var redirect = null;
+                        try {
+                            granters_count = data.granters_count;
+                            connections_count = data.connections_count;
+                            var percent = Math.ceil((connections_count / granters_count) * 100);                            
+                            if(granters_count > 0){
+                                if(granters_count == connections_count){
+                                    message = percent + "% complete (" + connections_count + "/" + granters_count + ").";
+                                    redirect = "/admin/";
+                                }else {
+                                    title = "Warning";
+                                    message = percent + "% complete (" + connections_count + "/" + granters_count + ").";
+                                    message += " Some granters already had existing connections with the auditor.";
+                                }
+                            } else {
+                                message = "There were 0 granters targeted from the provided criteria.";
+                            }
+                        } catch(e) {
+                            message = "Something Bombed, even though the server returned a 200";
+                        }
+                        
+                        app.confirm({
+                            title: title,
+                            text: message,
+                            html: true,
+                            allowOutsideClick: true,
+                            type: "info"
+                        }, function(){
+                            if(redirect){
+                                window.location = redirect;
+                            }
+                        });
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+
+                        console.log('error: ' + textStatus, jqXHR, errorThrown);
+                        $("#submit-auto-connections").removeClass("disabled").removeAttr("disabled").text("Submit");
+                        PROCESSING = false;
+
+                        app.confirm({
+                            title: "Error",
+                            text: textStatus,
+                            html: true,
+                            allowOutsideClick: true,
+                            type: "error"
+                        }, function(){
+                            if(redirect){
+                                window.location = redirect;
+                            }
+                        });
+
+                    },
+                });
+
+                
+            }
+
+            $('#submit-auto-connections').click(function(e){
+                onSubmit();
+                return false;
+            });
+
+            $('#action-cancel').click(function(e){
+                onCancel();
+                return false;
+            });
+
+        })();
+    </script>
+<% end %>

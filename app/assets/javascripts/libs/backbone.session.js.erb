@@ -1,0 +1,62 @@
+(function(Backbone, _, undefined) {
+	"use strict";
+	
+	Backbone.Session = function(options) {
+	};
+	Backbone.Session.extend = Backbone.View.extend;
+	
+	_.extend(Backbone.Session.prototype, Backbone.Events, {
+		sessionPath: '/login',
+		initializeSession: function(options) {
+			this.sessionOptions = _.extend({}, options, {
+				seconds: <%= Devise.timeout_in %>,
+				warningAt: 120
+			});
+			
+			this.resetSession();
+		},
+		resetSession: function() {
+			var self = this;
+			this.seconds = this.sessionOptions.seconds;
+			this.warningAt = this.sessionOptions.warningAt;
+			this.invalidationDate = moment().add('seconds', this.sessionOptions.seconds);
+			
+			_.each(this.timers, function(num, key) {
+				clearInterval(self.timers[key]);
+			});
+			
+			this.timers = {
+				session: null,
+				warning: null
+			}
+
+			this.sessionTimer();
+			this.warningTimer();
+		},
+		sessionRemaining: function() {
+			return this.invalidationDate.diff(new Date, 'seconds');
+		},
+		sessionTimer: function() {
+			var self = this;
+			self.timers.session = setInterval(function() {
+				if(self.invalidationDate < moment()) {
+					clearInterval(self.timers.session);
+					self.trigger('sessionExpired', self);
+				}
+			}, 1000);
+			
+			return self.timers.session;
+		},
+		warningTimer: function() {
+			var self = this;
+			self.timers.warning = setInterval(function() {
+				if(self.sessionRemaining() < self.warningAt) {
+					clearInterval(self.timers.warning);
+					self.trigger('sessionTimeoutWarning', self);
+				}
+			}, 1000);
+			
+			return self.timers.warning;
+		}
+	});
+})(Backbone, _);

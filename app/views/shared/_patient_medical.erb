@@ -1,0 +1,142 @@
+<section>
+    <div>
+    <h3>Medications</h3>
+    <% if @patient_details['medications'].length > 0 %>
+        <% @patient_details['medications'].each do |medication| %>
+        <article>
+        <% if has_view_permission(medication, @view_permission) %>
+            <strong><%= medication.therapy %></strong>
+            <small><%= medication.strength_dose(false) %></small>
+        <% else %>
+            <small class="private"><%= @default_privacy_message %></small>
+        <% end %>
+        </article>
+        <% end %>
+    <% else %>
+    <article><small>No known medications</small></article>
+    <% end %>
+    </div>
+</section>
+
+<section>
+    <div>
+    <h3>Allergies</h3>
+    <% if @patient_details['allergies'].length > 0 %>
+    <% @patient_details['allergies'].each do |allergy| %>
+    <article>
+    <% if has_view_permission(allergy, @view_permission) %>
+        <strong><%= allergy.allergen %></strong>
+        <small><%= PatientAllergy.reactions[allergy[:reaction]] %></small>
+    <% else %>
+        <small class="private"><%= @default_privacy_message %></small>
+    <% end %>
+    </article>
+    <% end %>
+    <% else %>
+    <article><small>No known allergies</small></article>
+    <% end %>
+    </div>
+</section>
+
+<section>
+    <div>
+    <h3>Conditions</h3>
+    <% if @patient_details['conditions'].length > 0 %>
+    <% @patient_details['conditions'].each do |condition| %>
+    <article>
+    <% if has_view_permission(condition, @view_permission) %>
+        <strong><%= condition.health_event %></strong>
+        <% if condition.start_date.present? %><small><%= automaskDate(condition.start_date, condition.start_date_mask) %></small><% end %>
+    <% else %>
+        <small class="private"><span>!</span><%= @default_privacy_message %></small>
+    <% end %>
+    </article>
+    <% end %>
+    <% else %>
+    <article><small>No known conditions</small></article>
+    <% end %>
+    </div>
+</section>
+
+<section>
+    <div>
+    <h3>Procedures &amp; Devices</h3>
+    <% if @patient_details['procedures'].length > 0 %>
+    <% @patient_details['procedures'].each do |procedure| %>
+    <article>
+    <% if has_view_permission(procedure, @view_permission) %>
+    <strong><%= procedure.health_event %></strong><% if procedure.start_date %><small><%= automaskDate(procedure.start_date, procedure.start_date_mask) %></small><% end %>
+    <% else %>
+        <small class="private"><%= @default_privacy_message %></small>
+    <% end %>
+    </article>
+    <% end %>
+    <% else %>
+    <article><small>No known procedures or devices</small></article>
+    <% end %>
+    </div>
+</section>
+
+<section>
+    <div>
+    <h3>Directives</h3>
+
+    <!-- if we're the owner here -->
+    <% if @owner %>
+    <!-- RIP SON <a class="add-document" data-platform="native" href="/api/v1/directive/create/">Add New Directive</a>-->
+    <% end %>
+
+    <% @patient_details['directives'].each do |directive| %>
+    <%= render :partial => 'api/lifesquares/dd', :locals => {:directive => directive} %>
+    <% end %>
+
+    </div>
+</section>
+
+<section>
+    <div>
+
+    <h3>Documents</h3>
+
+    <!-- if we're the owner here -->
+    <% if @owner %>
+    <!-- RIP SON -->
+    <!--<a class="add-document" data-platform="native" href="/api/v1/document/create/">Add New Document</a>-->
+    <% end %>
+
+    <% @patient_details['documents'].each do |directive| %>
+    <%= render :partial => 'api/lifesquares/dd', :locals => {:directive => directive} %>
+    <% end %>
+
+    </div>
+</section>
+
+<% if @patient.maternity_due_date %>
+<section>
+    <div>
+    <h3>Pregnant</h3>
+    <article>
+    <p>Due <%= @patient.maternity_due_date.strftime('%m/%d/%Y') %></p>
+    </article>
+    </div>
+</section>
+<% end %>
+
+<section>
+    <div>
+    <h3>Immunizations</h3>
+    <% if @patient_details['immunizations'].length > 0 %>
+    <% @patient_details['immunizations'].each do |immunization| %>
+    <article>
+    <% if has_view_permission(immunization, @view_permission) %>
+    <strong><%= immunization.health_event %></strong><% if immunization.start_date %> <small><%= immunization.start_date %></small><% end %>
+    <% else %>
+        <small class="private"><%= @default_privacy_message %></small>
+    <% end %>
+    </article>
+    <% end %>
+    <% else %>
+    <article><small>No known immunizations</small></article>
+    <% end %>
+    </div>
+</section>

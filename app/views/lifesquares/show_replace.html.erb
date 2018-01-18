@@ -1,0 +1,62 @@
+<!-- TODO single profile account context, show patient bar -->
+
+<section class="page-title">
+  <h1>Get replacement LifeStickers</h1>
+  <p>We’ll mail you a fresh sticker sheet for each profile you select.</p>
+</section>
+
+<div id="bb-view-replace-stickers" data-action="<%= api_lifesquares_replacements_path %>" class="basic-form <% if @requires_payment %>requires-payment<% else %>no-payment<% end %>">
+
+<section id="stickers" class="cards<% if @patients.size < 2 %> single-item<% end %>">
+    <!-- it's a list of one, but whatever -->
+    <% @patients.each_with_index do |patient, index| %>
+        <article>
+            <header>
+                <input type="checkbox" class="replacement" data-patient-uuid="<%= patient.uuid %>" id="replacement-<%= patient.uuid %>" checked="checked" />
+                <h3><%= patient.name_extended %></h3>
+            </header>
+            <section>
+                <%= render :partial => 'components/patient_avatar', :locals => { :patient => patient } %>
+                <% if patient.age_str != "2015 years old" %><small class="age"><%= patient.age_str %></small><% else %><small class="age">&nbsp;</small><% end %>
+                <% if patient.lifesquare_code_str and patient.lifesquare_code_str.length > 0 %>
+                <article class="lifesquare">
+                    <img class="lifesquare" src="<%= api_lifesquare_image_path(patient.lifesquare_uid_str) %>" width="100" height="100" />
+                    <div class="lifesquare-code"><%= patient.lifesquare_code_str %></div>
+                </article>
+                <% end %>
+            </section>
+        </article>
+    <% end %>
+</section>
+
+<%= render :partial => 'components/shipping', :locals => { :addresses => @residences, :selected_index => @selected_residence_index } %>
+
+<% if @requires_payment %>
+<%= render :partial => 'components/payment', :locals => { :available_cards => @cards_on_file, :total => @total } %>
+<% end %>
+
+<section class="flow-control">
+  <button type="submit" class="button primary">Submit</button>
+  <a href="<%= patient_index_path %>" class="button">Cancel</a>
+</section>
+
+</div>
+
+<% content_for :js_head do %>
+<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+<script type="text/javascript">
+  Stripe.setPublishableKey('<%= @publishable_key %>');
+</script>
+<% end %>
+<% content_for :js_bootstrap do %>
+<script>
+    (function() {
+        window.COST_PER_PATIENT = <%= @replacement_cost_per_patient %>;
+        
+        var Account = app.module('account');
+        var Patient = app.module('patient');
+        var stickersView = new Patient.Views.LifesquaresReplace({ el: '#bb-view-replace-stickers' });
+        var addressPickerView = new Patient.Views.AddressPicker({ el: '#bb-view-shipping' });
+    })();
+</script>
+<% end %>

@@ -1,0 +1,17 @@
+*.swp
+.bundle
+.DS_Store
+.sass-cache/
+config/credentials-local.yml
+config/database-local.yml
+db/*.sqlite3
+db/data.yml
+log/*.log
+node_modules
+npm-debug.log
+public/system
+public/assets
+tmp/
+vendor/bundle/
+.ruby-version
+.byebug_history

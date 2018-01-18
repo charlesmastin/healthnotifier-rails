@@ -1,0 +1,10 @@
+<% if @patient_details['procedures'].length > 0 %>
+<article data-url="#">
+    <header><%= image_tag "icons/surgeon.png" %><h4><a href="<%= patient_edit_medical_path(@patient.uuid) %>#procedure">Procedures & Devices</a></h4></header>
+    <section>
+        <% @patient_details['procedures'].each do |procedure| %>
+        <%= render :partial => 'components/patient_procedure', :locals => { :procedure => procedure } %>
+        <% end %> 
+    </section>
+</article>
+<% end %>

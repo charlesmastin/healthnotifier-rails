@@ -1,0 +1,124 @@
+
+<% content_for :below_header do %>
+
+<section id="patient-transaction-bar" class="organization">
+    <div class="inner">
+    <h4 class="patient_name"><%= @organization.name %> <span class="tag enterprise on-dark">Business</span></h4>
+
+    <div class="actions">
+        <% if false %>
+        <% if @membership.owner? or @membership.admin? %>
+        <a href="<%= organization_order_lifesquares_path %>" class="button primary juiced">Order LifeStickers</a>
+        <a href="<%= organization_renew_path %>" class="button primary juiced">Renew Coverage</a>
+        <% end %>
+        <% end %>   
+        <a href="#" class="action actions" data-popover="org-actions-<%= @organization.uuid %>"><i class="material-icons">more_vert</i></a>
+    </div>
+    </div>
+</section>
+
+<% end %>
+
+<% if false %>
+<% content_for :pagetitle do %>
+<h1><%= @organization.name %></h1>
+<h3>Business Dashboard</h3>
+<% end %>
+<% end %>
+
+<%= render :partial => 'sidebar' %>
+
+<section id="main-column">
+
+<% if @membership.owner? or @membership.admin? %>
+<!-- <a href="<%= organization_order_lifesquares_path %>" class="button primary">Bulk Order LifeStickers</a> -->
+
+<!-- later we can do the nuanced bits -->
+
+
+<% if @organization.campaigns.length > 0 %>
+<section class="pillbox">
+<article>
+<div class="content">
+<!-- <h3>Campaigns</h3> -->
+<table class="default datagrid">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        <th>Quickstart</th>
+        <th>Promo Code</th>
+        <!-- <th>Member Price</th> -->
+        <th>Claimed<br />LifeStickers</th>
+        <th>Remaining<br />Credits</th>
+        <!-- <th>Actions</th> -->
+    </tr>
+    </thead>
+    <tbody>
+    <% @organization.campaigns.each do |item| %>
+      <tr>
+        <td><small><%= item.name %></small></td>
+        <td><% if item.promo_code != "" %><a href="<%= campaign_show_url item.uuid %>" target="_blank" class="button">View Quickstart</a><% end %></td>
+        
+        <td><% if item.promo_code != "" %><div class="promo-code"><%= item.promo_code.upcase %></div><% end %></td>
+        <!-- <td><%= number_to_currency(item.promo_price / 100) %></td> -->
+        <td><strong><%= item.claimed_lifesquares_count %></strong></td>
+        <td><%= item.lifesquare_credits %></td>
+        <!--
+        <td>
+            <a href="#" style="display: inline-block;" data-popover="<%= item.id %>"><i class="material-icons">more_horizon</i></a>
+        </td>
+        -->
+      </tr>
+    <% end %>
+    </tbody>
+</table>
+</div>
+</article>
+</section>
+<% else %>
+<!--<p></p>-->
+<% end %>
+
+<% if @organization.invoices.length > 0 %>
+<section class="pillbox">
+<article>
+<div class="content">
+<h3>Invoices</h3>
+<table class="default datagrid">
+    <tbody>
+    <% @organization.invoices.each do |item| %>
+    <tr>
+    <% if item.payment_id == nil %>
+        <td><a href="<%= organization_invoice_path(:uuid=>@organization.uuid, :invoice_uuid=>item.uuid) %>" title="Pay Now"><%= item.title %></a></td>
+        <td><%= number_to_currency(item.amount / 100) %></td>
+        <td><small>Due <%= item.due_date.strftime('%m/%d/%-Y') %></small></td>
+    <% end %>
+    <% if item.payment_id != nil %>
+        <td><%= item.title %></td>
+        <td><%= number_to_currency(item.amount / 100) %></td>
+        <td><span class="tag green">PAID</span> <small><%= item.payment.created_at.strftime('%m/%d/%-Y') %></small></td>
+    <% end %>
+    </tr>
+    <% end %>
+    </tbody>
+</table>
+</div>
+</article>
+</section>
+<% end %>
+
+
+<% end %>
+
+<!-- stats bro -->
+<!-- total members by role -->
+<!-- invite to org action -->
+<!-- invites sent -->
+<!-- existing credits -->
+<!-- list of owners and admins -->
+<!-- customer support stuffs -->
+<!-- total number of scans on lifesquares -->
+
+
+</section>

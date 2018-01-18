@@ -1,0 +1,53 @@
+// not currently for the webview but for the summary and medical lists
+
+// this is the lightweight version, because it sits inside a "card" like surface
+article.dd-summary {
+    float: left;
+    margin: 0 !important;
+    margin-right: 1rem !important;
+    margin-bottom: 1rem !important;
+    box-sizing: border-box;
+    border-radius: 0.5rem;
+    border: 1px solid rgba(0, 0, 0, 0);
+    padding: 1rem;
+    background: $bg;//rgba(0, 0, 0, 0.05);
+    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.075);
+    -webkit-transition: box-shadow 0.15s linear;
+    // text-align: center;
+
+    p {
+        margin: 0;
+        position: relative;
+        top: -2px;
+    }
+
+    .image-wrapper {
+        position: relative;
+        box-sizing: border-box;
+        width: 82px;
+        height: 102px;
+        border: 1px solid $strokesForFolks;
+        margin: 0.25rem 0 0.5rem 0;
+
+        img {
+            object-fit: cover;
+        }
+
+        span.badge {
+            position: absolute;
+            bottom: 0.5rem;
+            left: 0.5rem;
+        }
+    }
+    span.privacy {
+
+    }
+
+    &:hover {
+        border: 1px solid #ccc;
+        box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
+        -webkit-transition: box-shadow 0.15s linear;
+    }
+}
+
+// obviously there is also the in viewer UI, plus the in editor UI

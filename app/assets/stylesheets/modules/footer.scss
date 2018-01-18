@@ -1,0 +1,97 @@
+footer#footer {
+    // get that flexy footer on son
+    // http://philipwalton.github.io/solved-by-flexbox/demos/sticky-footer/
+    -webkit-box-flex: 0;
+    -webkit-flex: none;
+    -ms-flex: none;
+    flex: none;
+    
+    width: 100%;
+    border-top: 1px solid #ccc;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    background: rgba(255, 255, 255, 1.0);//rgba(0, 0, 0, 0.1);
+    margin-top: 8rem;
+
+    div.inner {
+        margin: 0 auto;
+        width: $mainWidth;
+        @include clearfix;
+    }
+
+    a {
+        &:hover {
+            text-decoration: underline;
+        }
+        &.button:hover {
+            text-decoration: none;
+        }
+        &.action-feedback {
+            position: relative;
+            margin-left: -0.5rem;
+            i {
+                margin-right: 0.5rem;
+            }
+        }
+    }
+
+    &.public {
+        .inner {
+            @include clearfix;
+            article {
+                @include grid-columns(3, 1, 10%);
+            }
+        }
+    }
+
+    &.authenticated {
+        font-size: 0.8rem;
+        ul.inline {
+            li {
+                margin-left: 1rem;
+            }
+        }
+        a {
+            color: $textgray;
+            &:hover {
+                color: $blue2016;
+            }
+        }
+        .copyright {
+            color: $medgray;
+        }
+    }
+
+    
+
+    p {
+        padding-left: 0;
+        margin-left: 0;
+    }
+
+    h6 {
+        text-transform: uppercase;
+        margin-bottom: 1rem;
+        margin-top: 0.5rem;
+        letter-spacing: 0.025rem;
+    }
+
+    nav {
+        margin-bottom: 0.5rem;
+        ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            li {
+                margin-bottom: 0.25rem;
+                &:first-child {
+                    margin-left: 0;
+                }
+                a {
+                    font-size: 0.85rem;
+                }
+            }
+        }
+    }
+
+}

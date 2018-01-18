@@ -1,0 +1,318 @@
+// form buttons live in buttons.scss!!!!
+::-webkit-input-placeholder,
+{
+    color: $placeholder;
+}
+:-moz-placeholder,
+{
+    color: $placeholder;
+    opacity: 1;
+}
+::-moz-placeholder {
+    color: $placeholder;
+    opacity: 1;
+}
+:-ms-input-placeholder {
+    color: $placeholder;
+}
+.placeholder {
+    color: $placeholder !important;
+}
+
+// base styles son buns
+label {
+    font-size: 0.75rem;
+    margin-bottom: 0.25rem;
+
+    .required > &:after,
+    &.required:after {
+        content: '*';//(required)';
+        margin-left: 0.15rem;
+    }
+
+    .required > &,
+    &.required {
+        font-weight: 600;
+    }
+}
+
+input[type="text"], input[type="phone"], textarea, input[type="password"], input[type="email"], input[type="number"] {
+    font-size: 1rem;
+    box-sizing: border-box;
+    padding: 0.25rem 0.5rem;
+    border: none;
+    padding-left: 0;
+    border-bottom: 2px solid $strokesForFolks;
+    -webkit-transition: border-color 0.2s linear;
+    background: none;
+
+    &:focus {
+        outline: none;
+        border-color: $blue2016;
+        -webkit-transition: border-color 0.2s linear;
+    }
+
+    &.no-border {
+        border-bottom: none;
+    }
+}
+
+textarea {
+    min-height: 4rem;
+    box-shadow: inset 0px 0px 2px rgba(0, 0, 0, 0.15);
+    // border: 1px solid $strokesForFolks;
+    padding: 0.25rem;
+}
+
+.error-message {
+    color: $red2016;
+    margin-top: 0.25rem;
+    margin-bottom: 0;
+    font-size: 0.75rem;
+    font-weight: bold;
+    display: none;
+}
+
+p + p.error-message {
+    // margin-top: -0.5rem;
+}
+
+select {
+    //-webkit-appearance: none;
+    //-moz-appearance: none;
+    //appearance: none;
+    border-radius: 0.25rem;
+    padding: 0.25rem 0.5rem;
+    font-size: 1rem;
+    border: 1px solid $strokesForFolks;
+}
+
+.row + .row {
+    margin-top: 0.5rem;
+}
+
+.row.air-top {
+    margin-top: 1rem;
+}
+
+
+// regular big assforms - aka auth forms
+.auth-form {
+    label {
+        display: block;
+    }
+    input[type="checkbox"] + label {
+        display: inline;
+    }
+    input[type="text"], textarea, input[type="password"], input[type="email"] {
+        width: 100%;
+    }
+    div.field {
+        margin-bottom: 1.5rem;
+    }
+    div.check-wrapper {
+        input[type="checkbox"] {
+            display: inline;
+        }
+        label {
+            display: inline;
+        }
+    }
+    input#create_mobile_phone_country {
+        width: 20%;
+        display: inline !important;
+        margin-right: 5%;
+        float: left;
+    }
+    input#create_mobile_phone {
+        width: 75%;
+        display: inline !important;
+    }
+
+}
+
+.basic-form {
+    div.field {
+        margin-bottom: 1rem;
+    }
+    div.line, div.row {
+        // margin-bottom: 1rem;
+        @include clearfix;
+
+        div.field {
+            float: left;
+            margin-left: 1rem;
+            min-height: 3rem;
+            box-sizing: border-box;
+            &:first-of-type {
+                margin-left: 0;
+            }
+
+            input[type="text"], input[type="phone"], input[type="email"], input[type="password"], select {
+                width: 100%;
+            }
+
+            // TLC for the super narrow inputs and stuffs
+            &.span1 {
+                width: 4rem;
+            }
+            &.span2 {
+                width: 6rem;
+            }
+            &.span3 {
+                width: 8rem;
+            }
+            &.span4 {
+                width: 10rem;
+            }
+            &.span5 {
+                width: 12rem;
+            }
+            &.span6 {
+                width: 14rem;
+            }
+            &.span7 {
+                width: 16rem;
+            }
+            &.span8 {
+                width: 18rem;
+            }
+
+            &.privacy-wrap {
+                position: relative;
+                top: -4px;
+            }
+        }
+
+        &.slim {
+            div.field {
+                min-height: 1rem;
+            }
+        }
+        
+    }
+    
+    label {
+        display: block;
+
+        &.inline {
+            display: inline-block;
+        }
+    }
+}
+
+.floaters {
+    .field {
+        @include grid-columns(2, 1, 4%);
+    }
+}
+
+// special hacks
+
+input[type="text"].south-of-the-border,
+textarea.south-of-the-border {
+    background: white;
+    padding: 0.25rem;
+    border: 1px solid $strokesForFolks;
+}
+
+.radio-options-wrapper {
+    label {
+        display: inline-block;
+        margin-right: 1rem;
+        font-size: 1rem;
+        input {
+            display: inline-block;
+            margin-right: 0.25rem;
+        }
+    }
+}
+
+label {
+    span.step {
+        font-weight: 600;
+        margin-right: 0.25rem;
+    }
+}
+
+.nested-wrapper {
+    border-left: 2px solid $black-10;
+    padding-left: 1rem;
+    margin-bottom: 1rem;
+}
+
+// edit forms - aka all the mf forms for the edit screens lol
+.ui-autocomplete {
+    z-index: 1000;
+    max-width: 20rem;
+    background: rgba(255, 255, 255, 1.0);
+    font-family: $font-stack !important;
+    padding: 0 !important;
+    box-sizing: border-box;
+    box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.15);
+    border-bottom-left-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+    li {
+        background: white; // mobile iOS workaround
+        // margin-bottom: 0.25rem !important; // mobile iOS workaround
+        font-size: 1rem;
+        padding: 0.25rem 0.5rem !important;
+        box-sizing: border-box;
+        list-style: none;
+        cursor: default;
+        &.ui-state-focus, &:hover {
+            border: none;
+            font-weight: normal;
+            color: white;
+            background: $blue2016;
+        }
+    }
+}
+
+.ui-helper-hidden-accessible {
+    display: none;
+}
+
+
+.survey {
+    border-top: 1px solid $black-10;
+    padding-top: 1rem;
+    margin-top: 3rem;
+    p {
+        font-size: 0.8rem;
+    }
+}
+
+#exit-survey {
+    display: none;
+    margin-bottom: 1rem;
+    ul {
+        margin: 0;
+        padding: 0;
+        column-count: 2;
+        margin: 1rem 0;
+        li {
+            list-style: none;
+            margin-bottom: 0.25rem;
+            label {
+                input {
+                    margin-right: 0.25rem;
+                }
+            }
+        }
+    }
+
+    textarea {
+        display: none;
+    }
+}
+
+#exit-survey-wrapper {
+    #exit-survey {
+        display: block;
+
+        ul {
+            column-count: 3;
+        }
+    }
+}

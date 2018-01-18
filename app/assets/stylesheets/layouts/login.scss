@@ -1,0 +1,48 @@
+body.login, body.register {
+    aside {
+        display: none;
+    }
+    section.main-column {
+        width: 33rem;
+        margin: 6rem auto 0 auto;
+
+        section.page-title {
+            h1 {
+                margin-left: 1rem;
+            }
+        }
+
+        .flow-control {
+            @include clearfix;
+            padding: 0;
+            a.button.small {
+                position: relative;
+                top: 1px;
+                float: right;
+            }
+        }
+
+        .pillbox {
+            float: none;
+            width: 100%;
+
+            button[type="submit"] {
+                // margin-left: 1rem;
+            }
+
+        }
+
+        section.additional-info {
+            margin-top: 3rem;
+            padding: 1rem;
+            p {
+                font-size: 0.8rem;
+            }
+            ul {
+                li {
+                    font-size: 0.8rem;
+                }
+            }
+        }
+    }
+}

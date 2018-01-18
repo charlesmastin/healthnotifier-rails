@@ -1,0 +1,169 @@
+section.tiles {
+    & > article {
+        @include grid-columns(3, 1, 1%);
+        box-sizing: border-box;
+
+        border-radius: 0.5rem;
+        -webkit-transition: box-shadow 0.15s linear;
+        margin-bottom: 2%;
+
+
+
+        // cursor: pointer;
+        min-height: 12rem;
+        
+        @include surface-alt-1;
+
+        // border: 1px solid rgba(0, 0, 0, 0.2);
+
+        & > header {
+            padding: 0.5rem 1rem;
+            @include clearfix;
+            border-top-left-radius: 0.5rem;
+            border-top-right-radius: 0.5rem;
+            border-bottom: 1px solid #eee;//rgba(0, 0, 0, 0.08);//#eee;
+
+            h4 {
+                display: inline;
+            }
+
+            h4 + span.bolt-on {
+                margin-left: 0.25rem;
+                font-size: 0.8rem;
+                color: $black-30;
+            }
+
+            img {
+                display: none;
+            }
+
+            i.error-town {
+                color: $red2016;
+                position: relative;
+                font-size: 1rem;
+                top: 2px;
+                margin-right: 0.25rem;
+            }
+
+            i.alert-town {
+                color: $orange2016;
+                position: relative;
+                font-size: 1rem;
+                top: 2px;
+                margin-right: 0.25rem;
+            }
+
+        }
+        & > section {
+            text-align: left;
+            // background: hotpink;
+            
+            padding: 1rem;
+
+            p {
+                font-size: 0.8rem;
+            }
+            article {
+                font-size: 0.8rem;
+                line-height: 1.2rem;
+            }
+
+            .privacy {
+                display: none;
+            }
+
+            .blankstate {
+                width: 85%;
+                // margin: 1rem auto;
+                // margin-top: 0.5rem;
+                // text-align: center;
+
+                p {
+                    color: $black-30;
+                    margin-bottom: 0.5rem;
+
+                    a.button {
+                        position: relative;
+                        left: -0.5rem;
+                        // color: $black
+                    }
+                }
+            }
+        }
+    }
+
+    .user-thumbnail-circle {
+        margin: 0;
+    }
+}
+
+body.profile-beta {
+    // background: rgba(105, 109, 117, 0.1);
+}
+
+.tile {
+    &.tile-lifesquare {
+        .lifesquare-jw {
+            display: inline-block;
+            text-align: center;
+            width: 100%;
+            // margin-top: 0.5rem;
+        }
+        article.user-thumbnail-circle {
+            display: inline-block;
+            position: relative;
+            top: -1.25rem;
+            left: 1rem;
+        }
+    }
+    &.tile-manage-records {
+        ul.actions {
+            margin-bottom: 0;
+            margin-top: -0.5rem;
+            // font-size: 0.8rem;
+        }
+        i {
+            margin-right: 0.5rem;
+            position: relative;
+            top: 3px;
+        }
+    }
+    &.tile-admin {
+        ul.actions.flushtown {
+            position: relative;
+            left: -0.5rem;
+        }
+    }
+    &.tile-network-out {
+        article.pending-request {
+            & > div {
+                display: inline;
+                article.user-thumbnail-circle {
+                    position: relative;
+                    top: 0.8rem;
+                    width: 32px;
+                    margin: 0;
+                    display: inline;
+                    margin-right: 0.25rem;
+                    p.user-thumbnail {
+                        display: inline-block;
+                    }
+                }
+            }
+        }
+    }
+    section.connection-wrapper {
+        display: block;
+        overflow: auto;
+        // margin-bottom: 1rem;
+        & > article {
+            
+            float: left;
+            margin-right: 0.25rem;
+            margin-bottom: 0.25rem;
+        }
+    }
+    ul.actions {
+        margin-bottom: 0;
+    }
+}

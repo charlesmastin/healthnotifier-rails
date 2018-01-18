@@ -1,0 +1,26 @@
+<script id="procedure-item" type="text/html">
+    <div class="item-view row" style="display: none;">
+        <h3>{{health_event}}</h3>
+        <p>{{start_date}}</p>
+    </div>
+    <div class="item-edit row">
+        <input type="hidden" name="procedure-name" id="procedure-{{record_order}}-name" value="{{procedure}}">
+        <input type="hidden" name="procedure-imo" id="procedure-{{record_order}}-imo" value="{{imo_code}}">
+        <input type="hidden" name="procedure-icd9" id="procedure-{{record_order}}-icd9" value="{{icd9_code}}">
+        <input type="hidden" name="procedure-icd10" id="procedure-{{record_order}}-icd10" value="{{icd10_code}}">
+        <div class="field span4 required">
+            <label class="span4" for="procedure-{{record_order}}">Procedure or device</label>
+            <input class="item-input span4 procedure" type="text" name="health_event" value="{{health_event}}" id="procedure-{{record_order}}" placeholder="Name">
+            <p class="error-message span4" data-for="procedure-{{record_order}}">Please enter a procedure or device</p>
+        </div>
+        <div class="field span3">
+            <label for="proceduredate-{{record_order}}">Date performed</label>
+            <input class="item-input span3" type="text" name="start_date_formatted" value="{{start_date}}" id="proceduredate-{{record_order}}" placeholder="Any type of date">
+            <p class="error-message span3" data-for="proceduredate-{{record_order}}">Please enter a date in <br/>MM/DD/YYYY format</p>
+        </div>
+        <div class="field span1 privacy-wrap">
+            <%= render :partial => 'components/privacy', :locals => { :field => 'procedure' } %>
+        </div>
+        <%= render :partial => 'components/remove_row_button' %>
+    </div>
+</script>

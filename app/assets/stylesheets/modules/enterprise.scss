@@ -1,0 +1,18 @@
+body.register {
+    &.enterprise {
+        background: image-url("backgrounds/tahoe1.jpg") !important;
+    }
+}
+
+#bb-view-org-renewal {
+    #member_uuid {
+        width: 320px;
+    }
+    ul#exclusion-list {
+        width: 320px;
+        li {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+    }
+}

@@ -1,0 +1,45 @@
+<script id="medication-item" type="text/html">
+    <div class="item-view row" style="display: none;">
+        <h3>{{therapy}}</h3>
+        <p>{{therapy_quantity}} {{therapy_strength_form}}, {{therapy_frequency}}</p>
+    </div>
+    <div class="item-edit row">
+        <input type="hidden" name="therapy-name" id="therapy-{{record_order}}-name" value="{{therapy}}">
+        <input type="hidden" name="therapy-imo" id="therapy-{{record_order}}-imo" value="{{imo_code}}">
+        <input type="hidden" name="therapy-icd9" id="therapy-{{record_order}}-icd9" value="{{icd9_code}}">
+        <input type="hidden" name="therapy-icd10" id="therapy-{{record_order}}-icd10" value="{{icd10_code}}">
+        <div class="field span3 required">
+            <label for="medication-{{record_order}}">Medication</label>
+            <input class="item-input medication-name span4" type="text" name="therapy" value="{{therapy}}" id="medication-{{record_order}}" placeholder="Name">
+            <p class="error-message span4" data-for="medication-{{record_order}}">Please enter a medication</p>
+        </div>
+        <div class="field span2">
+            <label for="dose-{{record_order}}">Dose</label>
+            <select class="span2 dose" name="therapy_strength_form" id="dose-{{record_order}}" size="1">
+                <option value="">&mdash;</option>
+                <option value="Other">Other</option>
+            </select>
+            <p class="error-message span2" data-for="dose-{{record_order}}">Dose is required</p>
+        </div>
+        <div class="field span3">
+            <label for="frequency-{{record_order}}">Frequency</label>
+            <select class="span2 therapy_frequency" name="therapy_frequency" id="frequency-{{record_order}}" size="1">
+                <option value="">&mdash;</option>
+                <%= options_for_select(@frequencies.map {|item| [item[:name], item[:value]] }) %>
+            </select>
+            <p class="error-message span2" data-for="frequency-{{record_order}}">Frequency is required</p>
+        </div>
+        <div class="field span1">
+            <label for="quantity-{{record_order}}">Quantity</label>
+            <select class="span1 therapy_quantity" name="therapy_quantity" id="quantity-{{record_order}}" size="1">
+                <option value="">&mdash;</option>
+                <%= options_for_select(@quantities.map {|item| [item[:name], item[:value]] }) %>
+            </select>
+            <p class="error-message span1" data-for="quantity-{{record_order}}">Quantity is required</p>
+        </div>
+        <div class="field span1 privacy-wrap">
+            <%= render :partial => 'components/privacy', :locals => { :field => 'medication' } %>
+        </div>
+        <%= render :partial => 'components/remove_row_button' %>
+    </div>
+</script>

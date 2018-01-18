@@ -1,0 +1,8 @@
+<% if patient.has_current_coverage && current_account.lifesquare_employee? %>
+<article data-url="#">
+    <header><h4>Advise Me</h4></header>
+    <section>
+        <div class="blankstate"><p>Get help with a condition you may have, before you head to the Hospital or Urgent Care!</p><p><a href="<%= care_plans_patient_path(patient.uuid) %>" class="button small">Get Started</a></p></div>
+    </section>
+</article>
+<% end %>

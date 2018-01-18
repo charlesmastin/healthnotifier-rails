@@ -1,0 +1,18 @@
+<h1>Goodbye from HealthNotifier</h1>
+
+<p>We’re sad to see you go and we have enjoyed having you as a customer.</p>
+
+<!-- note about recurring accounts -->
+<% if cancelled_coverages.length > 0 %>
+<p>Recurring coverage subscriptions were cancelled. Please contact <a href="mailto:billing@domain.com">billing@domain.com</a> if you have any questions.</p>
+<% end %>
+
+<% if account.exit_survey == '' or account.exit_survey == nil %>
+<p>Please let us know how we can better serve you. Drop us a line at <a href="mailto:support@domain.com?subjectfeedback">support@domain.com</a> when you get a moment or take a minute to complete our exit survey.</p>
+
+<p><a href="<%= goodbye_url %>?account=<%= account.uid %>">Provide Feedback</a></p>
+<% end %>
+
+<hr />
+
+<p>If you did not delete this account directly or wish to restore it, <a href="mailto:support@domain.com">please let us know</a>.</p>

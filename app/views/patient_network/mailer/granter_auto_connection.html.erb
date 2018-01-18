@@ -1,0 +1,5 @@
+<p><strong>Dear <%= connection.granter_patient.first_name %></strong>,</p>
+
+<p>We have shared your HealthNotifier profile with <strong><%= connection.auditor_patient.fullname %></strong> as part of the HealthNotifier campaign purchased by <strong><%= organization.name %></strong> on your behalf. We are creating this connection based upon safety and process requirements as expressed by <strong><%= organization.name %></strong>.</p>
+
+<p>You can log into your profile and reject this sharing if you like (<a href="<%= patient_show_network_outbound_url(connection.granter_patient.uuid) %>"><%= patient_show_network_outbound_url(connection.granter_patient.uuid) %></a>), but please understand that it may compromise functionality that <strong><%= organization.name %></strong> felt was important for your safety and health. Please contact us with any questions or concerns at <a href="mailto:support@domain.com">support@domain.com</a>.</p>

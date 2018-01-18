@@ -1,0 +1,27 @@
+<% if @patient.has_demographics? %>
+<article data-url="#">
+    <header><%= image_tag "icons/headphones.png" %><h4><a href="<%= patient_edit_personal_path(@patient.uuid) %>#demographics">Demographics</a></h4></header>
+    <section>
+        <div class="metrics">
+            <% if @patient.gender %>
+            <article>
+                <small>Gender</small>
+                <div><%= @patient.gender.titlecase %></div>
+            </article>
+            <% end %>
+            <% if @patient.ethnicity.present? %>
+            <article>
+                <small>Ethnicity</small>
+                <div><%= Patient.formatted_ethnicities[@patient[:ethnicity]] %></div>
+            </article>
+            <% end %>
+            <% if @patient_details['languages'].length > 0 %>
+            <article>
+                <small>Speaks</small>
+                <div><%= @patient_details['languages'][0].language_code_assn.try('user_mask') %></div>
+            </article>
+            <% end %>
+        </div>
+    </section>
+</article>
+<% end %>

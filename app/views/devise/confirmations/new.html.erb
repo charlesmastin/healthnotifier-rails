@@ -1,0 +1,31 @@
+<% content_for :body_class do %> class="register"<% end %>
+
+<section class="main-column">
+
+<section class="page-title">
+    <h1>Confirm Account</h1>
+</section>
+
+<%= form_for(resource, :as => resource_name, :url => confirmation_path(resource_name), :html => { :method => :post, :class => "auth-form"}) do |f| %>
+<section class="pillbox">
+    <article>
+        <div class="content">
+            <div class="field">
+                <%= f.label :email, 'Your Email' %>
+                <%= f.email_field :email, :size => "27", :value => "", :autocomplete => "off", :autocapitalize => "off", :placeholder => "name@example.com" %>
+                <p class="error-message" data-for="account_email" style="display: none;">Invalid email address format</p>
+            </div>
+            <section class="flow-control left">
+                <button type="submit" class="button primary">Send Confirmation Instructions</button>
+            </section>
+        </div>    
+    </article>
+</section>
+<% end %>
+</section>
+
+<% content_for :js_bootstrap do %>
+<script>
+    document.getElementById('account_email').focus();
+</script>
+<% end %>

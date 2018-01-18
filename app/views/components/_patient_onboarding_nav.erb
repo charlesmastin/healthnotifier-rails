@@ -1,0 +1,40 @@
+<h6>New Profile Setup</h6>
+
+<nav class="onboarding">
+    <ol>
+        <% if @current_account.active_patients.size == 1 %>
+        <li class="completed"><i class="material-icons">check</i>Create Account</li>
+        <% end %>
+
+        <% if completed > 1 %>
+        <li class="completed <% if step == 1 %>active <% end %>"><a href="<%= patient_edit_personal_path(patient.uuid) %>"><i class="material-icons">check</i>Add Personal Details</a></li>
+        <% else %>
+        <li class="incomplete <% if step == 1 %>active <% end %>">Add Personal Details</li>
+        <% end %>
+
+        <% if completed > 2 or step > 2 %>
+        <li class="completed <% if step == 2 %>active <% end %>"><a href="<%= patient_edit_medical_path(patient.uuid) %>"><i class="material-icons">check</i>Add Medical History</a></li>
+        <% else %>
+        <li class="incomplete <% if step == 2 %>active <% end %>">Add Medical History</li>
+        <% end %>
+
+        <% if completed > 3 %>
+        <li class="completed <% if step == 3 %>active <% end %>"><a href="<%= patient_edit_contacts_path(patient.uuid) %>"><i class="material-icons">check</i>Add Contacts</a></li>
+        <% else %>
+        <li class="incomplete <% if step == 3 %>active <% end %>">Add Contacts</li>
+        <% end %>
+
+        <% if completed > 4 %>
+        <li class="completed <% if step == 4 %>active <% end %>"><i class="material-icons">check</i>Confirm</li>
+        <% else %>
+        <li class="incomplete <% if step == 4 %>active <% end %>">Confirm</li>
+        <% end %>
+
+        <% if completed > 4 %>
+        <li class="incomplete"><a href="<%= lifesquares_show_assign_path %>">Get LifeStickers</a></li>
+        <% else %>
+        <li class="incomplete">Get LifeStickers</li>
+        <% end %>
+
+    </ol>
+</nav>

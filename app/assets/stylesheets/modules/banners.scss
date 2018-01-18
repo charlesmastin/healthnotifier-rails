@@ -1,0 +1,58 @@
+.banner {
+    padding: 35px 0;
+    // font-weight: 600;
+
+    p {
+        font-size: 18px;
+        color: $darkgray;
+        font-weight: 500;
+        margin-bottom: 0;
+        span.header {
+            font-weight: 600;
+        }
+    }
+
+    label {
+        font-size: 18px;
+        display: inline-block;
+        margin-right: 60px;
+        margin-top: 18px;
+        color: $textgray;
+        font-weight: 300;
+    }
+
+    label input {
+        margin-right: 10px;
+    }
+
+    label:last-child {
+        margin-right: 0;
+    }
+
+    &.right-text {
+        padding-top: 0px;
+    }
+}
+
+.banner.social {
+    section.social-buttons {
+        margin: 1rem 0;
+    }
+    .twitter-share-button, .twitter-count-horizontal {
+        vertical-align: text-bottom; //To match Facebook styles
+        margin-bottom: 0;
+        position: relative;
+        top: 1px;
+    }
+
+    .fb_iframe_widget {
+        top: 1px;
+        text-align: left;
+        overflow: visible;
+        position: relative;
+    }
+
+    .show-thanks p {
+        font-size: 16px;
+    }
+}

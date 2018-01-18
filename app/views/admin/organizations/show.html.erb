@@ -1,0 +1,17 @@
+<section class="page-title">
+    <h1><a href="<%= admin_organization_index_path %>" data-balloon="View All Organizations" class="baby-got-back"><i class="material-icons">arrow_back</i></a><%= @organization.name %></h1>
+</section>
+
+<%= render :partial => 'admin/sidebar' %>
+
+<section id="main-column">
+
+<section class="pillbox">
+    <article>
+    <div class="content">
+        <p>There will be some sick performance reports, charts and graphs, bla bla. In the meantime you can <a href="<%= admin_organization_edit_path(@organization.id) %>">edit</a> or <a href="#">delete</a> this campaign. Yup, those icons are on the previous screen in the actions column.</p>
+    </div>
+    </article>
+</section>
+
+</section>

@@ -1,0 +1,70 @@
+<%= fields_for @organization do |f| %>
+
+<article>
+    <div class="title">
+        <h3>Basics</h3>
+    </div>
+
+    <div class="content">
+        <div class="field">
+            <%= f.label :name, required: true %>
+            <%= f.text_field :name, :placeholder => 'ACME Health Co.', required: true %>
+        </div>
+        <div class="field">
+            <%= f.label :slug %>
+            <%= f.text_field :slug, :placeholder => 'acme-health-co' %>
+        </div>
+        <div class="field">
+            <%= f.label :ls_name, "Name (for sticker sheet)" %>
+            <%= f.text_field :ls_name, :maxlength => 15, :placeholder => 'ACME CO™' %>
+        </div>
+    </div>
+</article>
+
+<article>
+    <div class="title">
+        <h3>Contact</h3>
+    </div>
+    <div class="content">
+        <div class="field">
+            <%= f.label :contact_first_name, "First Name" %>
+            <%= f.text_field :contact_first_name %>
+        </div>
+        <div class="field">
+            <%= f.label :contact_last_name, "Last Name" %>
+            <%= f.text_field :contact_last_name %>
+        </div>
+        <div class="field">
+            <%= f.label :contact_saluation, "Salutation" %>
+            <%= f.text_field :contact_salutation %>
+        </div>
+        <div class="field">
+            <%= f.label :contact_title, "Title" %>
+            <%= f.text_field :contact_title %>
+        </div>
+        <div class="field">
+            <%= f.label :contact_email, "Email" %>
+            <%= f.email_field :contact_email %>
+        </div>
+        <div class="field">
+            <%= f.label :contact_phone, "Phone" %>
+            <%= f.text_field :contact_phone %>
+        </div>
+    </div>
+</article>
+
+<article>
+    <div class="title">
+        <h3>Misc</h3>
+    </div>
+    <div class="content">
+        <% if !@organization.new_record? %>
+        <div class="field">
+            <%= f.label :uuid %>
+            <%= f.text_field :uuid, :placeholder => 'UUID', readonly: true %>
+        </div>
+        <% end %>
+    </div>
+</article>
+
+<% end %>

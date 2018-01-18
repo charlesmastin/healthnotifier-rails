@@ -1,0 +1,56 @@
+<% if @social_panel %>
+<section id="social" class="social banner pillbox center-text">
+    <article>
+        <div class="content">
+            <h3>Thanks for signing up for HealthNotifier!</h3>
+            <p>Please help us spread the word by telling your friends and family about HealthNotifier.</p>
+    
+            <section class="social-buttons">
+                <a href="#" class="button send-email" data-reveal-id="email-modal"><i class="material-icons">email</i> Email</a> 
+                <div class="fb-like" data-href="#" data-send="false" data-layout="button_count" data-width="100" data-show-faces="false" data-font="lucida grande"></div>
+
+                <a href="https://twitter.com/share" class="twitter-share-button" data-url="https://www.domain.com" data-via="healthnotifier" data-related="healthnotifier">Tweet</a>
+
+                <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+            </section>
+            <% if not @account.signup_refer %>
+            <br><br>
+            <%= form_for @account, :as => :account, :method => :put, :url => save_signup_refer_account_path do |f| %>
+            <div class="row set-refer">
+                <div>
+                    <h3>How did you hear about HealthNotifier?</h3>
+                    <select class="custom" name="refer" id="refer" size="1">
+                        <option value="">Select&hellip;</option>
+                        <%= options_for_select(@refer.map {|k,v| [k.titleize, v] }, @account.signup_refer) %>
+                    </select>
+                </div>
+            </div>
+            <div class="show-thanks">
+                <p>Thanks for your feedback!</p>
+            </div>
+            <% end %>
+            <% end %>
+        </div>
+    </article>
+</section>
+
+<section id="email-modal" class="reveal-modal">
+    <div class="modal-content">
+        <%= render 'shared/emailfriend' %>
+
+        <section class="modal-sidebar" style="margin-top: 1rem;">
+        <p class="more">
+            <strong>Sending to multiple people?</strong><br>
+            Separate addresses with a comma
+        </p>
+        <p class="more"><strong>List emergency contacts?</strong><br/>Let your emergency contacts know about HealthNotifier</p>
+        </section>
+    </div>
+
+    <section class="successful-email center-text" style="display: none;">
+        <h2>Message sent</h2>
+        <p>Thanks for telling your friends about HealthNotifier! You may now close this window.</p>
+    </section>
+    <a class="close-reveal-modal close-icon mir">×</a>
+</section>
+<% end %>

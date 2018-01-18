@@ -1,0 +1,16 @@
+<article>
+    <% if has_view_permission(directive, @view_permission) %>
+    <% if defined? @context and @context == 'web' %>
+    <a href="<%= document_show_path(directive.document_digitized.uid) %>#file-0">
+        <strong><%= humanize_dd_category(directive.document_digitized.category) %></strong>
+    </a>
+    <% else %>
+    <a href="<%= api_document_view_path(directive.document_digitized.uid) %>/#file-0" target="_blank">
+        <strong><%= humanize_dd_category(directive.document_digitized.category) %></strong>
+    </a>
+    <% end %>
+    &nbsp;<small><%= directive.document_digitized.document_digitized_files.count %> pages</small>
+    <% else %>
+    <small class="private"><%= @default_privacy_message %></small>
+    <% end %>
+</article>

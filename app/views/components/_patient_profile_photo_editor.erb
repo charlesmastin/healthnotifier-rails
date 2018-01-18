@@ -1,0 +1,27 @@
+<section class="reveal-modal" <% if patient.photo_uid %>data-existing-photo="true"<% end %> data-endpoint="<%= api_patient_photo_path(patient.uuid) %>" id="patient-profile-photo-editor">    
+    <div class="modal-content">
+    <h2>Your Profile Photo</h2>
+
+    <section class="xmodal-content">
+        <div class="line inline-actions">
+            <a href="#" class="button action-remove">Remove</a>
+        </div>
+        
+        <div id="photo-drop-target" class="drop-target">
+            <p>Drag and drop a file here</p>
+            <span class="or">or</span>
+            <input type="file" accept="image/*" name="photo" class="photo-file" id="photo-file" />
+        </div>
+
+        <div id="photo-viewer" class="photo-viewer"></div>
+
+    </section>
+
+    <p class="error-message"></p>
+
+    <section class="modal-flow-control">
+        <a href="#" class="button primary action-save">Save</a>
+        <a href="#" class="button action-cancel">Cancel</a>
+    </section>
+    </div>
+</section>

@@ -1,0 +1,144 @@
+<% content_for :below_header do %>
+<% if false %><%= render :partial => 'components/patient_transaction_bar', :locals => { :patient => @patient } %><% end %>
+<section id="patient-transaction-bar">
+    <div class="inner">
+        <a class="backzone" href="<%= patient_show_path(@patient.uuid) %>">
+            <%= render :partial => 'components/patient_avatar', :locals => { :patient => @patient, :size => 'small' } %>
+            <h4 class="patient_name"><%= @patient.name_extended %></h4>
+        </a>
+        
+        <div class="actions">
+            <% if @patient.confirmed? %>
+            <a id="action-transaction-save" href="#" disabled="disabled" class="button primary disabled">Save Changes</a>
+            <a id="action-transaction-cancel" href="<%= patient_show_path(@patient.uuid) %>" class="button">Cancel</a>
+            <% else %>
+            <a id="action-transaction-save" href="#" disabled="disabled" class="button primary disabled">Save &amp; Continue</a>
+            <!-- patient_index_path ???? -->
+            <a id="action-transaction-cancel" href="<%= patient_show_path(@patient.uuid) %>" class="button">Cancel</a>
+            <% end%>
+            <% if @patient.confirmed? %>
+            <a href="#" class="action actions" data-popover="patient-actions-<%= @patient.uuid %>"><i class="material-icons">more_vert</i></a>
+            <% end %>
+        </div>
+
+        <%= render :partial => 'components/patient_onboarding_summary', :locals => { :patient => @patient, :state => @onboarding_details } %>
+
+    </div>
+</section>
+<% end %>
+
+<section id="main-column" class="basic-form">
+    <div id="emergency-emails">
+        <h2>Manage Emergency Contacts</h2>
+
+        <p>Please enter email addresses and mobile phones for your emergency contacts, so we can tell them that you have listed them on your LifeSticker. <strong>We will notify them via email and/or text message when your LifeSticker is scanned.</strong></p>
+        
+
+        <section id="emergency" class="pillbox">
+            <article>
+                <div class="title">
+                    <h3>
+                        <%= image_tag "icons/phone.png", :alt => "", :size => "28x28", :style => "margin-top: 3px" %><br>
+                        Emergency
+                    </h3>
+                </div>
+                <div class="content">
+                    <!--
+                    <p class="tip">
+                        Enter multiple contacts: family and friends, nearby and far away. We will notify them via email and/or text message when your LifeSticker is scanned.
+                    </p>
+                    -->
+                    <div class="entries expanded">
+                    </div>
+                    <%= render :partial => 'components/add_row_button', :locals => { :title => 'Add an Emergency Contact', :visible => true } %>
+                </div>
+            </article>
+        </section>
+
+        <!--
+        <section id="emergency" class="pillbox">
+            <article>
+                <div class="title">
+                    <h3>
+                        <%= image_tag "icons/phone.png", :alt => "", :size => "28x28", :style => "margin-top: 3px" %><br>
+                        Emergency
+                    </h3>
+                </div>
+                <div class="content">
+                    <div class="entries xexpanded">
+                    </div>
+                    <% if @emergency.size == 0 %>
+                    <p class="no_entries emergency">No emergency contacts listed. You can <a href="<%= patient_edit_contacts_path(@patient.uuid ) %>#add-a-contact">add some now</a> if you want.</p>
+                    <% end %>
+                </div>
+            </article>
+        </section>
+        -->
+
+        <!-- one off custom town -->
+        <% if false %>
+        <section class="flow-control">
+            <!-- NEED TO MANAGE WITH JS SON -->
+            <% if @emergency.size == 0 %>
+            <a href="<%= patient_edit_contacts_path(@patient.uuid) %>#add-a-contact" class="button large primary">Add Contacts</a>
+            <a href="<%= patient_confirm_path(@patient.uuid) %>" class="button large">Skip</a>
+            <% if false %><button type="submit" class="button default large">Skip</button><% end %>
+            <% else %>
+            <% if @patient.confirmed? %>
+            <button type="submit" class="button large primary">Send Notifications</button>
+            <a href="<%= patient_show_path(@patient.uuid) %>" class="button large">Skip</a>
+            <% else %>
+            <button type="submit" class="button large primary">Send Notifications</button>
+            <a href="<%= patient_confirm_path(@patient.uuid) %>" class="button large">Skip</a>
+            <% end%>
+            <% end %>
+        </section>
+        <% end %>
+
+    </div>
+</section>
+
+<% content_for :bodyextra do %>
+<%= render :partial => 'components/patient_onboarding_popover', :locals => { :patient => @patient, :state => @onboarding_details } %>
+<%= render :partial => 'components/patient_edit_contact' %>
+<%= render :partial => 'components/privacy_popover' %>
+
+<% if false %>
+<%= render :partial => 'components/patient_edit_contact_email' %>
+<% end %>
+
+<% end %>
+
+<% content_for :js_bootstrap do %>
+<script>
+    (function () {
+        "use strict";
+        var Patient = app.module('patient');
+        var emergencyData = <%=j @emergency.to_json.html_safe %>;
+        var patient_uuid = "<%= @patient.uuid %>";
+
+        //var emergencyView = new Patient.Views.Emergency({ el: '#emergency', collection: new Patient.Collections.Emergency(emergencyData, { patient_uuid: patient_uuid }) });
+        var eCollection = new Patient.Collections.Emergency(emergencyData, { patient_uuid: patient_uuid });
+
+        var emergencyView = new Patient.Views.Emergency({ el: '#emergency', collection: eCollection });
+        var action = "<%= api_patient_confirm_emergency_contacts_path(@patient.uuid) %>";
+        // JW view controller on the wrapper wrap it up wraps rap battle supreme
+        var contactsView = new Patient.Views.NotifyEmergencyContacts({ el: '#emergency-emails', views: [emergencyView], action: action });
+
+        if (emergencyView.collection.length === 0) {
+            emergencyView.addInitial(new Patient.Models.Emergency);
+        } else {
+            // remove da disabled state bro, because we just need to essentially skip
+            $("#action-transaction-save").removeAttr("disabled").removeClass("disabled");
+        }
+
+        popover.init($('#patient-transaction-bar a.actions, #patient-transaction-bar .onboarding-summary'));
+
+        <% if !@patient.confirmed? %>
+        var c = document.getElementById('component-onboarding-summary');
+        c.appendChild( pieChart(<%= @onboarding_details[:progress_percent] %>, 32) );
+        <% end %>
+
+    })();
+</script>
+<% end %>

@@ -1,0 +1,77 @@
+<section class="page-title">
+    <h1>Accounts</h1>
+</section>
+
+<%= render :partial => 'admin/sidebar' %>
+
+<section id="main-column">
+
+<section class="pillbox">
+<article>
+<div class="content">
+
+
+<table class="default datagrid">
+    <thead>
+    <tr>
+        <th>UUID</th>
+        <th>First</th>
+        <th>Last</th>
+        <!-- <th>Email</th> -->
+        <th>Patients</th>
+        <th>Last Login</th>
+        <th>Status</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @objects.each do |item| %>
+      <tr>
+        <td><strong><small><a href="#"><%= item.uid[0..5] %>…</a></small></strong></td>
+        <td><small><% if item.active_patients.size > 0 %><%= item.this_is_me_maybe.first_name %><% end %></small></td>
+        <td><small><% if item.active_patients.size > 0 %><%= item.this_is_me_maybe.last_name[0..10] %><% if item.this_is_me_maybe.last_name.size > 10 %>…<% end %><% end %></small></td>
+        <!-- <td><small><%= item.email %></small></td> -->
+        <td><small><%= item.active_patients.count %></small></td>
+        <td><small><%= item.last_sign_in_at %></small></td>
+        <td><small><%= item.account_status %></small></td>
+        <td>
+            <a href="#" style="display: inline-block;" data-popover="<%= item.id %>"><i class="material-icons">more_horizon</i></a>
+        </td>
+        </td>
+      </tr>
+    <% end %>
+    </tbody>
+</table>
+</div>
+</article>
+</section>
+
+    <a data-balloon="Create Account" class="circler" href="#"><i class="material-icons md-48">add_circle</i></a>
+
+    <%= render :partial => 'admin/pagination', :locals => { :objects => @objects } %>
+
+
+
+</section>
+
+<% @objects.each do |item| %>
+<div id="popover-<%= item.id %>" class="popover">
+    <ul class="actions">
+        <li><a href="#">Edit</a></li>
+        <li><a href="#" class="disabled">Authenticate As</a></li>
+        <li><a href="#" class="disabled">Send Account Recovery</a></li>
+        <li><a href="#" class="disabled">Resend Welcome Email</a></li>
+        <li class="divider"></li>
+        <li><a href="#" class="disabled">Cycle Tokens</a>
+        <!--<li><a href="#" class="disabled">Disable</a>-->
+        <li><a href="#" class="disabled">Delete</a></li>
+    </ul>
+</div>
+<% end %>
+
+<% content_for :js_bootstrap do %>
+<script>
+    // wire up the object actions
+    popover.init();
+</script>
+<% end %>

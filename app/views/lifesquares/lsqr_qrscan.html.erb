@@ -1,0 +1,69 @@
+<% content_for :body_class do %> class="lsqr qrscan"<% end %>
+
+<% if defined?(patient) %>
+<section id="lsqr_scan">
+    <section class="branding">
+        <div id="logo">LifeSticker</div>
+    </section>
+
+    <header class="patient">
+        <div class="img">
+            <%= render :partial => 'components/patient_avatar', :locals => { :patient => patient, :size => 'xlarge' } %>
+        </div>
+        <div class="text">
+            <strong><%= patient.first_name %></strong>
+            <!-- TODO: add privacy constraints here -->
+            <small><%= patient.age_str %> <% if patient.gender %><%= patient.gender.titlecase %><% end %>
+            <% if patient.blood_type.present? %>
+            <br />Blood Type <%= Patient.blood_types[patient.blood_type].to_s %>
+            <% end %>
+            <% if patient.organ_donor %><br />Organ Donor<% end %>
+            </small>
+        </div>
+    </header>
+
+    <div class="details">
+        <!-- alert meds -->
+        <% if patient.alerted_medications.length > 0 %>
+        <section>
+            <h6>Alert Medications</h6>
+            <% patient.alerted_medications.each do |med| %>
+            <%= render :partial => 'components/patient_medication', :locals => { :medication => med } %>
+            <% end %>
+        </section>
+        <% end %>
+
+        <!-- allergies -->
+        <% if patient.allergies.length > 0 %>
+        <section>
+        <h6>Allergies</h6>
+        <% patient.allergies.each do |allergy| %>
+        <%= render :partial => 'components/patient_allergy', :locals => { :allergy => allergy } %>
+        <% end %>
+        </section>
+        <% end %>
+
+        <!-- emergency contacts -->
+        <% if contacts.length %>
+        <section>
+            <h6>Emergency Contacts</h6>
+            <% contacts.each do |contact| %>
+            <!-- communicate next of kin, and power of attorney -->
+            <article>
+                <h2><%= contact.first_name %></h2>
+                <% if contact.home_phone %>
+                <p><a href="tel:<%= contact.home_phone %>"><%= contact.home_phone %></a></p>
+                <% end %>
+                <% if contact.email %>
+                <p><a href="mailto:<%= contact.email %>"><%= contact.email %></a></p>
+                <% end %>
+            </article>
+            <% end %>
+        </section>
+        <% end %>
+    </div>
+</section>
+
+<% else %>
+<center><h1>No active or valid LifeSticker found!</h1></center>
+<% end %>

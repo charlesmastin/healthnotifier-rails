@@ -1,0 +1,3 @@
+<article>
+<%= condition.health_event %><% if condition.start_date.present? %> &nbsp;<span class="fine-detail"><%= automaskDate(condition.start_date, condition.start_date_mask) %></span><% end %>&nbsp;<span class="tag privacy <%= condition.privacy %>"><%= privacy_label(condition.privacy) %></span>
+</article>                                            

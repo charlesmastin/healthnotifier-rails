@@ -1,0 +1,197 @@
+// ONBOARDING BIZZLE SIZZLE
+nav.onboarding {
+    background: $green2016;
+    
+    padding: 0.75rem 0.5rem 1rem 0.5rem; // visual offsets, 1 is always done, last is never done
+    margin-bottom: 2rem;
+    border-radius: 0.5rem;
+    ol {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        li {
+            margin: 0;
+            padding: 0;
+            margin-bottom: 0.5rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            // text-decoration: line-through;
+
+            i {
+                position: relative;
+                top: 3px;
+                font-size: 1rem;
+                font-weight: 600;
+                margin-right: 0.25rem;
+                // opacity: 0.0;
+            }
+
+            // counter-increment: step-counter;
+            &:last-child {
+                margin-bottom: 0;
+            }
+
+            &.completed {
+                color: $black-30;
+                a {
+
+                }
+            }
+
+            &.incomplete {
+                padding-top: 0.15rem;// visual offset for checkbox negative space
+                padding-left: 1.25rem;
+                text-decoration: none;
+            }
+
+            &::before {
+                // content: counter(step-counter);
+                margin-right: 5px;
+                font-size: 80%;
+                background-color: rgba(0, 0, 0, 0.15);
+                color: rgba(255, 255, 255, 0.6);
+                font-weight: bold;
+                width: 25px !important;
+                padding: 3px 8px;
+                border-radius: 3px;
+                position: relative;
+                top: -1px;
+                // opacity: 0.0;
+            }
+            a {
+                color: $black-30;
+            }
+        }
+    }
+}
+nav.onboarding-progress {
+    display: inline;
+    position: relative;
+    top: 0.55rem;
+    margin-left: 1rem;
+    ol {
+        display: inline;
+        padding: 0;
+        li {
+            display: inline-block;
+            color: $green2016;
+            width: 50px;
+            height: 10px;
+            background-color: $white-30;
+            margin-left: 0.5rem;
+
+            i {
+                display: none;
+            }
+
+            &.completed {
+                background-color: $green2016;
+            }
+
+            span {
+                display: none;
+            }
+        }
+    }
+}
+
+.popover.patient-onboarding {
+    width: 175px;
+    ul {
+        li {
+            font-size: 0.8rem;
+            i {
+                display: none;
+            }
+            &.completed {
+                text-decoration: line-through;
+                color: $black-30;
+                i {
+                    font-size: 1rem;
+                    position: relative;
+                    color: $green2016;
+                    display: none;
+                }
+            }
+            &.active {
+                // list-style: disc;
+                // list-style-position: inside;
+                // color: $blue2016;
+                font-weight: 600;
+            }
+        }
+    }
+}
+
+.sweet-alert.jw {
+    background-color: #fff;
+    width: 100px;
+    height: 100px;
+    border-radius: 0;
+    text-align: center;
+    display: block;
+    position: static;
+    left: 0;
+    top: 0;
+    margin: 0;
+
+    .sa-icon {
+        margin: 0 auto;
+    }
+}
+
+@media all and (max-width: 540px) {
+    .sweet-alert.jw {
+      width: auto;
+      margin-left: 0;
+      margin-right: 0;
+      left: 15px;
+      right: 15px; }
+    }
+
+.apps-promo-neue {
+    margin-top: 0.5rem;
+    @include clearfix;
+    // background: $red2016;
+    // vertical-align: top;
+    // box-sizing: border-box;
+
+    & > a {
+        margin-bottom: 0.5rem;
+        margin-right: 0.5rem;
+    }
+
+    .badge-android {
+        box-sizing: border-box;
+        width: 169px;
+        height: 50px;
+        display: block;
+        float: left;
+        img {
+            height: 50px;
+        }
+    }
+    .badge-ios {
+        width: 168px;
+        height: 50px;
+        display: block;
+        float: left;
+        box-sizing: border-box;
+        img {
+            height: 50px;
+        }
+    }
+    .badge-web {
+        width: 168px;
+        text-align: center;
+        height: 50px;
+        display: block;
+        float: left;
+        background: black;
+        color: white;
+        font-size: 1.5rem;
+        box-sizing: border-box;
+        padding: 0.6rem 1rem;
+        border-radius: 0.4rem;
+    }
+}

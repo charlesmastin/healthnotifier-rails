@@ -1,0 +1,118 @@
+.document-viewer {
+    
+    section.page-title {
+        div.line {
+            @include clearfix; // umm redundant town
+            h1 {
+                float: left;
+                small {
+                    font-size: 1rem;
+                    margin-left: 0.5rem;
+                }
+            }
+        }
+    }
+
+    ul.actions.inline {
+        float: right;
+        margin: 0;
+        position: relative;
+        top: 0.75rem;
+        li {
+            display: inline;
+            margin-left: 0.25rem;
+            a {
+                color: $textgray;
+                // color: rgba(255, 255, 255, 0.6);
+                &:hover, &.active {
+                    color: $blue2016;
+                    // color: rgba(255, 255, 255, 1.0);
+                }
+            }
+            &.divider {
+                // padding: 1rem 0;
+                // padding: 0 0.25rem;
+                &:after {
+                    content: '|';
+                    color: $strokesForFolks;//rgba(0, 255, 255, 0.6);
+                    position: relative;
+                    top: -7px;
+                }
+            }
+        }
+    }
+    
+    section.files {
+
+        box-sizing: border-box;
+        @include clearfix;
+        // padding: 1rem;
+
+        article {
+            box-sizing: border-box;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+            margin-bottom: 2.5%;
+            img {
+                width: 100%;
+                cursor: pointer;
+            }
+            span.loader {
+                font-size: 3em;
+                font-weight: 300;
+                width: 100px;
+                margin: 0 auto;
+                display: block;
+                color: #ccc;
+                display: none;
+            }
+            small.part-number {
+                margin-left: 0.25rem;
+                display: block;
+                padding: 0.15rem 0 0.25rem 0.25rem;
+            }
+
+        }
+
+        &.list {
+
+        }
+
+        &.grid {
+            & > article {
+                @include grid-columns(3, 1, 2.5%);
+                img {
+                    cursor: zoom-in;
+                }
+            }
+        }
+    }
+}
+
+#page-number {
+    display: none;
+    position: fixed;
+    height: 1rem;
+    bottom: 0.5rem;
+    left: 0.5rem;
+    width: 5rem;
+    border-radius: 0.25rem;
+    background: rgba(0, 0, 0, 0.75);
+    padding: 0.5rem;
+    margin: 0;
+
+    color: white;
+    text-align: center;
+    // display: none;
+    opacity: 0.0;
+    -webkit-transition: opacity 0.3s linear;
+
+    -webkit-user-select: none;
+    cursor: default;
+
+    &.visible {
+        // display: block;
+        opacity: 1.0;
+        -webkit-transition: opacity 0.3s linear;
+        display: none; // it was a great idea, and it will work when we shuffle this sizzle back into a modal town usa
+    }
+}       

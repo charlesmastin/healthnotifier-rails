@@ -1,0 +1,64 @@
+<aside id="sidebar">
+    <h6>General Admin</h6>
+    <ul class="actions">
+        <li><a href="<%= admin_index_path %>" class="button small">Dashboard</a></li>
+        <li><a href="<%= admin_code_sheet_index_path %>" class="button small">Print Requests<% if get_print_queue_new_count > 0 %><strong> •</strong><% end %></a></li>
+        <li><a href="<%= admin_batch_index_path %>" class="button small">Batches</a></li>
+        <li><a href="<%= admin_organization_index_path %>" class="button small">Organizations</a></li>
+        <li><a href="<%= admin_campaign_index_path %>" class="button small">Campaigns</a></li>
+        <li><a href="<%= admin_invoice_index_path %>" class="button small">Invoices</a></li>
+        <li><a href="<%= admin_provider_credentials_index_path %>" class="button small">Provider Credentials<% if get_provider_credentials_new_count > 0 %><strong> •</strong><% end %></a></li>
+    </ul>
+
+    <h6>Careplan</h6>
+    <ul class="actions">
+        <!-- this will all be experienced through a single entry point at some time, but this is CrudTownUSA™ -->
+        <% if false %><li><a href="<%= admin_care_plan_designer_path %>" class="button small">Plan Designer™ <span class="tag">Alpha</span></a></li><% end %>
+        <li><a href="<%= admin_care_plan_index_path %>" class="button small">Careplans</a></li>
+        <% if false %>
+        <li><a href="<%= admin_recommendation_index_path %>" class="button small">Recommendations</a></li>
+        <% end %>
+        <% if false %>
+        <li><a href="<%= admin_question_group_index_path %>" class="button small">Question Groups</a></li>
+        <li><a href="<%= admin_question_index_path %>" class="button small">Questions</a></li>
+        <li><a href="<%= admin_choice_index_path %>" class="button small">Question Choices</a></li>
+        
+        <% end %>
+        <% if false %><li><a href="#" class="button small">Customer Responses</a></li><% end %>
+    </ul>
+
+    <h6>User Data</h6>
+    <ul class="actions">
+        <li><a href="<%= admin_account_index_path %>" class="button small">Accounts</a></li>
+        <li><a href="<%= admin_patient_network_new_path %>" class="button small">Connection Manager</a></li>
+        <!-- <li><a href="#" class="button small disabled">Patients</a></li> -->
+        <!-- <li><a href="#" class="button small disabled">Payments</a></li> -->
+        <!--
+        <li><a href="#" class="button small disabled">Review User Feedback</a></li>
+        <li><a href="#" class="button small disabled" data-balloon-pos="left" data-balloon="Access Restricted. See Jerry or Charles">Access Stripe</a></li>
+        -->
+    </ul>
+
+    <h6>Analytics</h6>
+    <ul class="actions">
+        <li><a href="#" class="button small disabled">Current Usage</a></li>
+        <li><a href="#" class="button small disabled">Trends &amp; Monthly Reporting</a></li>
+        <li><a href="#" class="button small disabled">Keen.io</a></li>
+        <li><a href="#" class="button small disabled">Google Analytics</a></li>
+    </ul>
+
+    <h6>Brand</h6>
+    <ul class="actions">
+        <li><a href="<%= admin_styleguide_path %>" class="button small">Web Styleguide</a></li>
+    </ul>
+    <!--
+    <h6>Operations</h6>
+    <ul class="actions">
+        <li><a href="#" class="button small">Stripe</a></li>
+        <li><a href="#" class="button small">AWS</a></li>
+        <li><a href="#" class="button small">Github</a></li>
+        <li><a href="#" class="button small">Airbrake</a></li>
+    </ul>
+    -->
+
+</aside>

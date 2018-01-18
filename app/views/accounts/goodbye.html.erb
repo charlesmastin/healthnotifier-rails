@@ -1,0 +1,73 @@
+<section class="page-title">
+    <h1>Goodbye from HealthNotifier</h1>
+</section>
+
+<aside id="sidebar">&nbsp;</aside>
+
+<section id="main-column">
+
+<section class="pillbox">
+<article>
+<div class="content">
+<p>We’re sad to see you go and we have enjoyed having you as a customer.</p>
+
+<div id="exit-survey-wrapper">
+<p>Please let us know how we can better serve you. Drop us a line at <a href="mailto:support@domain.com">support@domain.com</a> when you get a moment or take a minute to complete the survey below</p>
+
+<%= render :partial => 'accounts/exit_survey' %>
+
+<section class="flow-control left">
+    <button type="submit" class="button primary">Send Feedback</button>
+</section>
+
+</div>
+
+</div>
+</article>
+
+</section>
+
+<% content_for :js_bootstrap do %>
+<script>
+    $(function(){
+        $('button[type="submit"]').click(function(e){
+            // js to prepare the survey
+
+            var request_data = {
+                Reasons: [],
+                Other: $('#exit-survey-other').val()
+            };
+
+            // try to read in the account id
+            var account_id = qs('account');
+            // TODO: hook a core validator for thoroughness, but we kinda trust it
+            if(account_id && account_id.length > 3){
+                request_data.AccountId = account_id;
+            }
+
+            // swoop through dem checkboxes dat be checked, toss their names in a list though
+            // add dat other son
+            $('#exit-survey input:checked()').each(function(index, elem){
+                request_data.Reasons.push($(elem).val());
+            });
+
+            // if we're good, send the delete to the server
+            $.ajax({
+                url: '<%= api_exit_survey_path %>',
+                type: 'POST',
+                dataType: 'json',
+                contentType: 'application/json',
+                data: JSON.stringify(request_data),
+                success: function(data){
+                    window.location = '/exit-survey/success';
+                },
+                error: function(data){
+                    // meh it didn't work, don't badger the ex-customer
+                    window.location = '/exit-survey/success';
+                }
+            });
+
+        });
+    });
+</script>
+<% end %>

@@ -1,0 +1,41 @@
+<script id="email-item" type="text/html">
+    <div class="row">
+        <div class="span6">
+            <h3>{{first_name}} {{last_name}}</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="field span6">
+            <label for="emergency-email-{{record_order}}">Email Address</label>
+            <input class="span6" type="text" name="email" value="{{email}}" id="emergency-email-{{record_order}}">
+            <p class="error-message" data-for="emergency-email-{{record_order}}">Please enter a valid email address</p>
+        </div>
+        <div class="field span6 required">
+            <label for="contact-phone-{{record_order}}">Phone Number</label>
+            <input class="span6" type="phone" name="home_phone" value="{{home_phone}}" id="contact-phone-{{record_order}}">
+            <p class="error-message" data-for="contact-phone-{{record_order}}">Please enter a valid phone number</p>
+        </div>
+    </div>
+</script>
+
+<script id="list-item" type="text/html">
+    <div class="row">
+        <div class="span4">
+            <h3>{{first_name}} {{last_name}}</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="field span6">
+            <label for="emergency-email-{{record_order}}">Email Address</label>
+            <input class="span6" type="text" name="email" value="{{email}}" id="emergency-email-{{record_order}}">
+            <p class="error-message" data-for="emergency-email-{{record_order}}">Please enter a valid email address</p>
+            <p style="margin-top: 0.5rem;"><small><em>Address has already been emailed</em></small></p>
+        </div>
+        <div class="field span6 required">
+            <label for="contact-phone-{{record_order}}">Phone Number</label>
+            <input class="span6" type="phone" name="home_phone" value="{{home_phone}}" id="contact-phone-{{record_order}}">
+            <p class="error-message" data-for="contact-phone-{{record_order}}">Please enter a valid phone number</p>
+            <p style="margin-top: 0.5rem;"><small><em>Number has already been texted</em></small></p>
+        </div>
+    </div>
+</script>

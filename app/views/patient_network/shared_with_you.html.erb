@@ -1,0 +1,251 @@
+<% content_for :below_header do %>
+<section id="patient-transaction-bar">
+    <div class="inner">
+      <a class="backzone" href="<%= patient_show_path(@patient.uuid) %>">
+            <%= render :partial => 'components/patient_avatar', :locals => { :patient => @patient, :size => 'small' } %>
+            <h4 class="patient_name"><%= @patient.name_extended %></h4>
+        </a>
+    <div class="actions">
+        <a href="#" class="action actions" data-popover="patient-actions-<%= @patient.uuid %>"><i class="material-icons">more_vert</i></a>
+    </div>
+    </div>
+</section>
+<% end %>
+
+<% content_for :pagetitle do %>
+    <h1><a href="<%= patient_show_path(@patient.uuid) %>" title="View <%= @patient.fullname %>" data-balloon="View Profile" class="baby-got-back"><i class="material-icons">arrow_back</i></a>LifeStickers shared with you</h1>
+    <!--<h2>for <%= @patient.fullname %></h2>-->
+<% end %>
+
+<% if false %>
+<aside id="sidebar">
+<%= render :partial => 'shared/patient_nav', :locals => {:patient => @patient } %>
+</aside>
+<% end %>
+
+<section id="main-column">
+
+
+
+<section class="pillbox">
+<article>
+<!--<div class="title"></div>-->
+<div class="content">
+  <p>Request permission to view other members’ LifeSticker.</p>
+  <div class="basic-form">
+      <!-- <label>Search Terms</label> -->
+      <div class="field">
+        <input id="search-keywords" name="keywords" style="width: 100%;" type="text" placeholder="Search by First and Last Name, Email, or Street Address" />
+      </div>
+      <button id="search-submit" type="submit" class="primary button">Search</button>
+  </div>
+
+  <div id="search-results"></div>
+  <!--
+  <section class="flow-control left">
+      <a href="#" class="button primary" id="add-connection" data-balloon-length="medium" data-balloon="Search for members and request permission to view their LifeSticker.">Add Connection</a>
+  </section>
+  -->
+</div>
+</article>
+</section>
+
+
+<% if @objects.length > 0 %>
+<!-- <h3>LifeStickers shared with you</h3> -->
+<section class="pillbox">
+<article>
+<div class="content">
+<table class="default">
+<thead>
+  <tr>
+    <th></th>
+    <th>Name</th>
+    <th>Age</th>
+    <th>Actions</th>
+  </tr>
+</thead>
+<tbody>
+  <% @objects.each do |patient_network| %>
+  <% patient = patient_network.granter_patient %>
+  <% if patient %>
+  <tr>
+    <td class="avatar"><%= render :partial => 'components/patient_avatar', :locals => { :patient => patient, :size => 'small' } %></td>
+    <td><strong><a href="<%= network_webview_path(patient_network.granter_patient.uuid, patient_network.auditor_patient.uuid) %>"><%= patient.last_name %>, <%= patient.first_name %></a></strong></td>
+    <td><small><%= patient.age_str %></small></td>
+    <td><a href="#" data-popover="network-<%= patient.uuid %>"><i class="material-icons">more_horizon</i></a></td>
+  </tr>
+  <% end %>
+  <% end %>
+</tbody>
+</table>
+</div>
+</article>
+</section>
+<% end %>
+
+<%= render :partial => 'admin/pagination', :locals => { :objects => @objects } %>
+
+
+
+<% if @pending.length > 0 %>
+<h3>Pending access you requested</h3>
+<section class="pillbox">
+<article>
+<div class="content">
+<table class="default">
+<thead>
+  <tr>
+    <th></th>
+    <th>Name</th>
+    <th>Date requested</th>
+  </tr>
+</thead>
+<tbody>
+  <% @pending.reverse.each_with_index do |patient_network, index| %>
+  <% patient = patient_network.granter_patient %>
+  <% if patient %>
+  <tr>
+    <td class="avatar"><%= render :partial => 'components/patient_avatar', :locals => { :patient => patient, :size => 'small' } %></td>
+    <td><strong><%= patient.last_name %>, <%= patient.first_name %></strong></td>
+    <td><%= patient_network.created_at.strftime("%m/%d/%Y") %></td>
+  </tr>
+  <% end %>
+  <% end %>
+</tbody>
+</table>
+</div>
+</article>
+</section>
+<% end %>
+
+</section>
+
+
+<script id="template-search-result-request" type="text/html">
+  <tr>
+    <td class="avatar">
+      <div class="user-thumbnail-circle small">
+          <p class="user-thumbnail">
+              [[ if (profile.Photo) { ]]
+              <img src="/api/v1/profiles/{{ profile.PatientUuid }}/profile-photo?width=32&amp;height=32" alt="Profile Photo" />
+              [[ } else { ]]
+              <img src="<%= asset_path('user-thumbnail-default.png') %>" alt="Profile Photo" />
+              [[ } ]]
+          </p>
+      </div>
+    </td>
+    <td>{{ profile.FirstName }} {{ profile.LastName }}</td>
+    [[ if (profile.IsPendingGranter) { ]]
+    <td><small>Access already requested, awaiting response…</small></td>
+    [[ } else { ]]
+    <td><a href="#" class="button small action-request-access" data-patient-uuid="{{ profile.PatientUuid }}">Request Access</a></td>
+    [[ } ]]
+  </tr>
+</script>
+
+<% content_for :bodyextra do %>
+<%= render :partial => 'components/patient_popover', :locals => { :patient => @patient, :context => 'detail' } %>
+
+<% @objects.each do |patient_network| %>
+<div id="popover-network-<%= patient_network.granter_patient.uuid %>" class="popover" data-auditor-id="<%= patient_network.auditor_patient.uuid %>" data-granter-id="<%= patient_network.granter_patient.uuid %>">
+    <h6><%= patient_network.granter_patient.name_extended %></h6>
+    <ul class="actions">
+        <li><a href="<%= network_webview_path(patient_network.granter_patient.uuid, patient_network.auditor_patient.uuid) %>">View LifeSticker</a></li>
+        <li class="divider"></li>
+        <li><a href="#" class="action-network-leave">Leave Network</a></li>
+    </ul>
+</div>
+<% end %>
+<% end %>
+
+
+<% content_for :js_bootstrap do %>
+
+
+<script>
+$(function(){
+    popover.init();
+
+    $('#patientnav-network-inbound').addClass('active');
+
+    // STRAIGHT GHETTO TOWN
+    $('a.export-records').parent().hide();
+    $('a.import-records').parent().hide();
+
+    // common code for handling search UX
+    var PATIENT_UUID = '<%= @patient.uuid %>';
+
+    $('#search-submit').click(function(e){
+      search();
+    });
+
+    $('#search-keywords').on('keydown', function(e){
+      if(e.which == 27){
+        $(this).blur();
+      }
+      if(e.which == 13){
+        search();
+      }
+    });
+
+    function search(){
+      window.networkApi.search(
+        '<%= @patient.uuid %>',
+        { keywords: $('#search-keywords').val() },
+        function(data){
+          // render dem results son
+          dd007_renderSearchResults(data);
+        },
+        function(data){
+          app.alert(data);
+        }
+      );
+    }
+
+    // global request handler, remember to mop up document level binding
+    // this is delegation, because of the whole adding dom items ,but we could also swap that
+    var requestAction = function(e){
+      e.stopImmediatePropagation();
+      window.networkApi.request_access(
+        { 
+          AuditorId: PATIENT_UUID,
+          GranterId: $(e.target).attr('data-patient-uuid')
+        },
+        function(data){
+          window.location.reload();
+        },
+        function(data){
+          app.alert(data);
+        }
+      );
+      return false;
+    }
+
+    $(document).off('click', 'a.action-request-access', requestAction);
+    $(document).on('click', 'a.action-request-access', requestAction);
+
+    function dd007_renderSearchResults(data){
+      // ok, we should be smart so we don't have to keep reloading our cells, but w/e
+      $('#search-results').empty();
+      
+      if(data.Patients.length){
+        // timewasters . com son
+        var t = $('<table class="default"><thead><tr><th></th><th>Name</th><th>Action</th></tr></thead><tbody></tbody></table>');
+        // ghetto wrapper son
+        var views = [];
+        // more compliant iterator, lol
+        var template = _.template($("#template-search-result-request").html());
+        data.Patients.forEach(function(item, index){
+          views.push(template({profile: item}));
+        });
+        t.find('tbody').append(views);
+        $('#search-results').append(t);
+      } else {
+        $('#search-results').html('<small>0 Results</small>');
+      }
+
+    }
+});
+</script>
+<% end %>

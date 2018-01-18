@@ -1,0 +1,68 @@
+<section class="page-title xadd-new">
+    <h1>Care Plans</h1>
+</section>
+
+<%= render :partial => 'admin/sidebar' %>
+
+<section id="main-column">
+<section class="pillbox">
+<article>
+<div class="content">
+<input type="hidden" name="mode" value="" />
+<table class="default datagrid">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Status</th>
+            <th>Name</th>
+            <th>Org</th>
+            
+            <th>Groups</th>
+            <th>Completed</th>
+            <th>Updated</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% @objects.each do |item| %>
+        <tr>
+            <td><a href="<%= admin_care_plan_show_path(item.id) %>"><%= item.id %></a></td>
+            <td><span class="tag"><%= item[:status] %></span></td>
+            <td><a href="<%= admin_care_plan_show_path(item.id) %>"><%= item.name %></a></td>
+            <td><% if item.organization %><%= item.organization.name %><% end %></td>
+            
+            <td><%= item.question_groups.count %></td>
+            <td><%= item.care_plan_responses.count %></td>
+            <td><small><%= item.updated_at %></small></td>
+            <td>
+            <a href="#" style="display: inline-block;" data-popover="cspr-<%= item.id %>"><i class="material-icons">more_horizon</i></a>
+            </td>
+        </tr>
+        <% end %>
+    </tbody>
+</table>
+</div>
+</article>
+</section>
+
+<a data-balloon="Create Care Plan" class="circler" href="<%= admin_care_plan_new_path %>"><i class="material-icons md-48">add_circle</i></a>
+
+<%= render :partial => 'admin/pagination', :locals => { :objects => @objects } %>
+
+<% @objects.each do |item| %>
+<div id="popover-cspr-<%= item.id %>" class="popover">
+    <ul class="actions">
+        <li><a href="#">Set to Active</a></li>
+        <li><a href="#">Set to Draft</a></li>
+        <li class="divider"></li>
+        <li><a href="#">Delete</a></li>
+    </ul>
+</div>
+<% end %>
+
+<% content_for :js_bootstrap do %>
+<script>
+    // wire up the object actions
+    popover.init();
+</script>
+<% end %>

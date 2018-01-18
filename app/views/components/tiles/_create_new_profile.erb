@@ -1,0 +1,9 @@
+<% if patient.confirmed? && patient.account.active_patients.count == 1 %>
+<article data-url="#" class="tile tile-admin">
+    <header><h4>Add Additional Profiles</h4></header>
+    <section>
+    <div class="blankstate"><p>Have a family member that also needs HealthNotifier? Create a profile for them today.</p><p><a href="<%= patient_new_path %>" class="button small xprimary">Get Started</a></p></div>
+    
+    </section>
+</article>
+<% end %>

@@ -1,0 +1,107 @@
+<% content_for :below_header do %>
+
+<!-- LUL -->
+<div id="plan-designer-tm" data-action="<%= admin_care_plan_update_path(@care_plan.id) %>">
+<section id="patient-transaction-bar">
+    <div class="inner">
+        <a class="backzone" x-href="#">
+            <% if @care_plan.id %>
+            <h4 class="patient_name">Editing Care Plan: <%= @care_plan.id %></h4>
+            <% else %>
+            <h4 class="patient_name">New Care Plan</h4>
+            <% end %>
+        </a>
+        <div class="actions">
+            <!-- <a id="action-undo" href="#" class="action actions"><i class="material-icons">undo</i></a> -->
+            <!-- <a id="action-redo" href="#" class="action actions"><i class="material-icons">redo</i></a> -->
+            <% if @care_plan.uuid %>
+            <a id="action-preview" href="<%= care_plans_care_plan_path(@current_account.this_is_me_maybe.uuid, @care_plan.uuid) %>" class="action actions" target="_blank"><i class="material-icons">launch</i></a>
+            <% end %>
+            <a id="action-save" href="#" x-disabled="disabled" class="button primary x-disabled">Save Changes</a>
+            <a id="action-cancel" href="#" data-href="<%= admin_care_plan_index_path %>" class="button">Cancel</a>
+            <!-- <a href="#" class="action actions" data-popover="#"><i class="material-icons">more_vert</i></a> -->
+        </div>
+    </div>
+</section>
+<% end %>
+
+<div id="react-dingle-dongle"></div>
+
+<!-- LUL -->
+</div>
+
+<% content_for :js_bootstrap do %>
+<script type="text/javascript">
+
+function persistCarePlan(state){
+    // LOCK FORM, which is a higher level template concern here
+    var API_ENDPOINT = $('#plan-designer-tm').attr('data-action');
+    $.ajax({
+        url: API_ENDPOINT,
+        type: 'POST',
+        dataType: 'json',
+        contentType: 'application/json',
+        data: JSON.stringify(state),
+        success: function(data){
+            if(data.redirect_url != undefined){
+                window.location = data.redirect_url;
+            }else{
+                app.alert('Save complete!');
+            }
+        },
+        error: function(data){
+            app.alert('Ooops, no bueno');
+            // problem with validation of data
+            if(data.status == 400){
+                
+            }
+            // some catch all cluster bomb
+            if(data.status == 500){
+                
+            }
+            // scope.unlockForm();
+        }
+    });
+}
+
+$(function(){
+    // These are the funny, I was in DOM, but my DOM is all over the place bits that tie the two environments together, aka rails erb container and the react component
+    $('#action-save').click(function(e){
+        $(document).trigger('onDesignerSave');
+        return false;
+    });
+    $('#action-cancel').click(function(e){
+        $(document).trigger('onDesignerCancel', [e.target.getAttribute('data-href')]);
+        return false;
+    });
+    $('#action-undo').click(function(e){
+        $(document).trigger('onDesignerUndo');
+        return false;
+    });
+    $('#action-redo').click(function(e){
+        $(document).trigger('onDesignerRedo');
+        return false;
+    });
+    // cheap cheeky jquery networkling layer for persisting the care plan, at the moment
+    $(document).off('onCarePlanSave');
+    $(document).on('onCarePlanSave', function(e, state){
+        e.stopImmediatePropagation();
+        persistCarePlan(state);
+    });
+});
+
+window.CAREPLAN_MODEL = <%= @care_plan.to_editor_json.to_json.html_safe %>;
+window.CAREPLAN_CONFIG = {
+    organizations: <%= @organizations.to_json.html_safe %>,
+    patient_uuid: "<%= @current_account.this_is_me_maybe.uuid %>",
+    // static definition of plan availability filters
+    plan_filters: {"type": "or", "parameters": [
+        {"type": "age", "parameters": {"minimum": {"value": "65", "unit": "year"}}},
+        {"type": "condition", "parameters": {"imo": {"code": "41884"}}}
+        ]
+    }
+}
+
+</script>
+<script type="text/javascript" src="<%= asset_path("careplan-bundle.js") %>"></script>
+<% end %>

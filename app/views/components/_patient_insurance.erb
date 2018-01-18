@@ -1,0 +1,16 @@
+<article>
+<%= insurance.organization_name %>
+<span class="tag privacy <%= insurance.privacy %>"><%= privacy_label(insurance.privacy) %></span>
+<% if insurance.phone.present? %>
+    <br><%= format_phone(insurance.phone) %>
+<% end %>
+<% if insurance.policy_code.present? %>
+    <br>ID: <%= insurance.policy_code %>
+<% end %>
+<% if insurance.group_code.present? %>
+    <br>Group: <%= insurance.group_code %>
+<% end %>
+<% if insurance.policyholder_name.present? %>
+    <br>Policy holder: <%= insurance.policyholder_name %>
+<% end %>
+</article>

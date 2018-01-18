@@ -1,0 +1,18 @@
+<article>
+    <% if address.residence_type.present? %>
+    <%= PatientResidence.formatted_residence_types[address[:residence_type]] %>
+    <% end %>
+    <% if address.mailing_address? %> &nbsp;<span class="fine-detail">Mailing Address</span><% end %>
+    <span class="tag privacy <%= address.privacy %>"><%= privacy_label(address.privacy) %></span>
+    <p>
+    <%= format_address(address) %>
+    <br />LifeSticker Location:
+    <% if address.lifesquare_location_other != '' %>
+    <%= address.lifesquare_location_other %>
+    <% else %>
+        <% if address.lifesquare_location_type %>
+        <%= PatientResidence.lifesquare_location_types[address[:lifesquare_location_type]] %>
+        <% end %>
+    <% end %>
+    </p>
+</article>

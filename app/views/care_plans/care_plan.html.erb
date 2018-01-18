@@ -1,0 +1,25 @@
+<% content_for :below_header do %>
+<section id="patient-transaction-bar">
+    <div class="inner">
+        <a class="backzone" href="<%= patient_show_path(@patient.uuid) %>">
+            <%= render :partial => 'components/patient_avatar', :locals => { :patient => @patient, :size => 'small' } %>
+            <h4 class="patient_name"><%= @patient.name_extended %></h4>
+        </a>
+        <div class="actions">
+            <a href="#" class="action actions" data-popover="patient-actions-<%= @patient.uuid %>"><i class="material-icons">more_vert</i></a>
+        </div>
+    </div>
+</section>
+<% end %>
+
+<!-- this is like a placeholder for reponsive and bla, and we may primarily serve this content in a hover widget -->
+
+<h1><%= @care_plan.name %><% if @patient.account.lifesquare_employee? %> <span class="tag"><%= @care_plan[:status] %></span><% end %></h1>
+<p><%= @care_plan.description %></p>
+<small>Estimated Time: <%= (@care_plan.question_groups.count * 1) + 3 %> minutes</small>
+
+<hr />
+
+<div class="flow-control" style="margin-top: 2rem;">
+    <a href="<%= care_plans_question_group_path(@patient.uuid, @care_plan.uuid, @care_plan.question_groups[0].uuid) %>" class="button primary">Begin</a>
+</div>

@@ -1,0 +1,80 @@
+html.modal-open {
+    // oh heck yea son
+    main {
+        overflow: hidden;
+        height: 100%;
+    }
+    footer {
+        // height: 0;
+    }
+}
+
+.reveal-modal-bg { 
+    position: fixed; 
+    height: 100%;
+    width: 100%;
+    background: rgba(0,0,0,.8);
+    z-index: 1001;
+    display: none;
+    top: 0;
+    left: 0; 
+}
+
+.reveal-modal {
+    display: none;
+    top: 0; 
+    left: 50%;
+    margin-left: -300px;
+    width: 520px;
+    background: $bg-solid;
+    position: absolute;
+    z-index: 1002;
+    padding: 30px 40px 34px;
+
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    -moz-box-shadow: 0 0 10px rgba(0,0,0,.4);
+    -webkit-box-shadow: 0 0 10px rgba(0,0,0,.4);
+    -box-shadow: 0 0 10px rgba(0,0,0,.4);
+
+    // ensure dat overflow works son
+    overflow-y: auto !important;
+    height: auto;
+
+    .modal-content {
+        overflow-y: initial !important;
+    }
+}
+    
+.reveal-modal.small         { width: 200px; margin-left: -140px;}
+.reveal-modal.medium        { width: 400px; margin-left: -240px;}
+.reveal-modal.large         { width: 600px; margin-left: -340px;}
+.reveal-modal.xlarge        { width: 800px; margin-left: -440px;}
+
+.reveal-modal .close-reveal-modal {
+    font-size: 22px;
+    line-height: .5;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    color: #aaa;
+    text-shadow: 0 -1px 1px rbga(0,0,0,.6);
+    font-weight: bold;
+    cursor: pointer;
+} 
+
+
+.reveal-modal {
+    top: 5rem !important;
+
+    @include clearfix;
+
+    aside {
+        float: right;
+    }
+
+    section.modal-content {
+        float: left;
+    }
+}

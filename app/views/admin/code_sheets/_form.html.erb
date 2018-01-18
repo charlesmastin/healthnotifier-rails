@@ -1,0 +1,71 @@
+<%= fields_for @sheet do |f| %>
+
+<article>
+    <div class="title">
+        <h3>Basics</h3>
+    </div>
+
+    <div class="content">
+        <div class="field">
+            <%= f.label :lifesquares %>
+            <%= f.text_area :lifesquares, :placeholder => '001AAA010,203FFF120,202XXX012', :class => 'lifesquare-code' %>
+        </div>
+        <div class="field">
+            <%= f.label :sheets_per_lifesquare %>
+            <%= f.number_field :sheets_per_lifesquare, :value => 3, :min => 1, :max => 3 %>
+        </div>
+        <div class="field">
+            <%= f.label :instructions %>
+            <%= f.text_area :instructions, :placeholder => 'Use promocode XYZ17 for free activation' %>
+            <small>Renders on stickersheet… to shoehorn things like a promocode, or app store info on there.</small>
+        </div>
+        <!--
+        <div class="field">
+            <%= f.label :priority %>
+            <%= f.number_field :priority, :value => 0 %>
+        </div>
+        -->
+        <div class="field">
+            <%= f.label :reprint %>
+            <%= f.check_box :reprint %>
+        </div>
+    </div>
+</article>
+
+<article>
+    <div class="title">
+        <h3>Shipping Address</h3>
+    </div>
+    <div class="content">
+        <div class="field">
+            <label>Patient Residence</label>
+            <input type="search" name="patient_residence_id" />
+        </div>
+        <div class="field">
+            <label><input type="checkbox" name="ship_to_lifesquare_office" value="ship-it" /> Lifesquare SF office - 50 Hawthorne St.</label>
+        </div>
+        <p>Or, just enter some arbitary address in the US</p>
+        <div class="field">
+            <%= f.label :address_line1 %>
+            <%= f.text_field :address_line1, :placeholder => '123 Easy St.' %>
+        </div>
+        <div class="field">
+            <%= f.label :address_line2 %>
+            <%= f.text_field :address_line2, :placeholder => 'Suite 101' %>
+        </div>
+        <div class="field">
+            <%= f.label :city %>
+            <%= f.text_field :city, :placeholder => 'Springfield' %>
+        </div>
+        <div class="field">
+            <%= f.label :state_province %>
+            <%= f.text_field :state_province, :placeholder => 'OR' %>
+        </div>
+        <div class="field">
+            <%= f.label :postal_code %>
+            <%= f.text_field :postal_code, :placeholder => '97477' %>
+        </div>
+    </div>
+</article>
+
+<% end %>

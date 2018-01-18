@@ -1,0 +1,101 @@
+.button {
+    display: inline-block;
+    letter-spacing: 0.025rem;
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    background: rgba(0, 0, 0, 0.0);
+    -webkit-transition: background 0.1s linear;
+    box-sizing: border-box;
+    font-weight: 500;
+
+    outline: none;
+
+    // min-width: 5rem;
+
+    i {
+        font-size: 1rem;
+        position: relative;
+        top: 2px;
+    }
+
+    &:hover {
+        color: white;
+        background: $blue2016;
+        -webkit-transition: background 0.1s linear;
+    }
+
+    &.disabled {
+        cursor: default;
+        color: $textgray;
+        &:hover {
+            color: inherit;
+            background: inherit;
+        }
+    }
+
+    &.small {
+        font-size: 0.8rem;
+        
+    }
+}
+
+button, button[type="submit"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    color: white;
+    border: none;
+    outline: none;
+    &:hover {
+        cursor: pointer;
+        background: rgba(51, 123, 211, 1.0) !important;
+    }
+
+    &.default {
+        // a button that's one of these, but needs to look like a normal button, son
+        color: $blue2016;
+        &:hover {
+            color: white;
+        }
+    }
+}
+
+.button.primary {
+    background: rgba(51, 123, 211, 0.7) !important;
+    color: white;
+
+    &:hover {
+        background: rgba(51, 123, 211, 1.0) !important;
+    }
+
+    &.inverse {
+        background: rgba(0, 0, 0, 0.1);
+    }
+
+    &.disabled {
+        opacity: 0.4 !important;
+        cursor: default !important;
+        &:hover {
+            color: inherit;
+            background: rgba(51, 123, 211, 0.7) !important;
+        }
+    }
+
+    &.juiced {
+        background: rgba(51, 123, 211, 1.0) !important;
+        color: white !important;
+    }
+}
+
+
+// normal, blue hover to white with blue back
+
+// primary, blue already filled in
+
+// TODO: consolidate between all the types of things
+
+// button
+// input[type="submit"]
+// a.button.primary
+
+// LOLZORSRUS™

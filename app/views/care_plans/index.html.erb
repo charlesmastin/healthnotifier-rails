@@ -1,0 +1,36 @@
+<% content_for :pagetitle do %>
+<h1>Advise Me</h1>
+<h3>Please select a patient to continue</h3>
+<% end %>
+
+<section id="main-column">
+
+<p style="width: 80%;">We tailor our process to each patient and their current profile. We may prompt you to input additional information during the course of the workflow and will save any relevant data back to your profile.</p>
+
+<section class="cards<% if @patients.size < 2 %> single-item<% end %>">
+    <!-- it's a list of one, but whatever -->
+    <% @patients.each_with_index do |patient, index| %>
+      <article class="patient" data-detail-url="<%= care_plans_patient_path(patient.uuid) %>">
+            <header>
+                <h3><%= patient.name_extended %></h3>
+            </header>
+            <section>
+                <%= render :partial => 'components/patient_avatar', :locals => { :patient => patient } %>
+                <% if patient.age_str != "2015 years old" %><small class="age"><%= patient.age_str %></small><% else %><small class="age">&nbsp;</small><% end %>
+            </section>
+        </article>
+    <% end %>
+</section>
+
+</section>
+
+<% content_for :js_bootstrap do %>
+<script>
+    (function () {
+        "use strict";
+        $('.cards > article').click(function(e){
+            window.location = $(e.currentTarget).attr('data-detail-url');
+        });
+    })();
+</script>
+<% end %>

@@ -1,0 +1,22 @@
+<article>
+<%= contact.name %> &nbsp;<span class="fine-detail">
+<% if contact.contact_relationship %>
+    <%= PatientContact.formatted_contact_relationships[contact[:contact_relationship]] %>
+<% end %>
+<% extra = [];
+   if contact.next_of_kin?
+       extra.push("Next of Kin")
+   end
+   if contact.power_of_attorney?
+       extra.push("Durable health care Power of Attorney")
+   end
+%>
+<% if not extra.empty? %>
+    (<%= extra.join(", ") %>)
+<% end %>
+</span>
+
+<span class="tag privacy <%= contact.privacy %>"><%= privacy_label(contact.privacy) %></span>
+
+<% if contact.home_phone.present? %><br><%= format_phone(contact.home_phone) %><% end %>
+</article>

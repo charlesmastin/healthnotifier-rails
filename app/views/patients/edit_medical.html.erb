@@ -1,0 +1,478 @@
+<% content_for :below_header do %>
+<section id="patient-transaction-bar">
+    <div class="inner">
+        <a class="backzone" href="<%= patient_show_path(@patient.uuid) %>">
+            <%= render :partial => 'components/patient_avatar', :locals => { :patient => @patient, :size => 'small' } %>
+            <h4 class="patient_name"><%= @patient.name_extended %></h4>
+        </a>
+        <div class="actions">
+            <% if @patient.confirmed? %>
+            <a id="action-transaction-save" href="#" disabled="disabled" class="button primary disabled">Save Changes</a>
+            <a id="action-transaction-cancel" href="<%= patient_show_path(@patient.uuid) %>" class="button">Cancel</a>
+            <% else %>
+            <a id="action-transaction-save" href="#" xdisabled="disabled" class="button primary xdisabled">Save &amp; Continue</a>
+            <!-- patient_index_path ???? -->
+            <a id="action-transaction-cancel" href="<%= patient_show_path(@patient.uuid) %>" class="button">Cancel</a>
+            <% end%>
+            <% if @patient.confirmed? %>
+            <a href="#" class="action actions" data-popover="patient-actions-<%= @patient.uuid %>"><i class="material-icons">more_vert</i></a>
+            <% end %>
+        </div>
+        <%= render :partial => 'components/patient_onboarding_summary', :locals => { :patient => @patient, :state => @onboarding_details } %>
+    </div>
+</section>
+<% end %>
+
+<section id="main-column" class="basic-form">
+    <div id="signup-medical">
+
+    <h2>Edit Medical Record</h2>
+    
+    <% if !@patient.confirmed %>
+    <%= render :partial => 'shared/blue_button_promo', :locals => { :patient => @patient } %>
+    <% end %>
+
+    <section id="medication" class="pillbox">
+        <article>
+            <div class="title">
+                <h3>
+                    <%= image_tag "icons/pill.png", :alt => "", :size => "28x28" %><br>
+                    Medications
+                </h3>
+            </div>
+            <div class="content">
+                <div class="row inline-labels">
+                    <% if @patient_details['medications'].length == 0 %>
+                    <p class="intro">Are you regularly taking any medications? <strong>e.g. prednisone, Lipitor, insulin</strong></p>
+                    <% end %>
+                    <% if false %>
+                    <p class="">
+                        <span class="error-message" data-for="medication_presence"><br>Please select &ldquo;Yes&rdquo; or &ldquo;No&rdquo;</span>
+                    </p>
+                    <p class="">
+                        <label class="large light"><input class="display presence" type="radio" name="medication_presence" value="1" data-container="medication"<%= " checked" if @patient.medication_presence == '1' %>> Yes</label>
+                        <label class="large light"><input class="display presence" type="radio" name="medication_presence" value="0" data-container="medication"<%= " checked" if @patient.medication_presence == '0' %>> No</label>
+                    </p>
+                    <% end %>
+                </div>
+
+                <div class="entries compact">
+                </div>
+                <%= render :partial => 'components/add_row_button', :locals => { :title => 'Add a Medication' } %>
+            </div>
+        </article>
+    </section>
+
+    <section id="allergy" class="pillbox inline-labels">
+        <article>
+            <div class="title">
+                <h3>
+                    <%= image_tag "icons/bee.png", :alt => "", :size => "30x29" %><br>
+                    Allergies
+                </h3>
+            </div>
+            <div class="content">
+                <div class="row">
+                    <% if @patient_details['allergies'].length == 0 %>
+                    <p class="intro">Are you allergic to anything? <strong>e.g. latex, sulfa, peanuts</strong></p>
+                    <% end %>
+                    <% if false %>
+                    <p class="">
+                        <span class="error-message" data-for="allergy_presence"><br>Please select &ldquo;Yes&rdquo; or &ldquo;No&rdquo;</span>
+                    </p>
+                    <p class="">
+                        <label class="large light"><input class="display presence" type="radio" name="allergy_presence" value="1" data-container="allergy"<%= " checked" if @patient.allergy_presence == '1' %>> Yes</label>
+                        <label class="large light"><input class="display presence" type="radio" name="allergy_presence" value="0" data-container="allergy"<%= " checked" if @patient.allergy_presence == '0' %>> No</label>
+                    </p>
+                    <% end %>
+                </div>
+
+                <div class="entries compact">
+                </div>
+                <%= render :partial => 'components/add_row_button', :locals => { :title => 'Add an Allergy' } %>
+            </div>
+        </article>
+    </section>
+
+    <section id="immunization" class="pillbox inline-labels">
+        <article>
+            <div class="title">
+                <h3>
+                    <%= image_tag "icons/pill.png", :alt => "", :size => "28x28" %><br>
+                    Immunizations
+                </h3>
+            </div>
+            <div class="content">
+                <div class="row">
+                    <% if @patient_details['immunizations'].length == 0 %>
+                    <p class="intro">Have you had any immunizations? <strong>e.g. tetanus, measles, hepatitis</strong></p>
+                    <% end %>
+                    <% if false %>
+                    <p class=">
+                        <span class="error-message" data-for="immunization_presence"><br>Please select &ldquo;Yes&rdquo; or &ldquo;No&rdquo;</span>
+                    </p>
+                    <p class="">
+                        <label class="large light"><input class="display presence" type="radio" name="immunization_presence" value="1" data-container="immunization"<%= " checked" if @patient.immunization_presence == '1' %>> Yes</label>
+                        <label class="large light"><input class="display presence" type="radio" name="immunization_presence" value="0" data-container="immunization"<%= " checked" if @patient.immunization_presence == '0' %>> No</label>
+                    </p>
+                    <% end %>
+                </div>
+
+                <div class="entries compact">
+                </div>
+                <%= render :partial => 'components/add_row_button', :locals => { :title => 'Add an Immunization' } %>
+            </div>
+        </article>
+    </section>
+
+    <section id="condition" class="pillbox inline-labels">
+        <article>
+            <div class="title">
+                <h3>
+                    <%= image_tag "icons/heartbeat.png", :alt => "", :size => "32x28" %><br>
+                    Conditions
+                </h3>
+            </div>
+            <div class="content">
+                <div class="row">
+                    <% if @patient_details['conditions'].length == 0 %>
+                    <p class="intro">Do you have any medical conditions? <strong>e.g. diabetes, high blood pressure, Alzheimer's</strong></p>
+                    <% end %>
+                    <% if false %>
+                    <p class="">
+                        <span class="error-message" data-for="condition_presence"><br>Please select &ldquo;Yes&rdquo; or &ldquo;No&rdquo;</span>
+                    </p>
+                    <p class="">
+                        <label class="large light"><input class="display presence" type="radio" name="condition_presence" value="1" data-container="condition"<%= " checked" if @patient.condition_presence == '1' %>> Yes</label>
+                        <label class="large light"><input class="display presence" type="radio" name="condition_presence" value="0" data-container="condition"<%= " checked" if @patient.condition_presence == '0' %>> No</label>
+                    </p>
+                    <% end %>
+                </div>
+
+                <div class="entries compact">
+                </div>
+                <%= render :partial => 'components/add_row_button', :locals => { :title => 'Add a Condition' } %>
+            </div>
+        </article>
+    </section>
+
+    <section id="procedure" class="pillbox inline-labels">
+        <article>
+            <div class="title">
+                <h3>
+                    <%= image_tag "icons/surgeon.png", :alt => "", :size => "28x32", :style => "margin-top: -11px" %><br>
+                    Procedures<br>&amp; Devices
+                </h3>
+            </div>
+            <div class="content">
+                <div class="row">
+                    <% if @patient_details['procedures'].length == 0 %>
+                    <p class="intro">Any medical procedures or implanted devices? <strong>e.g. angioplasty, hip replacement, pacemaker</strong></p>
+                    <% end %>
+                    <% if false %>
+                    <p class="">
+                        <span class="error-message" data-for="procedure_presence"><br>Please select &ldquo;Yes&rdquo; or &ldquo;No&rdquo;</span>
+                    </p>
+                    <p class="">
+                        <label class="large light"><input class="display presence" type="radio" name="procedure_presence" value="1" data-container="procedure"<%= " checked" if @patient.procedure_presence == '1' %>> Yes</label>
+                        <label class="large light"><input class="display presence" type="radio" name="procedure_presence" value="0" data-container="procedure"<%= " checked" if @patient.procedure_presence == '0' %>> No</label>
+                    </p>
+                    <% end %>
+                </div>
+
+                <div class="entries compact">
+                </div>
+                <%= render :partial => 'components/add_row_button', :locals => { :title => 'Add a Procedure or Device' } %>
+            </div>
+        </article>
+    </section>
+
+    <section id="directive" class="pillbox inline-labels">
+        <article>
+            <div class="title">
+                <h3>
+                    <%= image_tag "icons/clipboard.png", :alt => "", :size => "28x38" %><br>
+                    Directives
+                </h3>
+            </div>
+            <div class="content">
+                <div class="row">
+                    <p class="intro">Do you have any end-of-life wishes? <strong>e.g. DNR status, POLST form, <a target="_blank" href="<%= asset_path('docs/ACS_What_is_an_Advance_Directive.pdf') %>" data-balloon="Learn more about advance directives">Advance Directive</a></strong></p>
+                    <% if false %>
+                    <p class="">
+                        <span class="error-message" data-for="directive_presence"><br>Please select &ldquo;Yes&rdquo; or &ldquo;No&rdquo;</span>
+                    </p>
+                    <p class="">
+                        <label class="large light"><input class="display presence" type="radio" name="directive_presence" value="1" data-container="directive"<%= " checked" if @patient.directive_presence == '1' %>> Yes</label>
+                        <label class="large light"><input class="display presence" type="radio" name="directive_presence" value="0" data-container="directive"<%= " checked" if @patient.directive_presence == '0' %>> No</label>
+                    </p>
+                    <% end %>
+                </div>
+
+                <div class="entries">
+                    <% if @patient_details['directives'].length > 0 %>
+                    <% @patient_details['directives'].each do |pha| %>
+                    <%= render :partial => 'components/patient_document', :locals => { :pha => pha } %>
+                    <% end %>
+                    <% end %>
+                </div>
+                <%= render :partial => 'components/add_row_button', :locals => { :title => 'Add a Directive' } %>
+            </div>
+        </article>
+    </section>
+
+    <section id="document" class="pillbox inline-labels">
+        <article>
+            <div class="title">
+                <h3>
+                    <%= image_tag "icons/clipboard.png", :alt => "", :size => "28x38" %><br>
+                    Documents
+                </h3>
+            </div>
+            <div class="content">
+                <div class="row">
+                    <p class="intro">Add any medical documents for secure storage and quick access. <strong>e.g. Lab results, Imaging results, ECGs, Medical notes?</strong></p>
+                    <% if false %>
+                    <p class="">
+                        <span class="error-message" data-for="document_presence"><br>Please select &ldquo;Yes&rdquo; or &ldquo;No&rdquo;</span>
+                    </p>
+                    <p class="">
+                        <label class="large light"><input class="display presence" type="radio" name="document_presence" value="1" data-container="directive"<%= " checked" if @patient.document_presence == '1' %>> Yes</label>
+                        <label class="large light"><input class="display presence" type="radio" name="document_presence" value="0" data-container="directive"<%= " checked" if @patient.document_presence == '0' %>> No</label>
+                    </p>
+                    <% end %>
+                </div>
+
+                <div class="entries">
+                <% if @patient_details['documents'].length > 0 %>
+                <% @patient_details['documents'].each do |pha| %>
+                <%= render :partial => 'components/patient_document', :locals => { :pha => pha } %>
+                <% end %>
+                <% end %>
+                </div>
+                <%= render :partial => 'components/add_row_button', :locals => { :title => 'Add a Document' } %>
+            </div>
+        </article>
+    </section>
+    <% if [nil, '', 'female'].include? @patient.gender %>
+    <section id="pregnancy" class="pillbox inline-labels">
+        <article>
+            <div class="title">
+                <h3>
+                    <%= image_tag "icons/bear.png", :alt => "", :size => "28x32" %><br>
+                    Pregnancy
+                </h3>
+            </div>
+            <div class="content">
+                <div class="row">
+                    <p class="intro">Are you pregnant?</p>
+                    <p class="">
+                        <span class="error-message" data-for="maternity_state"><br>Please select &ldquo;Yes&rdquo; or &ldquo;No&rdquo;</span>
+                    </p>
+                    <p class="">
+                        <label class="large light"><input type="radio" class="display presence" name="maternity_state" data-container="pregnancy" value="1"<%= " checked" if @patient.maternity_state == '1' %>> Yes</label>
+                        <label class="large light"><input type="radio" class="display presence" name="maternity_state" data-container="pregnancy" value="0"<%= " checked" if @patient.maternity_state == '0' %>> No</label>
+                    </p>
+                </div>
+
+                <div class="entries" style="display: none;">
+                    <div class="required">
+                        <label class="" for="maternity_due_date_formatted">Due Date</label>
+                        <input class="input-item span4 due-date" type="text" name="maternity_due_date_formatted" value="" id="maternity_due_date_formatted" placeholder="MM/DD/YYYY">
+                        <p class="error-message" data-for="maternity_due_date_formatted">Please enter a future date in <br/>MM/DD/YYYY format</p>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </section>
+    <% end %>
+</div>
+</section>
+
+
+<% content_for :bodyextra do %>
+<%= render :partial => "shared/delete_patient_modal", :locals => {:patient => @patient } %>
+<%= render :partial => 'components/add_document', :locals => { :patient => @patient } %>
+<%= render :partial => 'shared/import_modal', :locals => {:patient => @patient, :emrs => @import_emrs } %>
+<%= render :partial => 'shared/export_modal', :locals => {:patient => @patient } %>
+<%= render :partial => 'components/privacy_popover' %>
+<%= render :partial => 'components/patient_popover', :locals => { :patient => @patient, :context => 'detail' } %>
+<%= render :partial => 'components/patient_onboarding_popover', :locals => { :patient => @patient, :state => @onboarding_details } %>
+
+<!-- BB view templates -->
+<%= render :partial => 'components/patient_edit_medication' %>
+<%= render :partial => 'components/patient_edit_allergy' %>
+<%= render :partial => 'components/patient_edit_condition' %>
+<%= render :partial => 'components/patient_edit_procedure' %>
+<%= render :partial => 'components/patient_edit_immunization' %>
+<%= render :partial => 'components/patient_edit_pregnancy' %>
+<!-- document & directives do not have these as they are rendered inline and edited in a detail route -->
+
+<% end %>
+
+<% content_for :js_bootstrap do %>
+<script>
+    (function () {
+        "use strict";
+
+        var Patient = app.module('patient');
+        var patientData = <%=j @patient.to_json.html_safe %>;
+        var patientModel = new Patient.Models.Profile(patientData);
+        var patient_uuid = "<%= @patient.uuid %>";
+        var medicationData = <%=j @patient_details['medications'].to_json.html_safe %>;
+        var allergyData = <%=j @patient_details['allergies'].to_json.html_safe %>;
+        var conditionData = <%=j @patient_details['conditions'].to_json.html_safe %>;
+        var procedureData = <%=j @patient_details['procedures'].to_json.html_safe %>;
+        var immunizationData = <%=j @patient_details['immunizations'].to_json.html_safe %>;
+
+        var medicationView = new Patient.Views.Medication({ el: '#medication', collection: new Patient.Collections.Medication(medicationData, { patient_uuid: patient_uuid }) }),
+            allergyView = new Patient.Views.Allergy({ el: '#allergy', collection: new Patient.Collections.Allergy(allergyData, {patient_uuid: patient_uuid }) }),
+            conditionView = new Patient.Views.Condition({ el: '#condition', collection: new Patient.Collections.Condition(conditionData, {patient_uuid: patient_uuid }) }),
+            procedureView = new Patient.Views.Procedure({ el: '#procedure', collection: new Patient.Collections.Procedure(procedureData, {patient_uuid: patient_uuid}) }),
+            immunizationView = new Patient.Views.Immunization({ el: '#immunization', collection: new Patient.Collections.Immunization(immunizationData, {patient_uuid: patient_uuid}) });
+
+        var views = [
+                medicationView,
+                allergyView,
+                conditionView,
+                procedureView,
+                immunizationView
+            ];
+
+        var pregnancyContainer = $('#pregnancy');
+        if(pregnancyContainer.length === 1) {
+            // TODO: default validation not working but this one is different
+            var pregnancyView = new Patient.Views.Pregnancy({ el: '#pregnancy', model: patientModel });
+            views.push(pregnancyView);
+        }
+
+        var action = "<%= @patient.confirmed? ? patient_show_path(@patient.uuid) : patient_edit_contacts_path(@patient.uuid) %>";
+
+        var medicalView = new Patient.Views.EditMedical(
+            {
+                el: '#signup-medical',
+                views: views,
+                model: patientModel,
+                action: action
+            });
+
+
+        var addDocumentView = null;
+        // TODO: this could be more DRY…
+        var importView = new Patient.Views.Importer({ el: '#emr-form' });
+
+        window.PRIVACY_OPTIONS = <%= @privacy_options.to_json.html_safe %>;
+        window.DIRECTIVE_VALUES = <%= @directive_types.to_json.html_safe %>;
+        window.DOCUMENT_VALUES = <%= @document_types.to_json.html_safe %>;
+
+        // ghetto town
+        //$('#directive a.create').css({'display': 'inline-block'});
+        //$('#document a.create').css({'display': 'inline-block'});
+
+        // delegation events from the document modal "view"
+        var documentStateHandler = function(e, action, payload){
+            if(action == 'cancel'){
+
+            }
+            if(action == 'update'){
+                try {
+                    if(payload.DocumentType != undefined){
+                        insertNewDocument(payload);
+                    }
+                } catch(e){
+
+                }
+            }
+            $('#add-document-modal').trigger('reveal:close');
+            if(addDocumentView != null){
+                addDocumentView = null;
+            }
+        }
+
+        $(document).off('onDocumentUploadState', documentStateHandler);
+        $(document).on('onDocumentUploadState', documentStateHandler);
+
+        // binding from the create buttons
+        $('#directive a.create, #document a.create').on('click', function(e){
+
+            var mode = 'directive';
+            if($(e.currentTarget).parents('.pillbox').attr('id') == 'document'){
+                mode = 'document';
+            }
+
+            $('#add-document-modal').reveal({
+                animation: 'fade',
+                closeonbackgroundclick: false
+            });
+            addDocumentView = new Patient.Views.AddDocument({ el: '#add-document-modal', model: patientModel, mode: mode });
+            
+            return false;
+        });
+
+        // store dis somewhere legit, because we may be "calling it" from events or sockets, son
+        function insertNewDocument(payload){
+            // TODO: pull from a dynamic dump™
+            var typesA = DOCUMENT_VALUES.map(function(item){
+                return item.value;
+            });
+            var typesB = DIRECTIVE_VALUES.map(function(item){
+                return item.value;
+            });
+            //var typesA = <%= raw @document_types.map { |item| item[:value] } %>;
+            //var typesB = <%= raw @directive_types.map { |item| item[:value] } %>;
+            var target = null;
+            var privacy_label = '';
+            for(var i=0;i<PRIVACY_OPTIONS.length;i++){
+                if(PRIVACY_OPTIONS[i].value == payload.Privacy){
+                    privacy_label = PRIVACY_OPTIONS[i].name;
+                    break;
+                }
+            }
+
+            if( _.contains(typesA, payload.DocumentType)){
+                target = $('#document .entries');
+            }
+            if( _.contains(typesB, payload.DocumentType)){
+                target = $('#directive .entries');
+            }
+            if(target){
+                var sizeBadge = '';
+                if(payload.Size > 1){
+                    sizeBadge = '<span class="badge">+' + (payload.Size - 1) + '</span>';
+                }
+                target.append('<article class="dd-summary" data-balloon="View This Document" data-uuid="" data-baloon="View This Document"><a href="/documents/' + payload.DocumentUuid + '" ><p>' + formatDocumentType(payload.DocumentType) + '</p><div class="image-wrapper"><img src="/api/v1/file/retrieve/' + payload.FirstChildUuid + '?width=80&height=100" width="80" height="100" />' + sizeBadge + '</div><span class="tag privacy ' + payload.Privacy +'">' + privacy_label + '</span></a></article>');
+
+                setTimeout(function(){
+                    $(document).scrollTo(target);
+                }, 250);
+            }
+        }
+
+        function formatDocumentType(value){
+            // yes. literally another formatting for the same thing, we'll make a class in ruby, and js for this
+            // GHETOMATTIC
+            for(var i=0; i<DOCUMENT_VALUES.length;i++){
+                if(DOCUMENT_VALUES[i].value == value){
+                    return DOCUMENT_VALUES[i].name;
+                }
+            }
+            for(var i=0; i<DIRECTIVE_VALUES.length;i++){
+                if(DIRECTIVE_VALUES[i].value == value){
+                    return DIRECTIVE_VALUES[i].name;
+                }
+            }
+            return value;
+        }
+
+        // THC times DM DD 007
+        // serious quirk workaround times
+        popover.init($('#patient-transaction-bar a.actions, #patient-transaction-bar .onboarding-summary'));
+
+        <% if !@patient.confirmed? %>
+        var c = document.getElementById('component-onboarding-summary');
+        c.appendChild( pieChart(<%= @onboarding_details[:progress_percent] %>, 32) );
+        <% end %>
+
+    })();
+</script>
+<% end %>

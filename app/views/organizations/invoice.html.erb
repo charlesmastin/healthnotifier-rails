@@ -1,0 +1,72 @@
+<% content_for :below_header do %>
+<section id="patient-transaction-bar" class="organization">
+    <div class="inner">
+    <h4 class="patient_name"><%= @organization.name %> <span class="tag enterprise on-dark">Business</span></h4>
+
+    <div class="actions">
+        <a href="#" id="action-transaction-save" class="button primary">Submit</a>
+        <a href="<%= organization_show_path @organization.uuid %>" class="button">Cancel</a>
+        <a href="#" class="action actions" data-popover="org-actions-<%= @organization.uuid %>"><i class="material-icons">more_vert</i></a>
+    </div>
+    </div>
+</section>
+<% end %>
+
+<% content_for :pagetitle do %>
+<% if @invoice.payment == nil %>
+<h1>Pay Invoice</h1>
+<% else %>
+<h1>Paid Invoice</h1>
+<% end %>
+
+<% end %>
+
+<div id="bb-view-org-invoice" data-action="<%= api_org_charge_invoice_path(:uuid=>@organization.uuid, :invoice_uuid=>@invoice.uuid) %>" class="basic-form requires-payment">
+
+<section class="pillbox auth-form">
+<article>
+    <div class="title">
+        <h3>Summary</h3>
+    </div>
+
+    <div class="content">
+        <h2><%= @invoice.title %></h2>
+        <%= simple_format @invoice.description.html_safe %>
+        <hr />
+        <% if @invoice.payment == nil %>
+        <p><strong>Due: <%= @invoice.due_date.strftime('%m/%d/%-Y') %></strong></p>
+        <% else %>
+        <p><strong><%= number_to_currency(@invoice.amount / 100) %></strong></p>
+        <p><strong>Paid: <%= @invoice.payment.created_at.strftime('%m/%d/%-Y') %></strong></p>
+        <% end %>
+    </div>
+</article>
+</section>
+
+<% if @invoice.payment == nil %>
+<%= render :partial => 'components/payment', :locals => { :subscription_end => nil, :subscription => false, :available_cards => @cards_on_file, :total => @invoice.amount } %>
+<% end %>
+
+</div>
+
+<% content_for :js_head do %>
+<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+<script type="text/javascript">
+  Stripe.setPublishableKey('<%= @publishable_key %>');
+</script>
+<% end %>
+
+<% content_for :js_bootstrap do %>
+    <% if @invoice.payment == nil %>
+    <script>
+        (function () {
+            "use strict";
+            window.SUCCESS_URL = "<%= organization_show_path @organization.uuid %>";
+            //window.ORGANIZATION_UUID = "<%= @organization.uuid %>";
+            //window.INVOICE_UUID = "<%= @invoice.uuid %>";
+            var Organization = app.module('organization');
+            var bbView = new Organization.Views.ChargeInvoice({ el: '#bb-view-org-invoice' });
+        })();
+    </script>
+    <% end %>
+<% end %>

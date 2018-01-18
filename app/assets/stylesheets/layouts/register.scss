@@ -1,0 +1,167 @@
+body.register {
+    background: $stolenBlue;
+    background: image-url("backgrounds/beach1.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    box-shadow: inset 0 0 0 1000px rgba(0,0,0,0.5);
+
+    .page-title {
+        color: $white-100;
+        h2 {
+            margin-left: 1rem;
+        }
+    }
+
+    // THIS IS NOW IN DA MODULE
+
+    .additional-info {
+        color: $white-100;
+        hr {
+            border-color: $white-75;
+        }
+        a {
+            color: white;
+            font-weight: 600;
+            text-decoration: underline;
+            //padding: 0.25rem;
+            //background: rgba()
+        }
+    }
+}
+
+#choose-account {
+    div.choice-wrapper {
+        @include clearfix;
+        div.wrap {
+            display: inline-block;
+
+        }
+        div.body {
+            display: inline-block;
+            margin-left: 2rem;
+            position: relative;
+            top: -1.25rem;
+
+            h3 {
+                label {
+                    font-size: 1.25rem;
+                }
+            }
+        }
+    }
+    div.flow-control {
+        margin-left: 2rem;
+    }
+}
+
+
+
+/*
+section.session-mgmt {
+    // padding: 0 40px 40px;
+    color: #64666D;
+    width: 380px;
+
+    h1 {
+        margin-bottom: 0;
+
+    }
+}
+#main section.session-mgmt {
+    margin: 0 0 40px;
+}
+#main .account-sidebar {
+    padding-top: 125px;
+}
+
+section.session-mgmt a {
+    color: #36C;
+}
+
+section.session-mgmt .helpers {
+    text-align: center;
+    color: #808080;
+}
+
+section.session-mgmt .helpers li {
+    line-height: 14px;
+}
+
+section.session-mgmt a.helper {
+    font-size: 11px;
+    line-height: 14px;
+}
+
+
+// SIGN UP AREA
+#account-tabs {
+    margin: 30px 0 0;
+    padding-left: 57%;
+}
+
+#login-modal,
+#privacy-details-modal,
+#signup-modal,
+#import-modal {
+    padding: 0 0 40px 40px;
+
+    h1 {
+        line-height: 1.0em;
+        margin-bottom: 0.5em;
+    }
+}
+
+#privacy-details-modal,
+#import-modal {
+    text-align: left;
+    // TODO: figure out animations
+    top: 100px;
+
+    p {
+        margin-left: 0;
+    }
+}
+
+#account_new {
+    // border: 1px solid #ddd;
+    // border-top: none;
+}
+
+#signup {
+}
+
+#signup-form {
+    position: relative;
+    margin: 0 10px;
+}
+
+#submit-container {
+    text-align: center;
+}
+
+#invalid-zip {
+    position: relative;
+}
+
+#invalid-zip button {
+    margin: 18px 0;
+}
+
+.signup-note {
+    margin-left: 135px;
+}
+
+.signup-note input[type="checkbox"] {
+    float: left;
+    display: block;
+}
+
+.signup-note input[type="checkbox"] + label {
+    float: none;
+    text-align: left;
+    display: inline-block;
+    padding: 0 0 0 6px;
+    width: auto;
+}
+*/

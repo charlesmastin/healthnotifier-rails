@@ -1,0 +1,61 @@
+
+<section id="main-column">
+    <section class="pillbox xjuicebox campaign-onboarding">
+        <article>
+            
+            <div class="content">
+                <h1>Welcome to HealthNotifier</h1>
+
+                <p>You have been invited to signup on behalf of <strong><%= @campaign.organization.name %></strong>. Let’s take the next 5 minutes and get your account and profile configured!</p>
+
+                <ol class="quickstart">
+                    <li>Have your sticker sheet next to you</li>
+                    <li>Choose your device platform (best) or register on the web
+                        <div class="apps-promo-neue">
+                            <a class="badge-ios" href="#">
+                                <%= image_tag "badge-ios.png" %>
+                            </a>
+                            <a class="badge-android" href="#">
+                                <%= image_tag "badge-android.png" %>
+                            </a>
+                            <a class="badge-web" href="/signup" target="_blank">Browser<!-- <small>HTML5</small>--></a>
+                        </div>
+                    </li>
+
+                    <li>Follow the instructions to create your account and profile</li>
+                    <li>Continue to “Checkout: Assign LifeStickers</li>
+                    <li>IMPORTANT: Select, “I already have LifeStickers</li>
+                    <li>Hold the phone camera up to the QR code on the stickers you have or select “Enter Code”.  If you select “Enter Code”, enter the 9 digit alphanumeric code on your sticker</li>
+                    <!-- TODO: be careful show only if applicable, hook start / end dates, really just set something in controller -->
+                    <% if @campaign.promo_code != nil %>
+                    <li>Enter the following Promo Code<% if @campaign.promo_price == 0 %> in order to qualify for free coverage for a year<% else %><% end %>
+
+                    <br /><div class="promo-code"><%= @campaign.promo_code.upcase %></div>
+
+                    </li>
+                    <% end %>
+                    <li>Setup is complete</li>
+                </ol>
+                
+                
+            </div>
+        </article>
+    </section>
+</section>
+
+
+<% content_for :js_bootstrap do %>
+<script>
+    (function() {
+        <% if account_signed_in? %>
+        
+        <% else %>
+        $('header.app-header div.divider').hide();
+        $('header.app-header a[href="/login"]').hide();
+        $('header.app-header a[href="/signup"]').hide();
+        <% end %>
+    })();
+</script>
+<% end %>
+
+

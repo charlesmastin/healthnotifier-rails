@@ -1,0 +1,3 @@
+<article>
+<%= immunization.health_event %><% if immunization.start_date %> &nbsp;<span class="fine-detail"><%= automaskDate(immunization.start_date, immunization.start_date_mask) %></span><% end %>&nbsp;<span class="tag privacy <%= immunization.privacy %>"><%= privacy_label(immunization.privacy) %></span>
+</article>

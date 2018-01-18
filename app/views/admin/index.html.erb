@@ -1,0 +1,76 @@
+<section>
+    <h1>Admin &amp; Operations Portal</h1>
+</section>
+
+<%= render :partial => 'sidebar' %>
+
+<section id="main-column">
+
+<section class="cards">
+    <article data-detail-url="<%= admin_code_sheet_index_path %>">
+        <header>
+            <h3>Print Requests</h3>
+        </header>
+        <section>
+            <article class="metric huge">
+                <div><%= get_print_queue_new_count %></div>
+                <label>Jobs to print &amp; mail</label>
+            </article>
+        </section>
+    </article>
+    <article data-detail-url="<%= admin_provider_credentials_index_path %>">
+        <header>
+            <h3>Provider Credentials</h3>
+        </header>
+        <section>
+            <article class="metric huge">
+                <div><%= get_provider_credentials_new_count %></div>
+                <label>Submissions to review</label>
+            </article>
+        </section>
+    </article>
+    <article data-detail-url="#">
+        <header>
+            <h3>Payments</h3>
+        </header>
+        <section>
+            <article class="metric large">
+                <div><span>$</span>10.2<span>k</span></div>
+                <label>30 Day transactions</label>
+            </article>
+        </section>
+    </article>
+    <article data-detail-url="#">
+        <header>
+            <h3>Current Active Sessions</h3>
+        </header>
+        <section class="metrics items-3">
+            <article class="metric large">
+                <div>15</div>
+                <label>Web</label>
+            </article>
+            <article class="metric large">
+                <div>11</div>
+                <label>iOS</label>
+            </article>
+            <article class="metric large">
+                <div>2</div>
+                <label>Android</label>
+            </article>
+        </section>
+    </article>
+</section>
+
+</section>
+
+<% content_for :js_bootstrap do %>
+<script>
+    (function () {
+        "use strict";
+        console.log('hi');
+        $('.cards > article').click(function(e){
+            window.location = $(e.currentTarget).attr('data-detail-url');
+        });
+    })();
+</script>
+<% end %>

@@ -1,0 +1,75 @@
+<% if patient.has_current_coverage or patient.has_expired_coverage or patient.account.provider? %>
+
+<% if false %>
+<h6>LifeSticker</h6>
+<% if patient.lifesquare_code_str.present? %>
+<%= render :partial => 'components/patient_lifesquare', :locals => { :patient => patient, :size => 100 } %>
+<% end %>
+<% end %>
+
+
+<h6>Patient Record</h6>
+<ul class="actions">
+    <li id="patientnav-summary"><a href="<%= patient_show_path(patient.uuid) %>" class="button small">Summary</a></li>
+    <li id="patientnav-edit"><a href="<%= patient_edit_personal_path(patient.uuid) %>" class="button small">Edit</a>
+    <ul id="edit-subnav">
+        <li id="patientnav-edit-personal"><a href="<%= patient_edit_personal_path(patient.uuid) %>" class="button small">Personal</a></li>
+        <li id="patientnav-edit-medical"><a href="<%= patient_edit_medical_path(patient.uuid) %>" class="button small">Medical Record</a></li>
+        <li id="patientnav-edit-contacts"><a href="<%= patient_edit_contacts_path(patient.uuid) %>" class="button small">Contacts</a></li>
+    </ul></li>
+    <% if current_account.lifesquare_employee? %>
+    <li><a href="#" class="button small import-records">Import</a></li>
+    <% end %>
+    <li><a href="#" class="button small export-records">Export</a></li>
+</ul>
+
+
+<h6>Connections</h6>
+<ul class="actions">
+    <li id="patientnav-network-inbound"><a href="<%= patient_show_network_inbound_path(patient.uuid) %>" class="button small network">Shared With You</a></li>
+    <li id="patientnav-network-outbound"><a href="<%= patient_show_network_outbound_path(patient.uuid) %>" class="button small network">Your LifeCircle</a><% if patient.network_auditors_pending.length > 0 %><a href="<%= patient_show_network_outbound_path(patient.uuid) %>#pending"><span class="badge attention" data-balloon-length="medium" data-balloon="Pending requests to view your LifeSticker" style="display: inline-block; position: relative; top: -1px;"><%= patient.network_auditors_pending.length %></span></a><% end %></li>
+</ul>
+
+<% if false %>
+<% if current_account.lifesquare_employee? %>
+<h6>Advise Me</h6>
+<p style="margin-left: 0.5rem; margin-bottom: 0; margin-top: 0;"><small>Get help with a condition you may have, before you head to the Hospital or Urgent Care!</small></p>
+<ul class="actions">
+<li><a href="<%= care_plans_patient_path(@patient.uuid) %>" class="button small">Get Started</a></li>
+</ul>
+<% end %>
+<% end %>
+
+<h6>Coverage</h6>
+<ul class="actions">
+    <% if patient.has_expired_coverage %>
+    <li><a href="<%= lifesquares_show_renew_path %>" class="button primary small">Renew Coverage</a></li>
+    <% end %>
+
+    <% if patient.current_coverage %>
+    <li id="patient-coverage-summary" data-coverage-end="<%= patient.current_coverage.coverage_end.strftime("%m/%d/%Y") %>"><small><% if patient.current_coverage.recurring %><span data-balloon="Will automatically renew">Recurring</span> <% end %>valid through <strong><%= patient.current_coverage.coverage_end.strftime("%m/%d/%Y") %></strong></small></li>
+    <% end %>
+
+    <% if patient.current_coverage and patient.current_coverage.recurring %>
+    <li><a href="#" class="button small cancel-subscription" title="Recurring coverage will automatically renew <%= patient.current_coverage.coverage_end.strftime("%m/%d/%Y") %>">Cancel Coverage Subscription</a></li>
+    <% end %>
+
+    <% if patient.can_request_stickers %>
+    <li><a href="<%= lifesquares_show_replace_path %>" class="button small reprint">Get Replacement LifeStickers</a></li>
+    <% end %>
+</ul>
+<% else %>
+
+<!-- essentially the Continue Setup -->
+<% if !patient.lifesquare_code_str.present? and @onboarding_state_index > 5 %>
+<ul class="actions">
+<li><a href="<%= lifesquares_show_assign_path %>" class="button primary small">Get LifeStickers</a></li>
+</ul>
+<% end %>
+
+<% end %>
+
+
+<ul class="actions backburner">
+    <li><a href="#" class="button small delete-patient">Delete This Profile</a></li>
+</ul>

@@ -1,0 +1,117 @@
+<section class="page-title">
+    <h1>Invoices</h1>
+</section>
+
+<%= render :partial => 'admin/sidebar' %>
+
+<section id="main-column">
+
+<section class="pillbox">
+<article>
+<div class="content">
+<table class="default datagrid">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Org</th>
+        <th>Amount</th>
+        <th>Due Date</th>
+        <th>Status</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @objects.each do |item| %>
+      <tr>
+        <td><a href="<%= admin_invoice_edit_path item.id %>"><strong><%= item.title %></strong></a></td>
+        <td><% if item.organization %><%= item.organization.name %><% end %></td>
+        <td><%= number_to_currency(item.amount / 100) %></td>
+        <td><small><%= item.due_date.strftime('%m/%d/%-Y') %></small></td>
+        <td><% if item.payment %><span class="tag">PAID</span> <small><%= item.payment.created_at.strftime('%m/%d/%-Y') %></small><% end %></td>
+        <td>
+            <a href="#" style="display: inline-block;" data-popover="<%= item.id %>"><i class="material-icons">more_horizon</i></a>
+        </td>
+        </td>
+      </tr>
+    <% end %>
+    </tbody>
+</table>
+</div>
+</article>
+</section>
+
+    <a data-balloon="Create Invoice" class="circler" href="<%= admin_invoice_new_path %>"><i class="material-icons md-48">add_circle</i></a>
+
+    <%= render :partial => 'admin/pagination', :locals => { :objects => @objects } %>
+
+
+
+</section>
+
+<% @objects.each do |item| %>
+<div id="popover-<%= item.id %>" class="popover">
+    <ul class="actions">
+        <% if item.payment == nil %>
+        <li><a class="action-notify-invoice" href="#" data-action-url="<%= api_org_notify_invoice_path(:uuid=>item.organization.uuid, :invoice_uuid=>item.uuid) %>" >Send Notification Email</a></li>
+        <% end %>
+        <% if false %>
+        <li class="divider"></li>
+        <li><a href="<%= admin_organization_destroy_path(item.id) %>">Delete</a></li>
+        <% end %>
+    </ul>
+</div>
+<% end %>
+
+<% content_for :js_bootstrap do %>
+<script>
+    
+    // wire up the object actions
+    (function () {
+        "use strict";
+        popover.init();
+        
+        
+        $("a.action-notify-invoice").click(function(event){
+            var API_ENDPOINT = $(event.currentTarget).attr("data-action-url");
+
+
+            $.ajax({
+                url: API_ENDPOINT,
+                type: 'POST',
+                dataType: 'json',
+                contentType: 'application/json',
+                data: undefined,
+                success: function(data){
+                    // redirect to the confirm screen son, bla bla bla
+                    window.app.alert("Notifications sent!");
+                },
+                error: function(data){
+
+                    // problem with validation of data
+                    if(data.status == 400){
+                        app.alert('Invalid Invoice');
+                    }
+                    // problem with payment
+                    if(data.status == 402){
+                        var bla = JSON.parse(data.responseText);
+                        var _errors = [];
+                        // BLABLABLABLA
+                        for(var i=0;i<bla.errors.length;i++){
+                            _errors.push(bla.errors[i].message);
+                        }
+                        app.alert('There was a problem with your billing information. <strong>' + _errors.join(', ') + '</strong>');
+                    }
+                    // some catch all cluster bomb
+                    if(data.status == 500){
+                        app.alert('There was un unexpected error. Please contact support@lifesquare.com for assistance.');
+                    }
+
+                    
+                }
+            });
+
+            // return false;
+        });
+    })();
+</script>
+<% end %>

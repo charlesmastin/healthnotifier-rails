@@ -1,0 +1,86 @@
+<section class="page-title xadd-new">
+    <h1>Print Requests</h1>
+</section>
+
+<%= render :partial => 'admin/sidebar' %>
+
+<section id="main-column">
+<section class="pillbox">
+<article>
+<div class="content">
+<input type="hidden" name="mode" value="" />
+<table class="default datagrid">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Lifesquares</th>
+            <!-- <th>Pages</th> -->
+            <th>Shipped</th>
+            <!-- <th>Address</th> -->
+            <th>Created</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% @objects.each do |item| %>
+        <tr>
+            <td><%= item.id %></td>
+            <td style="overflow: auto; width: 290px;"><span class="badge" style="float: left; margin-right: 0.5rem;"><%= item.lifesquares_a.size %></span><span style="float: left; position: relative; top: 0.25rem;" class="lifesquare-code"><%= item.lifesquares_a[0] %></span></td>
+            <!-- <td><%= (item.lifesquares_a.size / 3.to_f).ceil %></td> -->
+            <td><% if item.mailed_at %><i class="material-icons">check</i><% end %></td>
+            <!--<td><% if item.postal_code %><small><%= item.state_province %>, <%= item.postal_code %></small><% end %></td>-->
+            <td><small><%= item.updated_at %></small></td>
+            <td>
+            <% if item.status == 0 %><a href="<%= api_download_print_request_path(item.id) %>" style="display: inline-block;" target="_blank" ><i class="material-icons">cloud_download</i></a><% end %>
+            <a href="#" style="display: inline-block;" data-popover="cspr-<%= item.id %>"><i class="material-icons">more_horizon</i></a>
+            </td>
+        </tr>
+        <% end %>
+    </tbody>
+</table>
+</div>
+</article>
+</section>
+
+<a data-balloon="Create Print Request" class="circler" href="<%= admin_code_sheet_new_path %>"><i class="material-icons md-48">add_circle</i></a>
+
+<%= render :partial => 'admin/pagination', :locals => { :objects => @objects } %>
+
+<% @objects.each do |item| %>
+<div id="popover-cspr-<%= item.id %>" class="popover">
+    <ul class="actions">
+        <li><a href="<%= api_download_print_request_path(item.id) %>" target="_blank">Download</a></li>
+        <% if item.status != 4 %>
+        <li><a class="action-update-status" data-url="<%= api_update_print_request_status_path(item.id, 4) %>" href="#">Mark as Shipped</a></li>
+        <% end %>
+        <% if item.status == 4 %>
+        <li><a class="action-update-status" data-url="<%= api_update_print_request_status_path(item.id, 0) %>" href="#">Reset Status</a></li>
+        <% end %>
+        <li class="divider"></li>
+        <li><a href="#">Delete</a></li>
+    </ul>
+</div>
+<% end %>
+
+<% content_for :js_bootstrap do %>
+<script>
+    // wire up the object actions
+    popover.init();
+
+    // chug yourself silly through the actions
+    $('a.action-update-status').click(function(e){
+        $.ajax({
+            url: $(this).attr('data-url'),
+            type: 'POST',
+            success: function(data) {
+                location.reload();
+            },
+            error: function() {
+                app.alert('Yup, that didn\'t work out as planned');
+            }
+        });
+        return false;
+    });
+
+</script>
+<% end %>

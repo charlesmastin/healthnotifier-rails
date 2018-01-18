@@ -1,0 +1,16 @@
+<article data-url="#">
+    <% if patient.lifesquare_code_str and patient.lifesquare_code_str.length > 0 %>
+    <header><%= image_tag "icons/person.png" %><h4><a href="<%= patient_show_webview_path(patient.uuid, 'private') %>">Lifesquare</a></h4></header>
+    <section>
+        <a data-balloon="Preview Lifesquare" data-balloon-pos="top" style="display: block;" href="<%= patient_show_webview_path(patient.uuid, 'provider') %>">
+        <img class="lifesquare" src="<%= api_lifesquare_image_path(patient.lifesquare_uid_str) %>" width="100" height="100" />
+        <div class="lifesquare-code"><%= patient.lifesquare_code_str %></div>
+        </a>
+    </section>
+    <% else %>
+    <header><%= image_tag "icons/person.png" %><h4>Lifesquare</h4></header>
+    <section>
+        <p>None Assigned</p>
+    </section>
+    <% end %>
+</article>

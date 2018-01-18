@@ -1,0 +1,29 @@
+<!-- TODO: have tooltips, except our tooltips don't properly support absolute positioning -->
+<article <% if patient.current_coverage %>data-detail-url="<%= patient_show_path(patient.uuid) %>"<% end %><% if patient.active? %> data-detail-url="<%= patient_continue_setup_path(patient.uuid) %>"<% end %>>
+    <header>
+        <% if patient.has_expired_coverage %>
+        <i class="material-icons expired">warning</i>
+        <% end %>
+        <h4><%= patient.name_extended %></h4>
+        <a href="#" data-popover="patient-actions-<%= patient.uuid %>" class="actions" title="More Actions" ><i class="material-icons">more_horiz</i></a>
+    </header>
+    <section>
+        <%= render :partial => 'components/patient_avatar', :locals => { :patient => patient } %>
+        <% if patient.age_str != "2015 years old" %><small class="age"><%= patient.age_str %></small><% else %><small class="age">&nbsp;</small><% end %>
+        <% if patient.lifesquare_code_str and patient.lifesquare_code_str.length > 0 %>
+        <article class="lifesquare">
+            <img class="lifesquare" src="<%= api_lifesquare_image_path(patient.lifesquare_uid_str) %>" width="100" height="100" />
+            <div class="lifesquare-code">
+            <%= render :partial => 'components/lifesquare_masked', :locals => { :lifesquare => patient.lifesquare_uid_str } %>
+            </div>
+        </article>
+        <% else %>
+        <% if patient.confirmed? %>
+        <p style="margin-bottom: 0.5rem;"><a href="<%= patient_continue_setup_path(patient.uuid) %>" class="">Get LifeStickers</a></p>
+        <% else %>
+        <p style="margin-bottom: 0.5rem;"><a href="<%= patient_continue_setup_path(patient.uuid) %>" class="">Continue Setup</a></p>
+        <% end %>
+        <% end %>
+        <% if false %><% if patient.current_coverage %><h6><%= patient.current_coverage.coverage_end.strftime('%m/%d/%-Y') %></h6><% end %><% end %>
+    </section>
+</article>

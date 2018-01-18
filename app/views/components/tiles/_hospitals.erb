@@ -1,0 +1,8 @@
+<% if @patient_details['hospitals'].length > 0 %>
+<article data-url="#" class="mapbox-wrap">
+    <header><%= image_tag "icons/hospital.png" %><h4><a href="<%= patient_edit_contacts_path(@patient.uuid) %>#hospital">Hospital</a></h4></header>
+    <section>
+        <%= render :partial => 'components/patient_hospital', :locals => { :hospital => @patient_details['hospitals'][0] } %>
+    </section>
+</article>
+<% end %>

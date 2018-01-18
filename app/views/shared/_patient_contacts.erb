@@ -1,0 +1,157 @@
+<!--
+<p>
+    <h1>TEST LINKS</h1>
+    <a href="tel:4152796521">Phone</a>
+    <a href="geo:37.7749,-122.4194">Maps</a>
+    <a href="mailto:c@charlesmastin.com">Email</a>
+</p>
+-->
+<section>
+    <div>
+    <h3>Emergency Contacts</h3>
+    <% if @patient_details['emergency'].length > 0 %>
+    <% @patient_details['emergency'].each do |contact| %>
+    <article>
+        <% if has_view_permission(contact, @view_permission) %>
+        <strong><%= contact.name %></strong>
+        <small>
+        <% if contact.contact_relationship.present? %>
+            <%= PatientContact.formatted_contact_relationships[contact[:contact_relationship]] %>
+        <% end %>
+        <% extra = [];
+           if contact.next_of_kin?
+               extra.push("Next of Kin")
+           end
+           if contact.power_of_attorney?
+               extra.push("Durable health care Power of Attorney")
+           end
+        %>
+        <% if not extra.empty? %>
+            (<%= extra.join(", ") %>)
+        <% end %>
+        </small>
+        <% if contact.home_phone.present? %><br /><a href="<%= format_phone_html(contact.home_phone) %>"><%= format_phone(contact.home_phone) %></a><% end %>
+        <% if contact.email.present? %><br /><br /><a href="mailto:<%= (contact.email) %>"><%= contact.email %></a><% end %>
+        <% else %>
+        <small class="private"><%= @default_privacy_message %></small>
+        <% end %>
+    </article>
+    <% end %>
+    <% else %>
+    <article><small>No known contacts</small></article>
+    <% end %>
+    </div>
+</section>
+<section>
+    <div>
+    <h3>Insurance</h3>
+    <% if @patient_details['insurances'].length > 0 %>
+    <% @patient_details['insurances'].each do |insurance| %>
+    <article>
+        <% if has_view_permission(insurance, @view_permission) %>
+        <strong><%= insurance.organization_name %></strong>
+        <% if insurance.phone.present? %>
+            <br><a href="<%= format_phone_html(insurance.phone) %>"><%= format_phone(insurance.phone) %></a>
+        <% end %>
+        <% if insurance.policy_code.present? %>
+            <br>ID: <%= insurance.policy_code %>
+        <% end %>
+        <% if insurance.group_code.present? %>
+            <br>Group: <%= insurance.group_code %>
+        <% end %>
+        <% if insurance.policyholder_name.present? %>
+            <br>Policy holder: <%= insurance.policyholder_name %>
+        <% end %>
+        <% else %>
+        <small class="private"><%= @default_privacy_message %></small>
+        <% end %>
+    </article>
+    <% end %>
+    <% else %>
+    <article><small>No known contacts</small></article>
+    <% end %>
+    </div>
+</section>
+<section>
+    <div>
+    <h3>Hospitals</h3>
+    <% if @patient_details['hospitals'].length > 0 %>
+    <% @patient_details['hospitals'].each do |hospital| %>
+    <article>
+        <% if has_view_permission(hospital, @view_permission) %>
+        <strong><%= hospital.name %></strong>
+        <br>
+        <% if hospital.phone.present? %>
+            <a href="<%= format_phone_html(hospital.phone) %>"><%= format_phone(hospital.phone) %></a><br>
+        <% end %>
+        <% if (addr = format_address(hospital)).present? %>
+            <%= addr %><br>
+        <% end %>
+        <% else %>
+        <small class="private"><%= @default_privacy_message %></small>
+        <% end %>
+    </article>                
+    <% end %>
+    <% else %>
+    <article><small>No known contacts</small></article>
+    <% end %>
+    </div>
+</section>
+<section>
+    <div>
+    <h3>Physicians</h3>
+    <% if @patient_details['care_providers'].length > 0 %>
+    <% @patient_details['care_providers'].each do |care_provider| %>
+
+    <article>
+        <% if has_view_permission(care_provider, @view_permission) %>
+        <strong><%= care_provider.name %></strong>
+        <small><% if care_provider.care_provider_class.present? %><%= PatientCareProvider.formatted_care_provider_classes[care_provider[:care_provider_class]] %><% end %></small>
+        <% if care_provider.phone1.present? %>
+            <br><a href="<%= format_phone_html(care_provider.phone1) %>"><%= format_phone(care_provider.phone1) %></a>
+        <% end %>
+        <% if care_provider.email.present? %>
+            <br><a href="mailto:<%= care_provider.email %>"><%= care_provider.email %></a>
+        <% end %>
+        <% if care_provider.medical_facility_name.present? %>
+            <br><%= care_provider.medical_facility_name %>
+        <% end %>
+        <% if (addr = format_address(care_provider,'Ste.')).present? %>
+            <br><%= addr %>
+        <% end %>
+        <% else %>
+        <small class="private"><%= @default_privacy_message %></small>
+        <% end %>
+    </article>
+    <% end %>
+    <% else %>
+    <article><small>No known contacts</small></article>
+    <% end %>
+    </div>
+</section>
+
+<section>
+    <div>
+    <h3>Pharmacies</h3>
+    <% if @patient_details['pharmacies'].length > 0 %>
+    <% @patient_details['pharmacies'].each do |pharmacy| %>
+    <article>
+        <% if has_view_permission(pharmacy, @view_permission) %>
+        <strong><%= pharmacy.name %></strong>
+        <br>
+        <% if pharmacy.phone.present? %>
+            <a href="<%= format_phone_html(pharmacy.phone) %>"><%= format_phone(pharmacy.phone) %></a><br>
+        <% end %>
+        <% if (addr = format_address(pharmacy)).present? %>
+            <%= addr %><br>
+        <% end %>
+        <% else %>
+        <small class="private"><%= @default_privacy_message %></small>
+        <% end %>
+    </article>
+    <% end %>
+    <% else %>
+    <article><small>No known contacts</small></article>
+    <% end %>
+    </div>
+</section>

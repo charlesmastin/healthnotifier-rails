@@ -1,0 +1,22 @@
+div.promo-code {
+    padding: 0.5rem 1rem;
+    // font-weight: bold;
+    background: $green2016;
+    color: rgba(0, 0, 0, 0.7);
+    display: inline-block;
+    margin-top: 0.5rem;
+    letter-spacing: 0.05rem;
+    font-family: 'OperatorMono', monospace;
+    font-size: 1.25rem;
+    box-sizing: border-box;
+    border-radius: 0.2rem;
+}
+
+ol.quickstart {
+    li {
+        margin-bottom: 1rem;
+    }
+    .apps-promo {
+        margin-top: 0.5rem;
+    }
+}

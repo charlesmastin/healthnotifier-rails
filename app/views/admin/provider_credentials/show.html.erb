@@ -1,0 +1,103 @@
+<section class="page-title">
+    <h1><a href="<%= admin_provider_credentials_index_path %>" data-balloon="View All Provider Credentials" class="baby-got-back"><i class="material-icons">arrow_back</i></a>Credentials for <%= @credentials.patient.name_extended %></h1>
+</section>
+
+<%= render :partial => 'admin/sidebar' %>
+
+<section id="main-column">
+
+<section class="pillbox">
+    <article>
+        <div class="title">
+            <h3>Application Info</h3>
+        </div>
+        <div class="content">
+            <dl class="basic">
+                <dt>Name</dt>
+                <dd><%= @credentials.patient.name_extended %></dd>
+                <dt>Email</dt>
+                <dd><a href="mailto:<%= @credentials.patient.account.email %>"><%= @credentials.patient.account.email %></a></dd>
+                <dt>Mobile Phone</dt>
+                <dd><%= @credentials.patient.account.mobile_phone %></dd>
+                <dt>Request Date</dt>
+                <dd><%= @credentials.created_at %></dd>
+                <dt>Status</dt>
+                <dd><%= @credentials.status %></dd>
+            </dl>
+        </div>
+    </article>
+
+    <article>
+        <div class="title">
+            <h3>License Info</h3>
+        </div>
+        <div class="content">
+            <dl class="basic">
+                <dt>Number</dt>
+                <dd><%= @credentials.license_number %></dd>
+                <dt>Expiration</dt>
+                <dd><%= @credentials.expiration %></dd>
+                <dt>Licensing State</dt>
+                <dd><%= @credentials.licensing_state_province %></dd>
+                <dt>Licensing Board</dt>
+                <dd><%= @credentials.licensing_board %></dd>
+                <dt>License Files</dt>
+                <dd>
+                <% if @credentials.document_digitized %>
+                    <% @credentials.document_digitized.document_digitized_files.each do |df| %>
+                    <article class="dd-summary" data-balloon="View This File">
+                        <a href="<%= api_file_retrieve_path(df.uid) %>" target="_blank">
+                            <div class="image-wrapper">
+                                <img src="<%= api_file_retrieve_path(df.uid) %>?width=80&height=100" width="80" height="100" />
+                            </div>
+                        </a>
+                    </article>
+                    <% end %>
+                <% else %>
+                    None Submitted
+                <% end %>
+                </dd>
+            </dl>
+
+        </div>
+    </article>
+
+    <article>
+        <div class="title">
+            <h3>Supervisor Info</h3>
+        </div>
+        <div class="content">
+            <dl class="basic">
+                <dt>Name</dt>
+                <dd><%= @credentials.supervisor_name %></dd>
+                <dt>Email</dt>
+                <dd><a href="mailto:<%= @credentials.supervisor_contact_email %>"><%= @credentials.supervisor_contact_email %></a></dd>
+                <dt>Phone</dt>
+                <dd><%= @credentials.supervisor_contact_phone %> <%= @credentials.supervisor_contact_phone_ext %></dd>
+            </dl>
+        </div>
+    </article>
+    <!--
+    <article>
+        <div class="title">
+            <h3>Approval</h3>
+        </div>
+        <div class="content">
+            <a href="#" class="button">Approve</a>
+            <a href="#" class="button">Deny</a>
+        </div>
+    </article>
+    -->
+
+</section>
+
+<section class="flow-control left">
+    <% if !@credentials.accepted? %>
+    <button data-url="<%= api_provider_credentials_approve_path(@credentials.id) %>" class="button primary action-credentials-approve">Approve / Grant</button>
+    <% end %>
+    <% if !@credentials.rejected? %>
+    <a href="#" data-url="<%= api_provider_credentials_deny_path(@credentials.id) %>" class="button action-credentials-deny">Deny / Revoke</a>
+    <% end %>
+</section>
+
+</section>

@@ -1,0 +1,50 @@
+// gray scales - 
+$black-100: rgba(0, 0, 0, 1.0);
+$black-75: rgba(0, 0, 0, 0.75);
+$black-30: rgba(0, 0, 0, 0.3);
+$black-10: rgba(0, 0, 0, 0.1);
+$black-03: rgba(0, 0, 0, 0.03);
+
+$black-00: rgba(0, 0, 0, 0.00);
+$white-100: rgba(255, 255, 255, 1.0);
+$white-75: rgba(255, 255, 255, 0.75);
+$white-50: rgba(255, 255, 255, 0.50);
+$white-30: rgba(255, 255, 255, 0.3);
+$white-10: rgba(255, 255, 255, 0.1);
+
+// colors
+$red2016: #D80319;
+$blue2016: #337BD3; //14A3DB
+$warmblue: #14A3DB;
+$green2016: #33D3AA;
+$purple2016: #8733D3;
+$teal2016: #13AFB5;
+$orange2016: #DB8714;
+$stolenBlue: #1e2327;
+
+$medgray: $black-30;//#cacbce;
+$darkgray: $black-75;//#2f3033;
+
+// application helpers
+$strokesForFolks: $black-30; // #ccc
+$surfaceBg: $white-100;
+$textgray: $darkgray;
+$bg: rgba(117, 117, 117, 0.1);//$black-03; // this is transparent, lol
+$bg-solid: #f8f8f8;
+$placeholder: #c1c3c7;
+
+$mainWidth: 80%;
+
+// mixin helper for surfaces
+@mixin surface-alt-1 {
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    background: $surfaceBg;    
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+// Z-DEPTHS SUCKA
+// 0 - page
+// 100 - popover
+// 101 - patientbar
+// 1000 - modal
+

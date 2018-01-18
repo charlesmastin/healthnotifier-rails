@@ -1,0 +1,74 @@
+<% content_for :body_class do %> class="register"<% end %>
+
+<section class="main-column">
+
+<section class="page-title">
+    <h1>Signup for HealthNotifier</h1>
+    <!-- <p>Business accounts can purchase LifeStickers for their employees</p> -->
+</section>
+
+<section class="pillbox" id="choose-account">
+    <article>
+        <div class="content auth-form">
+            <div class="choice-wrapper">
+                <div class="wrap">
+                    <input type="radio" name="mode" value="personal" id="mode-personal" />
+                </div>
+                <div class="body">
+                    <h3><label for="mode-personal">Personal Account</label></h3>
+                    <p>For individuals and families looking to get HealthNotifier for themselves and loved ones.</p>
+                </div>
+            </div>
+            <div class="choice-wrapper">
+                <div class="wrap">
+                    <input type="radio" name="mode" value="business" id="mode-business" />
+                </div>
+                <div class="body">
+                    <h3><label for="mode-business">Business Account</label></h3>
+                    <p>For organizations needing to provide HealthNotifier for their employees or affiliates.</p>
+                </div>
+            </div>
+
+            <div class="flow-control">
+                <a href="#" id="action-continue" class="button primary">Continue</a>
+            </div>
+        </div>
+    </article>
+</section>
+
+          
+
+</section>
+
+<% content_for :js_bootstrap do %>
+    <script>
+        (function () {
+            "use strict";
+            // wire it up bro
+            // KISS
+            var MODE = null;
+
+            // for UX clarity don't disable the submit button just 
+            $("#mode-personal").click(function(){
+                MODE = "personal";
+            });
+            $("#mode-business").click(function(){
+                MODE = "business";
+            });
+            $("#action-continue").click(function(){
+                if(MODE == null){
+                    app.alert("Please choose Personal or Business");
+                    return;
+                }
+                // TODO: pass along referer and campaign info
+                if(MODE == "personal"){
+                    window.location = "<%= create_account_path %>";
+                }
+                if(MODE == "business"){
+                    window.location = "<%= signup_enterprise_path %>";
+                }
+            });
+
+        })();
+    </script>
+<% end %>

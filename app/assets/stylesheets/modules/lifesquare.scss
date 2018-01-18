@@ -1,0 +1,132 @@
+article.lifesquare {
+    // margin-top: 2.5rem;
+    // float: right;
+    // text-align: center;
+    margin-bottom: 2rem;
+    position: relative;
+    // right: 1rem;
+    // background: white;
+    .lifesquare-code {
+        margin-left: 0.5rem;
+    }
+    img.lifesquare {
+        opacity: 1.0 !important;
+        display: block;
+        margin-bottom: 0.5rem;
+        margin-left: 0.5rem;
+    }
+
+}
+
+.lifesquare-code {
+    font-family: 'OperatorMono', monospace;
+    span {
+        margin-left: 0.25rem;
+        &:first-child {
+            margin-left: 0;
+        }
+    }
+
+    .lifesquare-masked {
+        font-family: 'OperatorMono', monospace !important;
+        .masked {
+            font-family: 'OperatorMono', monospace !important;
+            position: relative;
+            top: 3px;
+            color: $black-30 !important;
+        }
+    }
+
+}
+
+body.lsqr {
+    background: $bg;
+
+    footer {
+        margin: 0 3rem;
+        text-align: center;
+        .apps-promo-neue {
+            margin: 1rem auto;
+            width: 170px;
+        }
+
+        ul.inline {
+            padding-bottom: 2rem;
+            li {
+                margin-left: 1rem;
+            }
+        }
+    }
+}
+
+#lsqr_scan {
+    //background: $surfaceBg;
+    //border: 2px solid $strokesForFolks;
+
+
+    @include surface-alt-1;
+
+    margin-bottom: 3rem;
+
+    section.branding {
+        box-sizing: border-box;
+        background: $red2016;
+        height: 120px;
+        padding: 20px 0px;
+        #logo {
+            display: block;
+            width: 320px;
+            height: 80px;
+            text-indent: -9000px;
+            background: image-url("logo.svg");
+            background-repeat: no-repeat;
+            background-size: 320px 80px;
+            // float: left;
+            position: relative;
+
+            // offset for svg artboard
+            margin: 0 auto;
+        }
+
+    }
+
+    header.patient {
+        background: $stolenBlue;
+        text-align: center;
+        font-size: 4rem;
+        color: white;
+        padding: 1rem;
+    }
+
+    .privacy {
+        display: none;
+    }
+
+    div.details {
+        text-align: center;
+        font-size: 3rem;
+
+        section {
+            .fine-detail {
+                font-weight: 100;
+                // color: $medgray;
+            }
+            h6 {
+                color: $medgray;
+                border-bottom: 1px solid $strokesForFolks;
+                padding-bottom: 1rem;
+            }
+            margin-top: 2rem;
+            article {
+                //border-top: 1px solid $strokesForFolks;
+                padding: 1rem;
+                h2 {
+                    font-size: inherit;
+                }
+                p {
+                    font-size: inherit;
+                }
+            }
+        }
+    }
+}

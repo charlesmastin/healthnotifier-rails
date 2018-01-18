@@ -1,0 +1,98 @@
+<% content_for :body_class do %> class="profile-beta"<% end %>
+
+<% content_for :below_header do %>
+
+<section id="patient-transaction-bar">
+    <div class="inner">
+    <%= render :partial => 'components/patient_avatar', :locals => { :patient => @patient, :size => 'small' } %>
+    <h4 class="patient_name"><%= @patient.name_extended %></h4>
+
+    <% if false %>
+    <%= render :partial => 'components/patient_onboarding_summary', :locals => { :patient => @patient, :state => @onboarding_details } %>
+    <% end %>
+
+    <div class="actions">
+        <% if @patient.lifesquare_code_str and @patient.lifesquare_code_str.length > 0 %>
+
+        <% else %>
+        <a href="<%= patient_continue_setup_path(@patient.uuid) %>" class="button primary juiced">Continue Setup</a>
+        <% end %>
+        <!--
+        <a href="<%= patient_edit_personal_path(@patient.uuid) %>" data-balloon-pos="down" xdata-balloon="Edit Personal Details" class="action primetime"><i class="material-icons">account_circle</i><span>Personal</span></a>
+        <a href="<%= patient_edit_medical_path(@patient.uuid) %>" data-balloon-pos="down" xdata-balloon="Edit Medical Record" class="action primetime"><i class="material-icons">assignment</i><span>Medical Record</span></a>
+        <a href="<%= patient_edit_contacts_path(@patient.uuid) %>" data-balloon-pos="down" xdata-balloon="Edit Contacts &amp; Insurance" class="action primetime"><i class="material-icons">contacts</i><span>Contacts</span></a>
+        -->
+        
+        <a href="#" class="action actions" data-popover="patient-actions-<%= @patient.uuid %>"><i class="material-icons">more_vert</i></a>
+    </div>
+    </div>
+</section>
+
+<% end %>
+
+<section id="main-column">
+
+<% if @display_confirm %>
+<section class="pillbox juicebox">
+    <article>
+    <section class="content">
+        <p>I confirm the information entered for <strong><%= @patient.name_extended %></strong> is accurate and factual. HealthNotifier is a realtime platform and subsequent changes will be available to health care providers in times of intervention or care management.</p>
+        <p style="margin-bottom: 0;"><a href="<%= patient_finish_confirmation_path(@patient.uuid) %>" class="button primary">Confirm and Get LifeStickers</a><a href="<%= patient_confirm_and_create_path(@patient.uuid) %>" class="button xprimary small">Confirm and Create Another Profile</a></p>
+    </section>
+    </article>
+</section>
+<% end %>
+
+<section class="tiles profile-summary">
+    <%= render :partial => 'components/tiles/preview_lifesquare', :locals => { :patient => @patient } %>
+    <%= render :partial => 'components/tiles/manage_records', :locals => { :patient => @patient } %>
+    <%= render :partial => 'components/tiles/emergency_contacts', :locals => { :patient => @patient } %>
+    <%= render :partial => 'components/tiles/network_out', :locals => { :patient => @patient } %>
+    <%= render :partial => 'components/tiles/network_in', :locals => { :patient => @patient } %>
+    <%= render :partial => 'components/tiles/advise_me', :locals => { :patient => @patient } %>
+    <%= render :partial => 'components/tiles/access_history', :locals => { :patient => @patient } %>
+    <%= render :partial => 'components/tiles/manage_account', :locals => { :patient => @patient } %>
+    <%= render :partial => 'components/tiles/create_new_profile', :locals => { :patient => @patient } %>
+</section>
+
+</section>
+
+<% content_for :bodyextra do %>
+<%= render :partial => "shared/delete_patient_modal", :locals => {:patient => @patient } %>
+<%= render :partial => "shared/cancel_subscription_modal", :locals => {:patient => @patient } %>
+<%= render :partial => 'shared/import_modal', :locals => {:patient => @patient, :emrs => @import_emrs } %>
+<%= render :partial => 'shared/export_modal', :locals => {:patient => @patient } %>
+<%= render :partial => 'components/patient_profile_photo_editor', :locals => { :patient => @patient, :crop => @crop } %>
+<%= render :partial => 'components/patient_popover', :locals => { :patient => @patient, :context => 'detail' } %>
+<%= render :partial => 'components/patient_onboarding_popover', :locals => { :patient => @patient, :state => @onboarding_details } %>
+
+<section id="add-patient-modal" class="reveal-modal account-modal">
+    <div class="modal-content">
+    <h2>Would you like to create a profile for anyone else?</h2>
+    <section class="modal-flow-control">
+        <%= link_to("Ready to Request LifeStickers", patient_finish_confirmation_path, :type => :submit, :class => 'button primary confirm') %>
+        <%= link_to("Create Another Profile", new_patient_path, :type => :submit, :class => 'button new confirm') %>
+    </section>
+    </div>
+</section>
+
+<% end %>
+
+<% content_for :js_bootstrap do %>
+<script>
+    (function() {
+
+        var Patient = app.module('patient');
+        // TODO: this could be more DRY…
+        var importView = new Patient.Views.Importer({ el: '#emr-form' });
+
+        popover.init();
+        // popover.init($('#patient-transaction-bar a.actions, #patient-transaction-bar .onboarding-summary'));
+
+        // bangers n mash
+        //var c = document.getElementById('component-onboarding-summary');
+        //c.appendChild( pieChart(<%= @onboarding_details[:progress_percent] %>, 32) );
+
+    })();
+</script>
+<% end %>

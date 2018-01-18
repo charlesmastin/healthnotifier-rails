@@ -1,0 +1,8 @@
+<article data-url="#">
+    <header><%= image_tag "icons/person.png" %><h4><a href="#" class="edit-headshot">Photos</a></h4></header>
+    <section>
+        <a href="#" class="edit-headshot" style="display: block;" data-balloon="Edit Photo">
+        <%= render :partial => 'components/patient_avatar', :locals => { :patient => @patient } %>
+        </a>
+    </section>
+</article>

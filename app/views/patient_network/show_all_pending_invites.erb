@@ -1,0 +1,80 @@
+<% content_for :pagetitle do %>
+<h1>Pending requests for your LifeSticker</h1>
+<% end %>
+
+<section id="main-column">
+
+<section class="pillbox">
+<article>
+<div class="content">
+
+<% if @pending.length > 0 %>
+<table class="default">
+<thead>
+  <tr>
+    <th></th>
+    <th>Requestor</th>
+    <th>Your LifeSticker</th>
+    <th>Sent</th>
+    <th>Actions</th>
+  </tr>
+</thead>
+<tbody>
+  <% @pending.each_with_index do |patient_network, index| %>
+  <% requestor = patient_network.auditor_patient %>
+  <% profile = patient_network.granter_patient %>
+  <% if requestor and profile %>
+  <!-- TODO: hashed uuid so we can link to this cell -->
+  <tr>
+    <td class="avatar"><%= render :partial => 'components/patient_avatar', :locals => { :patient => requestor, :size => 'small' } %></td>
+    <td><strong><%= requestor.name_extended %></strong><% if requestor.account.provider? %><span class="tag provider-account" style="display: inline-block;position: relative; margin-left: 0.5rem; top: -2px;"><i class="material-icons">verified_user</i>Health care provider</span><% end %></td>
+    <td><%= profile.name_extended %></td>
+    <td><% if patient_network.asked_at != nil %><small><%= patient_network.asked_at.strftime("%m/%d/%Y") %></small><% end %></td>
+    <td><a href="#" data-popover="request-<%= index %>"><i class="material-icons">more_horizon</i></a></td>
+  </tr>
+  <% end %>
+  <% end %>
+</tbody>
+</table>
+<% else %>
+<p>There are 0 pending requests.</p>
+<% end %>
+
+</div>
+</article>
+</section>
+
+</section>
+
+<% content_for :bodyextra do %>
+
+<% @pending.each_with_index do |patient_network, index| %>
+<div id="popover-request-<%= index %>" class="popover" data-auditor-id="<%= patient_network.auditor_patient.uuid %>" data-granter-id="<%= patient_network.granter_patient.uuid %>">
+    <h6><%= patient_network.auditor_patient.name_extended %> wants to view <%= patient_network.granter_patient.first_name %></h6>
+    <ul class="actions">
+        <li><a href="#" class="action-network-decline">Decline Request</a></li>
+        <li class="divider"></li>
+        <li><small>Accept w/ Privacy</small></li>
+        <% if patient_network.auditor_patient.account.provider? %>
+        <% @privacy_options.each_with_index do |option, index2| %>
+        <% if index2 > 0 %>
+        <li><a href="#" class="privacy action-network-accept-<%= option[:value] %>"><i class="material-icons"><%= option[:icon] %></i><%= option[:name] %></a></li>
+        <% end %>
+        <% end %>
+        <% else %>
+        <% @privacy_options.each do |option| %>
+        <li><a href="#" class="privacy action-network-accept-<%= option[:value] %>"><i class="material-icons"><%= option[:icon] %></i><%= option[:name] %></a></li>
+        <% end %>
+        <% end %>
+    </ul>
+</div>
+<% end %>
+<% end %>
+
+
+<% content_for :js_bootstrap do %>
+<script>
+    // wire up the object actions
+    popover.init();
+</script>
+<% end %>

@@ -1,0 +1,22 @@
+<% if payment %>
+<p>We have successfully processed your payment of <%= number_to_currency(payment.amount / 100) %> for the following LifeStickers</p>
+<% else %>
+<p>The following LifeStickers have been assigned with complimentary coverage</p>
+<% end %>
+<hr />
+<% coverages.each do |c| %>
+<p>
+<strong><%= c.patient.name_extended %></strong><br />
+<%= render :partial => 'components/lifesquare_masked', :locals => { :lifesquare => c.patient.lifesquare.lifesquare_uid } %>
+</p>
+
+<!-- DO NOT SHOW LIFESQURE ID HERE ???? -->
+<% end %>
+<hr />
+<% if recurring %>
+<p>Coverage is renewed immediately and will automatically renew on <%= coverages[0].coverage_end.strftime("%m/%d/%Y") %>. You can cancel at anytime.</p>
+<% else %>
+<p>Coverage is renewed immediately and valid until <%= coverages[0].coverage_end.strftime("%m/%d/%Y") %>.</p>
+<% end %>
+
+<% if false %><p>Your stickers will be mailed shortly and should arrive within the next 7-10 days.</p><% end %>

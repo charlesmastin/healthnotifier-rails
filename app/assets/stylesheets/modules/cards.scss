@@ -1,0 +1,180 @@
+section.cards {
+  @extend .clearfix;
+
+  & > article {
+    @include grid-columns(4, 1, 1%);
+    box-sizing: border-box;
+    
+    border-radius: 0.5rem;
+    -webkit-transition: box-shadow 0.15s linear;
+    margin-bottom: 2%;
+
+    cursor: pointer;
+    
+    @include surface-alt-1;
+
+    // border: 1px solid rgba(0, 0, 0, 0.2);
+
+    header {
+      @include clearfix;
+
+      .expired {
+        font-size: 0.8rem;
+        color: $red2016;
+      }
+
+      h3, h4 {
+        padding: 0;
+        margin: 0;
+        margin-bottom: 0 !important;
+        display: inline;
+        text-align: center;
+      }
+
+      padding: 0.5rem;
+      border-bottom: 1px solid #eee;
+
+      a.actions {
+        text-align: right;
+        float: right;
+        line-height: 0;
+
+        color: $textgray;
+
+        &:hover {
+          color: $blue2016;
+        }
+
+        &.delete {
+          &:hover {
+            color: $red2016;
+          }
+        }
+      }
+
+    }
+
+    footer {
+      @include clearfix;
+      padding: 0.5rem;
+      border-top: 1px solid #eee;
+    }
+    section {
+      
+      padding: 0 0.5rem 0.5rem 0.5rem;
+
+      text-align: center;
+
+      article.user-thumbnail-circle {
+        margin-bottom: 0.5rem;
+      }
+
+      small.age {
+        display: block;
+        margin: 0.5rem auto;
+      }
+
+
+
+      article.lifesquare {
+        margin: 0 auto;
+        margin-top: 0.25rem;
+        text-align: center;
+        margin-bottom: 0.25rem;
+
+        img.lifesquare {
+          margin: 0 auto;
+          opacity: 1 !important;
+        }
+
+        .lifesquare-code {
+          margin-left: 0;
+          margin-top: 0.25rem;
+        }
+      }
+
+
+
+      p {
+        margin-bottom: 0;
+      }
+    }
+
+    &:hover {
+      border: 1px solid rgba(0, 0, 0, 0.5);
+      box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.4);
+      -webkit-transition: box-shadow 0.15s linear;
+      -webkit-transition: border 0.15s linear;
+    }
+
+    &.no-hover {
+      cursor: default;
+
+      &:hover {
+        @include surface-alt-1;
+      }
+    }
+
+  }
+
+  &.single-item > article {
+    @include grid-columns(1, 1, 2.5%);
+  }
+}
+
+
+section#deleted-patients {
+  display: none;
+}
+
+// card like bs here
+
+section.patients-summary {
+  & > article {
+    @include clearfix;
+    margin-bottom: 1rem;
+    .user-thumbnail-circle {
+      margin: 0;
+      display: inline;
+      float: left;
+      margin-right: 1rem;
+    }
+    h3 {
+      -webkit-user-select: none !important;
+      display: inline;
+      position: relative;
+      top: 1.15rem; // straight ghetto balls, just use tables already lolzors
+    }
+  }
+
+  &.selectable {
+    & > article {
+      max-width: 20rem;
+      border: 1px solid rgba(0, 0, 0, 0.0);
+      cursor: pointer;
+      padding: 0.5rem;
+      border-radius: 0.5rem;
+
+      &:hover, &.active {
+        background: rgba(0, 0, 0, 0.05);
+        border: 1px solid $blue2016;
+      }
+    }
+  }
+}
+
+article.patient-assign {
+  footer {
+    // padding: 2rem 0;
+    padding: 1rem !important;
+    text-align: center;
+  }
+  
+  input.lifesquare-code {
+    font-size: 1.2rem;
+    width: auto;
+    width: 8rem;
+    // text-align: center;
+    padding-left: 0.25rem;
+  }
+}

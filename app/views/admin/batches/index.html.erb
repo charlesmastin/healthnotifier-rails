@@ -1,0 +1,42 @@
+<section class="page-title">
+    <h1>Lifesquare Batches</h1>
+</section>
+
+<%= render :partial => 'admin/sidebar' %>
+
+<section id="main-column">
+
+    <section class="pillbox">
+        <article>
+        <div class="content">
+        <table class="default datagrid">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Count</th>
+                    <th>Accepted</th>
+                    <th>Rejected</th>
+                    <th>Unset</th>
+                </tr>
+            </thead>
+            <tbody>
+            <% @annotated_objects.each do |item| %>
+                <tr>
+                    <td><strong><a href="<%= admin_batch_show_path(item[:id]) %>"><%= item[:id] %></a></strong></td>
+                    <td><%= item[:count] %></td>
+                    <td><%= item[:accepted] %></td>
+                    <td><%= item[:rejected] %></td>
+                    <td><%= item[:unset] %></td>
+                </tr>
+            <% end %>
+            </tbody>
+        </table>
+        </div>
+        </article>
+    </section>
+
+    <a data-balloon="Create Batch" class="circler" href="<%= admin_batch_new_path %>"><i class="material-icons md-48">add_circle</i></a>
+
+    <%= render :partial => 'admin/pagination', :locals => { :objects => @objects } %>
+
+</section>

@@ -1,0 +1,365 @@
+<% content_for :below_header do %>
+<section id="patient-transaction-bar">
+    <div class="inner">
+        <a class="backzone" href="<%= patient_show_path(@patient.uuid) %>">
+            <%= render :partial => 'components/patient_avatar', :locals => { :patient => @patient, :size => 'small' } %>
+            <h4 class="patient_name"><%= @patient.name_extended %></h4>
+        </a>
+        
+        <div class="actions">
+            <% if @patient.confirmed? %>
+            <a id="action-transaction-save" href="#" disabled="disabled" class="button primary disabled">Save Changes</a>
+            <a id="action-transaction-cancel" href="<%= patient_show_path(@patient.uuid) %>" class="button">Cancel</a>
+            <% else %>
+            <a id="action-transaction-save" href="#" disabled="disabled" class="button primary disabled">Save &amp; Continue</a>
+            <!-- patient_index_path ???? -->
+            <a id="action-transaction-cancel" href="<%= patient_show_path(@patient.uuid) %>" class="button">Cancel</a>
+            <% end%>
+            <% if @patient.confirmed? %>
+            <a href="#" class="action actions" data-popover="patient-actions-<%= @patient.uuid %>"><i class="material-icons">more_vert</i></a>
+            <% end %>
+        </div>
+
+        <%= render :partial => 'components/patient_onboarding_summary', :locals => { :patient => @patient, :state => @onboarding_details } %>
+
+    </div>
+</section>
+<% end %>
+
+<% if false %>
+<% if false %><% if @first_patient %><h2>Welcome to HealthNotifier</h2><% end %><% end %>
+<% if @first_patient %>
+<p>Now that you’ve created your account, we’ll help you organize your essential health information in three simple pages. Once you’re done, you’ll be able to add other people in your family and create their LifeStickers.</p>
+<% end %>
+<p>The following information would be useful to a paramedic in an emergency. You decide what to enter, and how much detail to provide.</p>
+<% end %>
+
+<section id="main-column" class="basic-form">
+    <div id="signup-personal">
+
+    <h2>Edit Personal</h2>
+    <section id="personal" class="pillbox">
+        <article>
+            <div class="title">
+                <%= render :partial => 'components/patient_avatar', :locals => { :patient => @patient } %>
+                
+                <% if @patient.photo_uid %>
+                <a href="#" class="button edit-headshot small">Edit Photo</a>
+                <% else %>
+                <a href="#" class="button edit-headshot small">Add Photo</a>
+                <% end %>
+            </div>
+
+            <div class="content">
+                <div class="row">
+                    <div class="field span3 required">
+                        <label for="first_name">First</label>
+                        <input class="span3" type="text" name="first_name" value="<%= @patient.first_name %>" id="first_name">
+                        <p class="error-message" data-for="first_name">Please enter a first name</p>
+                    </div>
+                    <div class="field span2">
+                        <label for="middle_name" data-balloon="Middle name will be abbreviated">Middle</label>
+                        <input class="span2" type="text" name="middle_name" value="<%= @patient.middle_name %>" id="middle_name">
+                    </div>
+                    <div class="field span3 required">
+                        <label for="last_name">Last</label>
+                        <input class="span3" type="text" name="last_name" value="<%= @patient.last_name %>" id="last_name">
+                        <p class="error-message" data-for="last_name">Please enter a last name</p>
+                    </div>
+                    <div class="field span1">
+                        <label for="name_suffix">Suffix</label>
+                        <input class="span1" type="text" name="name_suffix" value="<%= @patient.name_suffix %>" id="name_suffix">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="field span3 required">
+                        <label class="span3" for="birthday">Date of Birth</label>
+                        <input class="span3" type="text" maxlength="10" name="birthdate_formatted" <% if @patient.birthdate %>value="<%= @patient.birthdate == DateTime.new(1,1,1) ? '' : @patient.birthdate.strftime('%m/%d/%-Y') %>"<% end %> id="birthdate_formatted"  placeholder="MM/DD/YYYY">
+                        <p class="error-message" data-for="birthdate_formatted">Please enter date of birth<br/>in MM/DD/YYYY format</p>
+                    </div>
+                    <div class="field span2">
+                        <label>&nbsp;</label>
+                        <input type="checkbox" name="organ_donor" id="organ_donor" <% if @patient.organ_donor then %>checked="checked"<% end %> />
+                        <label for="organ_donor" class="inline">Organ Donor</label>
+                    </div>
+                    <div class="field span6">
+                        <label>&nbsp;</label>
+                        <input type="checkbox" name="searchable" id="searchable" <% if @patient.searchable then %>checked="checked"<% end %> />
+                        <label for="searchable" class="inline" data-balloon="A Searchable profile allows licensed medical professionals (like 911-responders) to search for LifeStickers in the vicinity of an address. It also enables family, friends, and care providers to connect with you on HealthNotifier." data-balloon-length="large">Searchable on HealthNotifier?</label>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <article id="demographics">
+            <div class="title">
+                <h3 class="naked">Demographics</h3>
+                <div class="privacy-wrap">
+                    <%= render :partial => 'shared/privacy', :locals => { :privacy => @patient.demographics_privacy, :attr => 'demographics_privacy' } %>
+                </div>
+            </div>
+
+            <div class="content">                
+                <div class="row">
+                    
+                    <div class="field span4">
+                        <label class="span2" for="gender">Gender</label>
+                        <select class="span2" name="gender" id="gender" size="1">
+                            <option value="">&mdash;</option>
+                            <%= options_for_select(@genders.map {|item| [item[:name], item[:value]] }, Patient.genders[@patient.gender]) %>
+                        </select>
+                        <p class="error-message" data-for="gender">Please enter a gender</p>
+                    </div>
+                    <div class="field span4">
+                        <label for="race">Race</label>
+                        <select class="span3" name="race" id="race" size="1">
+                            <option value="">&mdash;</option>
+                            <%= options_for_select(@ethnicities.map {|item| [item[:name], item[:value]] }, Patient.ethnicities[@patient.ethnicity]) %>
+                        </select>
+                        <p class="error-message" data-for="race">Please enter a race</p>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <article id="biometrics">
+            <div class="title">
+                <h3 class="naked">Biometrics</h3>
+                <div class="privacy-wrap">
+                    <%= render :partial => 'shared/privacy', :locals => { :privacy => @patient.biometrics_privacy, :attr => 'biometrics_privacy' } %>
+                </div>
+            </div>
+
+            <div class="content">
+                <div class="row">
+
+
+                    <div class="field span2">
+                        <label for="hair-color">Hair Color</label>
+                        <select class="span3" name="hair_color" id="hair_color" size="1">
+                            <option value="">&mdash;</option>
+                            <%= options_for_select(@hair_colors.map {|item| [item[:name], item[:value]]}, Patient.hair_colors[@patient.hair_color]) %>
+                        </select>
+                        <p class="error-message" data-for="hair_color">Please enter a hair color</p>
+                    </div>
+                    <div class="field span2">
+                        <label for="eye_color_both">Eye Color</label>
+                        <select class="span3" name="eye_color" id="eye_color_both" size="1">
+                            <option value="">&mdash;</option>
+                            <%= options_for_select(@eye_colors.map {|item| [item[:name], item[:value]]}, @patient.eye_color_both) %>
+                        </select>
+                        <p class="error-message" data-for="eye_color_both">Please enter an eye color</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="field span2">
+                        <label for="height" data-balloon="eg 5'11&quot;">Height</label>
+                        <input class="span2" type="text" name="imperialHeight" value="<%= @patient.height %>" id="imperialHeight" placeholder="5'11&quot;" />
+                        <!--<br />pounds-->
+                        <p class="error-message" data-for="height">Please enter a height in feet, inches</p>
+                    </div>
+                    <div class="field span2">
+                        <label for="weight">Weight</label>
+                        <input class="span2" type="text" name="imperialWeight" value="<%= @patient.weight %>" id="imperialWeight" placeholder="140" />
+                        <!--<br />pounds-->
+                        <p class="error-message" data-for="weight">Please enter a weight in pounds</p>
+                    </div>
+                </div>
+                <div class="row" style="display: xnone;">
+                    <div class="field span2">
+                        <label for="blood_type">Blood Type</label>
+                        <select class="span3" name="blood_type" id="blood_type" size="1">
+                            <option value="">&mdash;</option>
+                            <%= options_for_select(@blood_types.map {|item| [item[:name], item[:value]]}, Patient.blood_types[@patient.blood_type]) %>
+                        </select>
+                        
+                    </div>
+                    <div class="field span2">
+                        <label for="height">BP Systolic</label>
+                        <input class="span2" placeholder="120" type="text" name="bp_systolic" value="<%= @patient.bp_systolic %>" id="bp_systolic">
+                        <!--<br />top number
+                        <br>-->
+                        <span class="error-message" data-for="bp_systolic">Please enter a blood pressure in mmHg</span>
+                    </div>
+                    <div class="field span2">
+                        <label for="height">BP Diastolic</label>
+                        <input class="span2" placeholder="80" type="text" name="bp_diastolic" value="<%= @patient.bp_diastolic %>" id="bp_diastolic">
+                        <!--<br />bottom number
+                        <br>-->
+                        <span class="error-message" data-for="bp_diastolic">Please enter a blood pressure in mmHg</span>
+                    </div>
+                    <div class="field span2">
+                        <label for="weight">Pulse</label>
+                        <input class="span2" placeholder="80" type="text" name="pulse" value="<%= @patient.pulse %>" id="pulse">
+                        <!--<br />bpm
+                        <br>-->
+                        <span class="error-message" data-for="pulse">Please enter a pulse in bpm</span>
+                    </div>
+                    
+                </div>
+            </div>
+        </article>
+    </section>
+
+    <h2 id="languages">Communication</h2>
+    <section class="pillbox" id="language">
+        <article>
+            <div class="title">
+                <h3>
+                    <%= image_tag 'icons/person.png', :alt => '', :size => '32x30' %><br>
+                    Languages
+                </h3>
+            </div>
+            <div class="content">
+                <div class="entries compact"></div>
+                <%= render :partial => 'components/add_row_button', :locals => { :title => 'Add a Language', :visible => true } %>
+            </div>
+        </article>
+    </section>
+    
+    <h2 id="residences">Contact</h2>
+    <section class="pillbox" id="signup-address">
+        <article>
+            <div class="title">
+                <h3>
+                    <%= image_tag 'icons/house.png', :alt => '', :size => '33x28' %><br>
+                    Address
+                </h3>
+            </div>
+            <div class="content">
+                <div class="entries expanded">
+                </div>
+                <%= render :partial => 'components/add_row_button', :locals => { :title => 'Add an Address', :visible => true } %>
+            </div>
+        </article>
+    </section>
+    <% if false %>
+    <%= render :partial => 'components/patient_flow_control', :locals => { :patient => @patient, :primary => true } %>
+    <% end %>
+</div>
+</section>
+
+<% content_for :bodyextra do %>
+<%= render :partial => 'shared/delete_patient_modal', :locals => {:patient => @patient } %>
+<%= render :partial => 'shared/import_modal', :locals => {:patient => @patient, :emrs => @import_emrs } %>
+<%= render :partial => 'shared/export_modal', :locals => {:patient => @patient } %>
+<%= render :partial => 'components/patient_profile_photo_editor', :locals => { :patient => @patient, :crop => @crop } %>
+<%= render :partial => 'components/validate_address' %>
+<%= render :partial => 'components/privacy_popover' %>
+<%= render :partial => 'components/patient_onboarding_popover', :locals => { :patient => @patient, :state => @onboarding_details } %>
+<%= render :partial => 'components/patient_popover', :locals => { :patient => @patient, :context => 'detail' } %>
+
+<!-- BB Views -->
+<%= render :partial => 'components/patient_edit_language' %>
+<%= render :partial => 'components/patient_edit_address' %>
+
+<% end %>
+
+<% content_for :js_bootstrap do %>
+<script>
+    "use strict";
+
+    (function () {
+        var Patient = app.module('patient');
+            
+        var residenceData = <%=j @patient_details['addresses'].to_json.html_safe %>,
+            languageData = <%=j @patient_details['languages'].to_json.html_safe %>,
+            patientData = <%=j @patient.to_json.html_safe %>,
+            patientModel = new Patient.Models.Profile(patientData, {parse: true});
+        
+        // TODO: change the name of this to profile, lolZors
+        var personalView = new Patient.Views.Profile({ el: '#personal', model: patientModel });
+        var languageView = new Patient.Views.Language({ el: '#language', collection: new Patient.Collections.Language(languageData, { patient_uuid: "<%= @patient.uuid %>" }) });
+        var addressView = new Patient.Views.Address({ el: '#signup-address', collection: new Patient.Collections.Residence(residenceData, { patient_uuid: "<%= @patient.uuid %>" } ) });
+        // between this and the backend, we have to be responsible for moving along to the "NEXT" if in fact we're "onboarding"
+        var action = "<%= @patient.confirmed? ? patient_show_path(@patient.uuid) : patient_edit_medical_path(@patient.uuid) %>"
+        var welcomeView = new Patient.Views.EditPersonal({ el: '#signup-personal', views: [personalView, languageView, addressView], action: action});
+        
+        if (addressView.collection.length === 0) {
+            addressView.addInitial(new Patient.Models.Residence);
+        }
+
+        var profilePhotoEditorView = null;
+
+        // TODO: this could be more DRY…
+        var importView = new Patient.Views.Importer({ el: '#emr-form' });
+
+        // good times son
+        $('a.edit-headshot').on('click', function(e){
+            // construct it and launch it son
+            $('#patient-profile-photo-editor').reveal({
+                animation: 'fade',
+                closeonbackgroundclick: false
+            });
+            profilePhotoEditorView = new Patient.Views.ProfilePhotoEditor({ el: '#patient-profile-photo-editor', model: patientModel });
+        });
+
+        // generic manager for all events coming from this class, anti-pattern
+        var profilePhotoStateHandler = function(e, action){
+            if(action == 'cancel'){
+                $('#patient-profile-photo-editor').trigger('reveal:close');
+            }
+            if(action == 'update'){
+                $('#patient-profile-photo-editor').trigger('reveal:close');
+                $('.user-thumbnail img').each(function(index, img){
+                    var src = '<%= api_patient_photo_path(@patient.uuid) %>';
+                    $(img).attr('src', src + '?height=128&width=128&cb3000=' + Math.random() );
+                });
+            }
+            if(action == 'delete'){
+                $('#patient-profile-photo-editor').trigger('reveal:close');
+                $('.user-thumbnail img').each(function(index, img){
+                    $(img).attr('src', '<%= asset_path("user-thumbnail-default.png") %>');
+                });
+            }
+            // GC this
+            if(profilePhotoEditorView != null){
+                profilePhotoEditorView = null;
+            }
+        }
+
+        // listen to the profile photo change event
+        $(document).off('onProfilePhotoState', profilePhotoStateHandler);
+        $(document).on('onProfilePhotoState', profilePhotoStateHandler);
+
+        // listen for the name change bizzle
+        $(document).off('onPatientNameChange');
+        $(document).on('onPatientNameChange', function(e, obj){
+            e.stopImmediatePropagation();
+            // using empty strings vs undefined / null because they are STRINGS!
+            var formatted = [];
+            if(obj.first_name.length){
+                formatted.push(obj.first_name);
+            }
+            if(obj.middle_name.length){
+                formatted.push(obj.middle_name.charAt(0) + '.');
+            }
+            if(obj.last_name.length){
+                formatted.push(obj.last_name);
+            }
+            if(obj.suffix.length){
+                formatted.push(obj.suffix);
+            }
+            // update dat name son
+            var elem = $('#patient-transaction-bar h4.patient_name');
+            if(formatted.length){
+                elem.text(formatted.join(' '));
+            }else{
+                elem.text('New Profile'); // or not
+            }
+        });
+
+        // debug it son $('a.edit-headshot').trigger('click');
+        // THC times DM DD 007
+        // serious quirk workaround times
+        popover.init($('#patient-transaction-bar a.actions, #patient-transaction-bar .onboarding-summary'));
+
+        // bangers n mash
+        <% if !@patient.confirmed? %>
+        var c = document.getElementById('component-onboarding-summary');
+        c.appendChild( pieChart(<%= @onboarding_details[:progress_percent] %>, 32) );
+        <% end %>
+
+    })();
+</script>
+<% end %>

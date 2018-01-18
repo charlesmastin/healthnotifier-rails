@@ -1,0 +1,246 @@
+<div class="document-viewer" id="document-viewer" data-document-uid="<%= @dd.uid %>">
+
+<section class="page-title">
+    <div class="line">
+        <h1><a href="<% if @owner %><%= patient_show_path(@owner_patient.uuid) %><% else %><%= network_webview_path(@owner_patient.uuid, @patient.uuid) %><% end %>" data-balloon-pos="down" data-balloon="Back" class="baby-got-back"><i class="material-icons">arrow_back</i></a><%= humanize_dd_category(@pha.document_digitized.category) %><small>Added on <%= @dd.created_at %></small></h1><% if @owner %><span class="tag privacy" style="position: relative; top: 1rem; left: 0.5rem;"><%= privacy_label(@pha.privacy) %></span><% end %>
+
+        <ul class="actions inline">
+            <li><a href="#" data-balloon-pos="down" data-balloon="View as List" class="action-view-list active"><i class="material-icons">view_list</i></a></li>
+            <li><a href="#" data-balloon-pos="down" data-balloon="View as Grid" class="action-view-grid"><i class="material-icons">view_comfy</i></a></li>
+            <% if false %>
+            <li class="divider">&nbsp;</li>
+            <li><a href="#" data-balloon-pos="down" data-balloon="Print" class="action-print"><i class="material-icons">print</i></a></li>
+            <li><a href="#" data-balloon-pos="down" data-balloon="Download" class="action-print"><i class="material-icons">cloud_download</i></a></li>
+            <% end %>
+            <% if @owner %>
+
+            <li class="divider">&nbsp;</li>
+            <li><a href="#" data-popover="more-actions" data-balloon-pos="down" data-balloon="More" class="action-more"><i class="material-icons">more_horiz</i></a></li>
+            <!---->
+            <% end %>
+        </ul>
+    </div>
+</section>
+
+<section class="files">
+<% @dd.document_digitized_files.each_with_index do |digitized_file, i| %>
+<article id="file-<%= i %>">
+    <img src="<%= @baseurl %>/api/v1/file/retrieve/<%= digitized_file.uid %>?width=1600" />
+    <small class="part-number">Page <%= (i+1) %> of <%= @dd.document_digitized_files.count %></small>
+    <span class="loader">Loading…</span>
+</article>
+<% end %>
+</section>
+</div>
+
+<% content_for :bodyextra do %>
+<div id="page-number"><small>Page <strong>2</strong> of 10</small></div>
+
+<div id="popover-more-actions" class="popover">
+    <!-- a title -->
+    <ul class="actions">
+        <% if @owner %>
+        <li><small>Set Privacy</small></li>
+        <% @privacy_options.each do |option| %>
+        <li><a href="#" class="action-set-privacy privacy" data-privacy="<%= option[:value] %>"><i class="material-icons"><%= option[:icon] %></i><%= option[:name] %></a></li>
+        <% end %>
+        <li class="divider"></li>
+        <li><a href="#" class="action-delete">Delete</a></li>
+        <% end %>
+    </ul>
+</div>
+
+<% end %>
+
+<% content_for :js_bootstrap do %>
+<script>
+    // https jquery load? or no
+    var PRIVACY_OPTIONS = <%= @privacy_options.to_json.html_safe %>;
+    $(function(){
+        var mode = 'list';
+        // query only once
+        var pageNumberInterval = null;
+        var numPages = $('section.files article').length;
+        $('.action-view-grid').on('click', function(e){
+            e.stopImmediatePropagation();
+            $('section.files').removeClass('list').addClass('grid');
+            $('a.action-view-grid').addClass('active');
+            $('a.action-view-list').removeClass('active');
+            // $('#page-number').removeClass('visible');
+            mode = 'grid';
+            return false;
+        });
+        $('.action-view-list').on('click', function(e){
+            e.stopImmediatePropagation();
+            $('section.files').removeClass('grid').addClass('list');
+            $('a.action-view-list').addClass('active');
+            $('a.action-view-grid').removeClass('active');
+            if(numPages > 1){
+                updatePageNumber();
+            }
+            mode = 'list';
+            return false;
+        });
+        $('.action-delete').on('click', function(e){
+            e.stopImmediatePropagation();
+
+            app.confirm(
+                {
+                title: "Really Delete?",
+                type: "error",
+                showCancelButton: true,
+                confirmButtonText: "Delete"
+                },
+                function(){
+                    var url = '/api/v1/document/' + $('.document-viewer').attr('data-document-uid');
+                    $.ajax({
+                        url: url,
+                        type: 'DELETE',
+                        dataType: 'json',
+                        contentType: 'application/json',
+                        success: function(data){
+                            // wipe down the UI, and send some cray cray events
+                            // sockets from the back end should deal with updating the views
+                            // count on those vs janky window-to-window-message
+                            // fallback, use some document events if we're in the modal style
+                            // THIS IS A WORKAROUND FOR NOW
+                            
+                            var back_url = $('#document-viewer').attr('data-back-url');
+                            if(back_url == undefined || back_url == ''){
+                                // back_url = '/profile/summary';
+                                // THIS IS BAD!
+                                <% if @owner %>
+                                var back_url = '<%= patient_show_path(@owner_patient.uuid) %>';
+                                <% else %>
+                                history.back();
+                                return;
+                                <% end %>
+                            }
+                            window.location = back_url;
+                            return;
+                            /*
+                            $('.document-viewer header').hide();
+                            $('.document-viewer main').empty().append('<h1>Document Deleted</h1><p style="text-align: center;"><a class="button primary" href="'+back_url+'">Go Back</a></p>');
+                            */
+                        },
+                        error: function(error){
+                            app.alert(error.message);
+                        }
+                    });
+
+                }
+            );
+            
+            return false;
+        });
+        $('section.files article').on('click', function(e){
+            e.stopImmediatePropagation();
+            var index = $(e.currentTarget).index();
+            if($('section.files').hasClass('grid')){
+                $('a.action-view-list').trigger('click');
+            };
+            focusFile(index);
+            e.stopImmediatePropagation();
+            return false;
+        });
+        // careful on this, since we have other scroll handlers
+        /*
+        $(document).on('scroll', function(e){
+            return;
+            // TODO: we have completely busted on scoll event propagation in general
+            // also, this feature is not longer in use.
+            if(mode == 'list'){
+                updatePageNumber();
+            }
+        });
+        */
+        // the patch api interaction should move upwards, that said, the implemention remains here ; aka bound to the view, son
+        $('.action-set-privacy').on('click', function(e){
+            e.stopImmediatePropagation();
+            // FRAGILE AS F (flapjacks)
+            var url = '/api/v1/documents/' + $('.document-viewer').attr('data-document-uid');
+            var p = $(e.currentTarget).attr('data-privacy');
+            var payload = {
+                Privacy: p
+            }
+            $.ajax({
+                url: url,
+                type: 'PATCH',
+                dataType: 'json',
+                contentType: 'application/json',
+                data: JSON.stringify(payload),
+                success: function(data){
+                    // window.alert('Privacy Updated');
+                    // broadcast that son… so the consuming fires can do their thing, all in due time my son
+                    // TODO this won't work anymore
+                    for(var i=0;i<PRIVACY_OPTIONS.length;i++){
+                        if(PRIVACY_OPTIONS[i].value == p.toLowerCase()){
+                            $('span.privacy').html(PRIVACY_OPTIONS[i].name);
+                            break;
+                        }
+                    }                    
+                },
+                error: function(data){
+                    //
+                    app.alert('Update failed:' + data.message);
+                }
+            });
+            // close out that popover sonny nuts
+            popover.hideAll();
+            return false;
+        });
+
+        function updatePageNumber(){
+            // $('#page-number').addClass('visible');
+            var page = 1;
+            var pages = $('section.files article');
+            var scrollY = $(window).scrollTop();
+            var offsets = [];
+            pages.each(function(index, item){
+                offsets.push({index: index, offset: Math.abs(scrollY - $(item).offset().top)});
+            });
+            var sorted = _.sortBy(offsets, 'offset');
+            page = sorted[0].index + 1;
+            $('#page-number').html('<small>Page <strong>' + page + '</strong> of ' + numPages);
+
+            clearTimeout(pageNumberInterval);
+            pageNumberInterval = setTimeout(function(){
+                // $('#page-number').removeClass('visible');
+                // in a perfect world this uses keyframes
+            }, 2000);
+        }
+
+        function focusFile(index){
+            // reset our scroll position
+            var elem = $('#file-'+index);
+            if(index > 1){
+                // subtle scrolling son
+                // $(window).stop();
+                $('body, html').scrollTop(elem.offset().top - 100);
+            }
+            // for last item in list, need some trickery to get the visual effect
+            $(window).stop().scrollTo(elem, 400);
+            // technically on stepped intervals, keep updating, but that's too wasteful
+            setTimeout(function(){
+                updatePageNumber();
+            }, 420);
+        }
+
+        // lul town but worksies
+        popover.init();
+
+        // init this bad boy
+        if(numPages > 1){
+            $('a.action-view-grid').trigger('click');
+        } else {
+            $('a.action-view-list').trigger('click');
+        }
+    });
+</script>
+<% if request.host.include? "domain.com" %>
+<script type="text/javascript">
+<%= render :partial => "shared/google_analytics" %>
+</script>
+<% end %>
+<% end %>
+

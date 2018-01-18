@@ -1,0 +1,151 @@
+#patient-transaction-bar {
+    //background: rgba(0, 0, 0, 0.85);
+    background: $stolenBlue;
+    -webkit-transition: background 0.2s linear;
+    box-sizing: border-box;
+    width: 100%;
+    display: block !important;
+
+    /*
+    &.organization {
+        background: $purple2016;
+    }
+    */
+
+    #action-transaction-save {
+    }
+    #action-transaction-cancel {
+    }
+
+    a.backzone {
+        &:hover {
+            h4 {
+                color: $white-100;
+            }
+        }
+    }
+
+    div.actions {
+        height: 36px; // pin it son
+        float: right;
+
+        a.button:not(primary) {
+            color: $white-50;
+            &:hover {
+                color: $white-100;
+            }
+        }
+
+        a.button.disabled {
+            &:hover {
+                color: $white-50;
+            }
+        }
+
+        a.action {
+            position: relative;
+            top: 0.4rem;
+            color: $white-50;
+            padding-right: 0.25rem;
+            &:hover {
+                color: $white-100;
+            }
+        }
+
+        .primetime {
+            margin-right: 1rem;
+            span {
+                font-size: 0.8rem;
+                margin-left: 0.25rem;
+                position: relative;
+                top: -7px;
+            }
+        }
+
+    }
+
+    div.inner {
+        margin: 0 auto;
+        width: $mainWidth;
+        @include clearfix;
+        position: relative;
+        // z-index: 999;
+        padding: 1.25rem 0.5rem 1.25rem 0.5rem;
+    }
+
+    // display: none;
+    article.user-thumbnail-circle {
+        float: left;
+        margin: 0;
+        position: relative;
+        top: 2px;
+
+        margin-left: 0.25rem;
+
+        img {
+            border-color: white;
+        }
+    }
+
+    .patient_name {
+        display: inline;
+        color: $white-75;
+        font-weight: 400;
+        // font-size: 08rem;
+        margin-left: 0.5rem;
+        position: relative;
+        top: 9px;
+    }
+
+    .onboarding-summary {
+        position: relative;
+        top: 0.55rem;
+        margin: 0;
+        padding: 0;
+        display: inline;
+        margin-right: 2.2rem;
+        float: right;
+        color: $white-75;
+
+        span {
+            margin-right: 0.5rem;
+        }
+        small {
+            margin-right: 0.25rem;
+        }
+        i {
+            display: none;
+            position: absolute;
+            top: 3px;
+            font-size: 1rem;
+        }
+
+        &:hover {
+            color: $white-100;
+            cursor: pointer;
+        }
+
+        svg {
+            position: absolute;
+            top: -4px;
+            right: -36px;
+        }
+
+    }
+
+    div.actions + .onboarding-summary {
+        margin-right: 5rem;
+    }
+
+}
+
+body.stucktown {
+    #patient-transaction-bar {
+        position: fixed;
+        top: 0;
+        z-index: 1000;
+    }
+    #main {
+        padding-top: 76px;
+    }
+}

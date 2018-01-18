@@ -1,0 +1,41 @@
+<article data-url="#">
+    <header><%= image_tag "icons/person.png" %><h4><a href="<%= patient_edit_personal_path(@patient.uuid) %>">Basics</a></h4></header>
+    <section>
+        <div class="metrics">
+            <article>
+                <small>Age</small>
+                <div><%= @patient.age_str %></div>
+            </article>
+            <% if @patient.eye_color_both %>
+            <article>
+                <small>Eyes</small>
+                <div><%= @patient.eye_color_both.titleize %></div>
+            </article>
+            <% end %>
+            <% if @patient.hair_color %>
+            <article>
+                <small>Hair</small>
+                <div><%= @patient[:hair_color] %></div>
+            </article>
+            <% end %>
+            <% if @patient.imperialHeight.present? %>
+            <article>
+                <small>Height</small>
+                <div><%= @patient.imperialHeight %></div>
+            </article>
+            <% end %>
+            <% if @patient.imperialWeight.present? %>
+            <article>
+                <small>Weight</small>
+                <div><%= @patient.imperialWeight %></div>
+            </article>
+            <% end %>
+            <% if @patient.organ_donor %>
+            <article>
+                <small>Organ Donor</small>
+                <div>Yes</div>
+            </article>
+            <% end %>
+        </div>
+    </section>
+</article>

@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta name="format-detection" content="telephone=no">
+        <title>HealthNotifier</title>
+        <style type="text/css">
+        /* TODO: GET THIS INTO A BUILD -- red c4262e purps 51269C 
+        HOT INJECTION ON THE PRECOMPILED STYLES, YEA SON, SON, SON, SON
+        THIS IS THE OUTPUT OF webview/main.css
+  
+        -blue 51 123 211
+        rgba(51, 123, 211, 1.0);
+
+        // new red son
+        rgba(216, 3, 25, 1.0);
+
+        // gray bg son
+        rgba(50, 50, 50, 1.0);
+
+        */
+ .webview {
+  font-family: 'Roboto', 'Helvetica Neue', Helvetica, arial, sans-serif; }
+  .webview h2 {
+    margin: 0; }
+  .webview h3 {
+    margin: 0;
+    font-size: 0.9em;
+    letter-spacing: 1px;
+    text-transform: uppercase; }
+  .webview p {
+    margin: 0; }
+  .webview ul {
+    margin: 0;
+    padding: 0; }
+    .webview ul li {
+      list-style: none; }
+  .webview img {
+    margin: 0;
+    padding: 0; }
+  .webview a {
+    color: rgba(216, 3, 25, 1.0);
+    text-decoration: none;
+    font-weight: 600; }
+  .webview * {
+    -webkit-user-select: none; }
+  .webview .private span {
+    font-style: normal;
+    font-weight: 600;
+    background: #666;
+    padding: 1px 7px;
+    font-size: 0.9em;
+    margin-right: 0.5em;
+    color: white;
+    border-radius: 12px;
+    text-shadow: 1px 1px rgba(0, 0, 0, 0.7); }
+  .webview .private-item {
+    background: #f2f2f2; }
+  .webview .tab {
+    background: #fff; }
+    .webview .tab:first-child {
+      display: block; }
+    .webview .tab h2 {
+      clear: both;
+      display: none; }
+    .webview .tab section > div {
+      margin-bottom: 2em; }
+      .webview .tab section > div h3 {
+        background: rgba(50, 50, 50, 1.0);
+        color: white;
+        padding: 0.25em 0.5em;
+        text-shadow: 1px 1px rgba(0, 0, 0, 0.3); }
+      .webview .tab section > div > article {
+        border-bottom: 1px solid #ccc;
+        padding: 0.25em 0.5em; }
+    .webview .tab#personal header {
+      color: white;
+      overflow: auto;
+      background: rgba(216, 3, 25, 1.0);
+      padding: 1em; }
+      .webview .tab#personal header div.img {
+        float: left;
+        width: 20%; }
+        .webview .tab#personal header div.img img {
+          border: 1px solid white;
+          width: 100%;
+          height: auto; }
+      .webview .tab#personal header div.text {
+        float: left;
+        width: 75%;
+        padding-left: 5%; }
+        .webview .tab#personal header div.text strong {
+          display: block; }
+    .webview .tab#medical img {
+      width: 50%;
+    }
+  .webview table {
+    width: 100%; }
+    .webview table tr.col2 td {
+      width: 50%; }
+      .webview table tr.col2 td:first-child {
+        border-right: 1px solid #ccc; }
+    .webview table td {
+      border-bottom: 1px solid #ccc;
+      padding: 0.25em 0.5em; }
+    .webview table.left-labels td:first-child {
+      width: 15%;
+      font-weight: 600; }
+  .webview .pull-left {
+    float: left; }
+  .webview .pull-right {
+    float: right; }
+
+@media (max-width: 40em) {
+  .webview {
+    font-size: 1em; } }
+
+@media (max-width: 25em) { }
+
+@media (max-height: 20em) { }
+
+@media (min-width: 40.001em) {
+  .webview {
+    font-size: 1.2em; } }
+
+@media (min-width: 40em) and (max-width: 63.999em) { }
+
+@media (min-width: 64em) and (max-width: 74.999em) { }
+
+@media (min-width: 64em) {
+  .webview {
+    font-size: 1.5em !important; }
+    .webview #personal table {
+      border-left: 1px solid #ccc;
+      border-right: 1px solid #ccc; }
+    .webview #personal header div.text {
+      font-size: 1.6em; }
+    .webview div.tab {
+      padding: 1em; }
+      .webview div.tab h2 {
+        display: block;
+        border-top: 5px solid #c4262e;
+        margin-bottom: 1em;
+        padding-top: 0.5em; }
+      .webview div.tab > section {
+        width: 49%;
+        margin-left: 0;
+        margin-right: 2%;
+        float: left; }
+        .webview div.tab > section:nth-of-type(2n+2) {
+          margin-right: 0;
+          clear: none; }
+        .webview div.tab > section:nth-of-type(2n+1) {
+          clear: left; }
+        .webview div.tab > section > div {
+          box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
+          border: 1px solid #ccc; }
+          .webview div.tab > section > div > article:last-child {
+            border: none; } }
+
+@media (min-width: 75em) and (max-width: 103.124em) { }
+
+@media (min-width: 103.125em) { }
+
+          /* THIS IS THE GOODY GOODY OVERRIDES N SUCH JUST FOR FUN, TOSSED IN LIKE A BOSS NOTICE LACK OF SCSS */
+          a.add-document {
+            display: block;
+            font-size: 17px;
+            margin: 1rem 0 1rem 0.5rem;
+            color: rgba(14, 122, 254, 1.0);
+          }
+
+          a.view-directive {
+            display: block;
+            font-size: 17px;
+            /*margin: 1rem 0 1rem 0.5rem;*/
+            margin-bottom: 0.5rem;
+            color: rgba(14, 122, 254, 1.0);
+          }
+
+          a.view-directive + a.view-directive {
+            /*margin-bottom: 0.5rem;*/
+          }
+
+          a.delete-document {
+
+          }
+
+          a {
+            color: rgba(14, 122, 254, 1.0) !important;
+          }
+
+          section.dd-webview-jw {
+            overflow: auto;
+          }
+
+          article.document {
+            float: left;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+          }
+
+          ul.files {
+            overflow: auto;
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+          }
+
+          ul.files li {
+            /*display: box;*/
+            /*float: left;*/
+            display: block;
+            box-sizing: border-box;
+            /*margin-right: 0.5rem;*/
+            /*margin-bottom: 0.5rem;*/
+          }
+
+          ul.files li div.thumbnail-wrapper {
+            box-sizing: border-box;
+            width: 135px;
+            height: 135px;
+            overflow: hidden;
+            border: 1px solid #ccc;/*rgba(50, 50, 50, 1.0);*/
+            position: relative;
+          }
+
+          ul.files li div.thumbnail-wrapper img {
+            background: #eee;
+            width: 100% !important;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 999;
+            /*object-fit: cover;*/
+          }
+
+          ul.files li div.thumbnail-wrapper small {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 1.0);
+            padding: 0.25rem 0 0.25rem 0.5rem;
+            box-sizing: border-box;
+            z-index: 1000;
+            color: #333;
+            font-weight: normal;
+            font-size: 0.65rem !important;
+            border-top: 1px solid #ccc;
+          }
+
+
+          /* LA LA LA LA LA LA */
+
+          div.alert {
+            background: #eee;
+            margin: -1.5rem -0.5rem 0.5rem -0.5rem;
+            padding: 1rem 1rem 1.5rem 1rem;
+            color: #333;
+          }
+
+          div.alert a {
+            color: #333;
+          }
+
+          div.alert a p {
+            font-weight: normal;
+          }
+
+          div.alert a p strong {
+            font-weight: bold;
+          }
+
+          div.alert h1 {
+            margin-bottom: 0;
+            color: #c4262e;
+          }
+
+          table#patient-summary {
+            border-collapse: collapse;
+          }
+
+          table#patient-summary tr td {
+
+          }
+
+          table#patient-summary tr td:first-child {
+            font-weight: bold;
+            width: 33%;
+            vertical-align: top;
+          }
+
+          .alt-units {
+            opacity: 0.6;
+          }
+
+          article.residence + article.residence {
+            margin-top: 0.5rem;
+          }
+
+          header {
+            padding: 0 !important;
+            margin-bottom: 0.5rem;
+            box-sizing: border-box;
+          }
+
+          header div.img {
+            margin: 0 !important;
+            width: 30% !important;
+            box-sizing: border-box;
+            padding: 0.5rem !important;
+            overflow: hidden;
+          }
+
+          header div.img article {
+            margin: 0;
+          }
+
+          header div.img article p {
+            margin: 0;
+          }
+
+          header div.img article p img {
+            margin: 0;
+          }
+
+          header div.text {
+            width: 70% !important;
+            box-sizing: border-box;
+            padding: 0.5rem;
+          }
+
+
+        </style>
+    </head>
+    <body>
+        <main class="webview">
+
+            <% if @owner and @patient.current_coverage == nil %>
+            <div class="alert" id="alert">
+              <a href="webportal://someurl" target="_blank">
+                <h1>Coverage is Expired!</h1>
+                <p><strong>Your LifeSticker is no longer accessible to health care providers</strong>. Please visit the web portal and update your coverage.</p>
+              </a>
+            </div>
+            <% end %>
+
+            <% if !@owner and @patient.current_coverage == nil %>
+            <div class="alert" id="alert">
+              <h1>Expired Coverage!</h1>
+              <p><strong>for <%= @patient.fullname %></strong></p>
+            </div>
+            <% end %>
+
+            <% if @owner or @patient.current_coverage %>
+            <div class="tab" id="personal">
+                <%= render :partial => 'shared/patient_personal' %>
+            </div>
+            <div class="tab" id="medical">
+                <%= render :partial => 'shared/patient_medical', :locals => {} %>
+            </div>
+            <div class="tab" id="contacts">
+                <%= render :partial => 'shared/patient_contacts' %>
+            </div>
+            <% end %>
+
+        </main>
+
+        <footer>
+            
+        </footer>
+
+        <script>
+
+            // decorate private stuff, because it's easier than doing the check in rails
+            var private_items = document.getElementsByClassName('private');
+            for(var i=0; i <private_items.length; i++){
+                private_items[i].parentNode.classList.add('private-item');
+            }
+
+            // backup method in case we default to hiding elements, or we have a responsive native side that determines when to hide/show the tab controller
+            // in theory, this may be useful for future stuff, where we could have a body class toggle or something, combined with media queries, etc
+            function displayAllTabs(){
+                var tabs = document.getElementsByClassName('tab');
+                for(var i=0; i<tabs.length; i++){
+                    tabs[i].style.display = 'block';
+                }
+                return true;
+            }
+            function displayTabById(slug){
+                var el = document.getElementById(slug);
+                if(el){
+                    var tabs = document.getElementsByClassName('tab');
+                    for(var i=0; i<tabs.length; i++){
+                        tabs[i].style.display = 'none';
+                    }
+                    el.style.display = 'block';
+                    return true;
+                }
+                return false;
+            }
+            function displayTabByIndex(index){
+                var tabs = document.getElementsByClassName('tab');
+                var el = tabs[index];
+                if(el){
+                    for(var i=0; i<tabs.length; i++){
+                        if(i == index){
+                            tabs[i].style.display = 'block';
+                        }else{
+                            tabs[i].style.display = 'none';
+                        }
+                    }
+                    return true;
+                }
+                return false;
+            }
+            displayTabByIndex(0);
+        </script>
+          
+
+    </body>
+</html>

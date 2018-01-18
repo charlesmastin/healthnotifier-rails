@@ -1,0 +1,53 @@
+#bb-view-assign-stickers {
+    i.state-valid {
+        color: $green2016;
+        position: relative;
+        top: 5px;
+        display: none;
+    }
+    i.state-invalid {
+        color: $red2016;
+        position: relative;
+        top: 5px;
+        display: none;
+    }
+    img.state-loading {
+        display: none;
+        position: relative;
+        top: 2px;
+    }
+
+    #promo-state {
+        display: inline;
+    }
+    #promo-price {
+        font-weight: 600;
+    }
+
+    #no-payment-info {
+        display: none;
+    }
+}
+
+// this is a straggler, but yea
+#no-shipping {
+    display: none;
+}
+
+#view-plan-level {
+    .radio-wraps {
+        h6, h3, h4 {
+            display: inline-block;
+            margin-left: 0.25rem;
+        }
+    }
+    ul {
+        margin-top: 0;
+        padding-top: 0;
+        text-indent: 0;
+        padding-left: 1.35rem;
+        li {
+            margin-bottom: 0.5rem;
+        }
+    }
+}

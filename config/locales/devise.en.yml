@@ -1,0 +1,70 @@
+# Additional translations at https://github.com/plataformatec/devise/wiki/I18n
+
+en:
+  errors:
+    messages:
+      expired: "has expired, please request a new one"
+      not_found: "not found"
+      already_confirmed: "was already confirmed, please try signing in"
+      not_locked: "was not locked"
+      not_saved:
+        one: "1 error prohibited this %{resource} from being saved:"
+        other: "%{count} errors prohibited this %{resource} from being saved:"
+
+  devise:
+    failure:
+      already_authenticated: 'You are already signed in.'
+      unauthenticated: 'You need to sign in or sign up before continuing.'
+      unconfirmed: 'You must confirm your account. Please check your email for the confirmation link.'
+      locked: 'Your account is locked.'
+      invalid: 'Invalid email or password. Would you like to <a href="/recover-account">recover your account</a> or <a href="/signup">create a new account</a>?'
+      invalid_token: 'Invalid authentication token.'
+      timeout: 'Your session has expired. Please sign in again.'
+      inactive: 'Your account has not been activated.'
+    sessions:
+      signed_in: ''
+      signed_out: ''
+    passwords:
+      send_instructions: 'You will receive an email with instructions about how to reset your password in a few minutes.'
+      updated: 'Your password was changed successfully.'
+      updated_not_active: 'Your password was changed successfully.'
+      send_paranoid_instructions: "If an account with that email address exists, you will receive a password recovery email shortly."
+    confirmations:
+      send_instructions: 'You will receive an email with instructions about how to confirm your account in a few minutes.'
+      send_paranoid_instructions: "If an account with that email address exists, you will receive a confirmation email shortly."
+      confirmed: 'Thanks for confirming your account. Please sign in again.'
+    registrations:
+      signed_up: 'Thanks for signing up! You will receive a confirmation email shortly. Please click the link in the email to confirm your email address within thirty days.'
+      updated: 'You updated your account successfully.'
+      update_needs_confirmation: "You updated your account successfully, but we need to verify your new email address. Please click the link in the confirmation email we sent you."
+      destroyed: 'Your account was successfully deleted.'
+      signed_up_but_unconfirmed: 'Thanks for signing up! You will receive a confirmation email shortly. Please click the link in the email to confirm your email address within thirty days.'
+      signed_up_but_inactive: 'Thanks for signing up! You will receive a confirmation email shortly, which will allow you to log in.'
+      signed_up_but_locked: 'You have signed up successfully. However, we could not sign you in because your account is locked.'
+    unlocks:
+      send_instructions: 'You will receive an email with instructions about how to unlock your account in a few minutes.'
+      unlocked: 'Your account has been unlocked successfully. Please sign in to continue.'
+      send_paranoid_instructions: 'If your account exists, you will receive an email with instructions about how to unlock it in a few minutes.'
+    omniauth_callbacks:
+      success: 'Successfully authenticated from %{kind} account.'
+      failure: 'Could not authenticate you from %{kind} because "%{reason}".'
+    mailer:
+      confirmation_instructions:
+        subject: 'Please activate your HealthNotifier account'
+      reset_password_instructions:
+        subject: 'HealthNotifier account recovery instructions'
+      unlock_instructions:
+        subject: 'Instructions to unlock your HealthNotifier account'
+      profile_reminder_instructions:
+        subject: 'Reminder to finish creating your HealthNotifier account'
+
+  activerecord:
+    attributes:
+      account:
+        confirmation_token: Confirmation token
+    errors:
+      models:
+        account:
+          attributes:
+            confirmation_token:
+              invalid: 'is invalid or has already been used.<br>If you have already confirmed your account, please <a href="/login">log in</a>.'

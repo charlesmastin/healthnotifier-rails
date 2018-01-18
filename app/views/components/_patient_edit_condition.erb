@@ -1,0 +1,22 @@
+<script id="condition-item" type="text/html">
+    <div class="item-edit row">
+        <input type="hidden" name="condition-name" id="condition-{{record_order}}-name" value="{{condition}}">
+        <input type="hidden" name="condition-imo" id="condition-{{record_order}}-imo" value="{{imo_code}}">
+        <input type="hidden" name="condition-icd9" id="condition-{{record_order}}-icd9" value="{{icd9_code}}">
+        <input type="hidden" name="condition-icd10" id="condition-{{record_order}}-icd10" value="{{icd10_code}}">
+        <div class="field span4 required">
+            <label for="condition-{{record_order}}">Condition</label>
+            <input class="item-input span4 condition" type="text" name="health_event" value="{{health_event}}" id="condition-{{record_order}}" placeholder="Name">
+            <p class="error-message span4" data-for="condition-{{record_order}}">Please enter a condition</p>
+        </div>
+        <div class="field span3">
+            <label for="startdate-{{record_order}}">Start date</label>
+            <input class="item-input span3" type="text" name="start_date_formatted" value="{{start_date}}" id="startdate-{{record_order}}" placeholder="Any type of date">
+            <p class="error-message span3" data-for="startdate-{{record_order}}">Please enter a date in <br/>MM/DD/YYYY format</p>
+        </div>
+        <div class="field span1 privacy-wrap">
+            <%= render :partial => 'components/privacy', :locals => { :field => 'condition' } %>
+        </div>
+        <%= render :partial => 'components/remove_row_button' %>
+    </div>
+</script>

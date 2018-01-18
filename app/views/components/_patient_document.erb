@@ -1,0 +1,13 @@
+<% if pha.document_digitized.document_digitized_files[0] != nil %> 
+<article class="dd-summary" data-uuid="<%= pha.document_digitized.uid %>" data-balloon="View This Document">
+    <a href="<%= document_show_path(pha.document_digitized.uid) %>" xtarget="_blank">
+        <p><%= humanize_dd_category(pha.document_digitized.category) %></p>
+   
+        <div class="image-wrapper">
+            <img src="/api/v1/file/retrieve/<%= pha.document_digitized.document_digitized_files[0].uid %>?width=80&height=100" width="80" height="100" />
+            <% if pha.document_digitized.document_digitized_files.size > 1 %><span class="badge">+<%= pha.document_digitized.document_digitized_files.size - 1 %></span><% end %>
+        </div>
+        <span class="tag privacy <%= pha.privacy %>"><%= privacy_label(pha.privacy) %></span>
+    </a>
+</article>
+<% end %>

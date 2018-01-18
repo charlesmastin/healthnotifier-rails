@@ -1,0 +1,9 @@
+<section class="flow-control">
+    <% if patient.confirmed? %>
+    <button type="submit" class="button<% if defined? primary and primary %> primary<% else %> default<% end %>">Update</button>
+    <a href="<%= patient_show_path(patient.uuid) %>" class="button">Cancel</a>
+    <% else %>
+    <button type="submit" class="button<% if defined? primary and primary %> primary<% else %> default<% end %>">Save &amp; Continue</button>
+    <a href="<%= patient_index_path %>" class="button">Cancel</a>
+    <% end%>
+</section>

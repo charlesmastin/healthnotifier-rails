@@ -1,0 +1,46 @@
+<% content_for :body_class do %> class="login"<% end %>
+
+
+<section class="main-column">
+
+<section class="page-title">
+    <h1>Change Password</h1>
+</section>
+
+<%= form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :put, :class => "auth-form" }) do |f| %>
+
+<%= f.hidden_field :reset_password_token %>
+
+<section class="pillbox" id="account_new">
+    <article>
+    <div class="content">
+        <div class="field">
+            <%= f.label :password, "New password" %>
+            <%= f.password_field :password %>
+            <p class="error-message invalid" data-for="account_password">Password must be at least 8 characters long and include a letter and a number or symbol</p>
+        </div>
+
+        <div class="field">
+            <label for="password_confirmation">Repeat New Password</label>
+            <input type="password" name="password_confirmation" value="" size="30" id="password_confirmation">
+            <p class="error-message invalid" data-for="password_confirmation">Password must be at least 8 characters long and include a letter and a number or symbol</p>
+            <p class="error-message mismatch" style="margin-top: 1rem;" data-for="password_confirmation">Passwords do not match</p>
+        </div>
+        
+        <button type="submit" class="button primary">Change Password</button>
+
+    </div>
+    </article>
+</section>
+<% end %>
+
+</section>
+
+<% content_for :js_bootstrap do %>
+<script>
+    (function() {
+        var Account = app.module('account');
+        var resetPasswordView = new Account.Views.ResetPassword({ el: '#account_new' });
+    })();
+</script>
+<% end %>

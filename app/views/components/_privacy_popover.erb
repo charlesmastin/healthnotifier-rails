@@ -1,0 +1,10 @@
+<div id="popover-privacy-control" class="popover">
+    <h6>Privacy Level</h6>
+    <ul class="actions">
+        <% @privacy_options.each do |option| %>
+        <li><a class="privacy" href="#" data-privacy="<%= option[:value] %>"><i class="material-icons"><%= option[:icon] %></i><%= option[:name] %></a></li>
+        <% end %>
+        <li class="divider"></li>
+        <li><a href="#" class="privacy-tooltip">About Privacy</a></li>
+    </ul>
+</div>

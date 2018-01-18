@@ -1,0 +1,27 @@
+<% if @patient.has_biometrics? %>
+<article data-url="#">
+    <header><%= image_tag "icons/heartbeat.png" %><h4><a href="<%= patient_edit_personal_path(@patient.uuid) %>#biometrics">Biometrics</a></h4></header>
+    <section>
+        <div class="metrics">
+            <% if @patient.blood_type.present? %>
+            <article>
+                <small>Blood Type</small>
+                <div><%= @patient[:blood_type] %></div>
+            </article>
+            <% end %>
+            <% if @patient.bp_systolic.present? and @patient.bp_diastolic.present? %>
+            <article>
+                <small>Blood Pressure</small>
+                <div><%= @patient.bp_systolic.to_s %>/<%= @patient.bp_diastolic.to_s %> <span class="units">mmHg</span></div>
+            </article>
+            <% end %>
+            <% if @patient.pulse.present? %>
+            <article>
+                <small>Pulse</small>
+                <div><%= @patient.pulse.to_s %><span class="units">bpm</span></div>
+            </article>
+            <% end %>
+        </div>
+    </section>
+</article>
+<% end %>

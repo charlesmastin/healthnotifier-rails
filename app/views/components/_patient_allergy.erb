@@ -1,0 +1,4 @@
+<article>
+<%= allergy.allergen %> &nbsp;<span class="fine-detail"><%= PatientAllergy.reactions[allergy.reaction] %></span>
+&nbsp;<span class="tag privacy <%= allergy.privacy %>"><%= privacy_label(allergy.privacy) %></span>
+</article>

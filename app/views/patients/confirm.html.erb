@@ -1,0 +1,53 @@
+<% content_for :below_header do %>
+<section id="patient-transaction-bar">
+    <div class="inner">
+    <%= render :partial => 'components/patient_avatar', :locals => { :patient => @patient, :size => 'small' } %>
+    <h4 class="patient_name"><%= @patient.name_extended %></h4>
+    <!-- Considering the implicartions of moving things up here -->
+    <!-- it's intention to move the confirm down below -->
+    <!-- that said, it could be handled in a modal during express signup -->
+    <!-- TODO: supress the emergency contacts notification here -->
+    <%= render :partial => 'components/patient_onboarding_summary', :locals => { :patient => @patient, :state => @onboarding_details } %>
+    </div>
+</section>
+<% end %>
+
+<% content_for :pagetitle do %>
+<h1>Please Confirm</h1>
+<% end %>
+
+<section id="main-column">
+    <section class="pillbox juicebox">
+        <article>
+            <section class="content">
+                <p>I confirm the information entered for <strong><%= @patient.name_extended %></strong> is accurate and factual. HealthNotifier is a realtime platform and subsequent changes will be available to health care providers in times of intervention or care management.</p>
+                <p style="margin-bottom: 0; overflow: auto;">
+                    <a href="<%= patient_finish_confirmation_path(@patient.uuid) %>" class="button primary" style="float: left;">Confirm and Get LifeStickers</a>
+                    <a href="<%= patient_confirm_and_create_path(@patient.uuid) %>" class="button xprimary small" style="float: left; margin-left: 0.5rem;">Confirm and Create Another Profile</a>
+                    <a href="<%= patient_show_path(@patient.uuid) %>" class="button small" style="float: right;">Cancel</a>
+                </p>
+            </section>
+        </article>
+    </section>
+</section>
+
+<% content_for :bodyextra do %>
+<%= render :partial => 'components/patient_onboarding_popover', :locals => { :patient => @patient, :state => @onboarding_details } %>
+<% end %>
+
+<% content_for :js_bootstrap do %>
+<script>
+    "use strict";
+
+    (function () {
+        popover.init($('#patient-transaction-bar a.actions, #patient-transaction-bar .onboarding-summary'));
+
+        // lol this case could never really happen unless it's in dev mode and we allow the view for testing
+        <% if !@patient.confirmed? %>
+        var c = document.getElementById('component-onboarding-summary');
+        c.appendChild( pieChart(<%= @onboarding_details[:progress_percent] %>, 32) );
+        <% end %>
+
+    })();
+</script>
+<% end %>

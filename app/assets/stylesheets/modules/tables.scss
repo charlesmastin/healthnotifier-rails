@@ -1,0 +1,35 @@
+// only in use in the admin side of print sheet requests
+table.default {
+	width: 100%;
+
+	thead {
+		tr {
+			th {
+				text-align: left;
+				padding: 1rem;
+				background: white;
+			}
+		}
+	}
+	tbody {
+		tr {
+			border-top: 1px solid lightgray;
+			td {
+				padding: 1rem;
+
+				span.provider-account {
+					display: inline-block;
+					position: relative;
+					margin-left: 0.5rem;
+					top: -1px;
+				}
+			}
+			&.selected {
+				td {
+					background: tint($blue2016, 90%);
+					// color: white;
+				}
+			}
+		}
+	}
+}

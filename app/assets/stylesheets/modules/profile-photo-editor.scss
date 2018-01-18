@@ -1,0 +1,58 @@
+#patient-profile-photo-editor {
+    aside {
+        // TODO: instructions?????, who needs instructions
+        display: none;
+    }
+
+    .error-message {
+        display: none;
+    }
+
+    .photo-viewer {
+        display: none;
+        img {
+            max-width: 100%;
+        }
+    }
+
+    a.action-remove {
+        display: none;
+    }
+
+    .modal-flow-control {
+        margin-top: 3rem;
+    }
+}
+
+.drop-target {
+    box-sizing: border-box;
+    border: 2px dashed #ccc;
+    padding: 4rem;
+    text-align: center;
+    min-height: 15rem;
+
+    span.or {
+        font-weight: bold;
+        display: block;
+        // quick hackers
+        // line-height: 15rem;
+    }
+
+    
+
+    // super hack for short term, shadow dom times son
+
+    input[type="file"]{
+        width: 90px; // for chrome on mac os, lol
+        margin-top: 1rem;
+    }
+
+    &.over {
+        border: 2px solid $blue2016;
+        background: rgba(255, 255, 255, 1.0);
+
+        span.or, input[type="file"] {
+            display: none;
+        }
+    }
+}

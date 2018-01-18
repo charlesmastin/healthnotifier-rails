@@ -1,0 +1,40 @@
+span.tag {
+	font-size: 0.75rem;
+	padding: 0.15rem 0.25rem;
+	border-radius: 0.25rem;
+	letter-spacing: 0.075rem;
+	-webkit-user-select: none;
+	color: white;
+	background: rgba(0, 0, 0, 0.25);
+	font-weight: normal !important;
+
+	&.public {
+		
+	}
+	&.provider {
+		
+	}
+	&.provider-account {
+		padding: 0.25rem;
+		background: $green2016;
+		i {
+			font-size: 0.8rem;
+			margin-right: 0.25rem;
+			position: relative;
+			top: 2px;
+		}
+	}
+	&.private {
+		
+	}
+	&.dangerous {
+		background: $red2016;
+	}
+	&.enterprise {
+		&.on-dark {
+			display: none;
+			// color: $black-75;
+			background: $white-50;
+		}
+	}
+}

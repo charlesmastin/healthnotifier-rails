@@ -1,0 +1,53 @@
+<% content_for :below_header do %>
+<section id="patient-transaction-bar">
+    <div class="inner">
+        <a class="backzone" href="<%= patient_show_path(@patient.uuid) %>">
+            <%= render :partial => 'components/patient_avatar', :locals => { :patient => @patient, :size => 'small' } %>
+            <h4 class="patient_name"><%= @patient.name_extended %></h4>
+        </a>
+        <div class="actions">
+            <a href="#" class="action actions" data-popover="patient-actions-<%= @patient.uuid %>"><i class="material-icons">more_vert</i></a>
+        </div>
+    </div>
+</section>
+<% end %>
+
+<% content_for :pagetitle do %>
+<h1><!--<a href="<%= care_plans_index_path %>" data-balloon="Change Patient" class="baby-got-back"><i class="material-icons">arrow_back</i></a>-->Advise Me</h1>
+<h3>Choose a condition or ailment</h3>
+<% end %>
+
+<% if false %>
+<aside id="sidebar">
+    <section class="cards single-item">
+      <article class="patient">
+            <header>
+                <h3><%= @patient.name_extended %></h3>
+            </header>
+            <section>
+                <%= render :partial => 'components/patient_avatar', :locals => { :patient => @patient } %>
+                <% if @patient.age_str != "2015 years old" %><small class="age"><%= @patient.age_str %></small><% else %><small class="age">&nbsp;</small><% end %>
+            </section>
+        </article>
+    </section>
+</aside>
+<% end %>
+
+<section id="main-column">
+<section class="pillbox">
+<article>
+    <section class="content">
+        <ul class="conditions">
+            <% @care_plans.each do |care_plan| %>
+            <% if care_plan.draft? && @patient.account.lifesquare_employee? %>
+            <li><a class="button small" href="<%= care_plans_care_plan_path(@patient.uuid, care_plan.uuid) %>"><%= care_plan.name %></a><span class="tag">DRAFT</span></li>
+            <% end %>
+            <% if care_plan.active? %>
+            <li><a class="button small" href="<%= care_plans_care_plan_path(@patient.uuid, care_plan.uuid) %>"><%= care_plan.name %></a></li>
+            <% end %>
+            <% end %>
+        </ul>
+    </section>
+</article>
+</section>
+</section>

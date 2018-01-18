@@ -1,0 +1,11 @@
+<h1><%= patient.name_extended %> was deleted</h1>
+
+<!-- TODO: logic to show or not show -->
+<!--<p>Any recurring subscriptions were cancelled</p>-->
+<% if cancelled_coverages.length > 0 %>
+<p>The recurring coverage subscription for <%= patient.first_name %> was cancelled. Please contact <a href="mailto:billing@domain.com">billing@domain.com</a> if you have any questions.</p>
+<% end %>
+
+<hr />
+
+<p>If you did not delete this profile directly or wish to restore it, <a href="mailto:support@domain.com">please let us know</a>.</p>

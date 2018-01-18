@@ -1,0 +1,101 @@
+<% content_for :below_header do %>
+<section id="patient-transaction-bar" class="organization">
+    <div class="inner">
+    <h4 class="patient_name"><%= @organization.name %> <span class="tag enterprise on-dark">Business</span></h4>
+
+    <div class="actions">
+        <a href="#" id="action-transaction-save" class="button primary">Submit</a>
+        <a href="<%= organization_show_path @organization.uuid %>" class="button">Cancel</a>
+        <a href="#" class="action actions" data-popover="org-actions-<%= @organization.uuid %>"><i class="material-icons">more_vert</i></a>
+    </div>
+    </div>
+</section>
+<% end %>
+
+<% content_for :pagetitle do %>
+<h1>Renew Coverages</h1>
+<% end %>
+
+<!-- main bb view stuffs -->
+<div id="bb-view-org-renewal" data-action="<%= api_org_renew_lifesquares_path @organization.uuid %>" class="basic-form requires-payment">
+
+<section class="pillbox auth-form">
+<article>
+    <div class="title">
+        <h3>Summary</h3>
+    </div>
+
+    <div class="content">
+        <!-- misleading -->
+        <p>Coverage will be renewed until <strong><%= @coverage_end.strftime('%m/%d/%-Y') %></strong> for sponsored LifeStickers.</p>
+        <h3>Annual Coverage Rate: <span id="unit-cost"><%= number_to_currency(@organization.get_coverage_cost() / 100) %></span></h3>
+        <h4>x <span id="membership-count"><%= @organization.get_membership_count %></span> LifeStickers</h4>
+        <hr />
+        <h3>Total: <span id="total"><%= number_to_currency((@organization.get_membership_count * @organization.get_coverage_cost()) / 100) %></span></h3>
+
+    </div>
+</article>
+</section>
+
+<!--
+Just too complex at the moment
+<section class="pillbox auth-form">
+<article>
+    <div class="title">
+        <h3>Additions</h3>
+    </div>
+
+    <div class="content">
+        <p>Purchase additional coverage credits for any new members.</p>
+    </div>
+</article>
+</section>
+-->
+
+<section class="pillbox auth-form">
+<article>
+    <div class="title">
+        <h3>Discontinue<br />Coverage</h3>
+    </div>
+
+    <div class="content">
+        <p><small>The following LifeStickers will not be renewed and coverage will expire at the end of their respective membership periods. The individual accounts for these LifeStickers will be able to manually renew their coverage, if so desired.</small></p>
+    
+        <input type="text" name="search" id="member_uuid" placeholder="Search by Name, Email, LifeSticker ID">
+        <div id="member_result"></div>
+        <!-- <hr /> -->
+        <ul id="exclusion-list">
+        </ul>
+    </div>
+</article>
+</section>
+
+<%= render :partial => 'components/payment', :locals => { :subscription_end => @coverage_end, :subscription => false, :available_cards => @cards_on_file, :total => @total } %>
+
+</div>
+
+<% content_for :js_head do %>
+<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+<script type="text/javascript">
+  Stripe.setPublishableKey('<%= @publishable_key %>');
+</script>
+<% end %>
+
+<% content_for :js_bootstrap do %>
+    <script>
+
+        (function () {
+            "use strict";
+            window.SUCCESS_URL = "<%= organization_show_path @organization.uuid %>";
+            window.ORGANIZATION_UUID = "<%= @organization.uuid %>";
+            window.ORGANIZATION_UNIT_COST = <%= @organization.get_coverage_cost() %>;
+            window.ORGANIZATION_TOTAL_MEMBER_COUNT = <%= @organization.get_membership_count() %>;
+
+            var Organization = app.module('organization');
+            var bbView = new Organization.Views.RenewLifesquares({ el: '#bb-view-org-renewal' });
+
+
+
+        })();
+    </script>
+<% end %>

@@ -1,0 +1,18 @@
+#importer-decision-tree-alpha {
+    div {
+        margin-bottom: 0.5rem;
+        label {
+            // padding-right: 1rem;
+        }
+        input {
+            margin-right: 0.5rem;
+        }
+    }
+}
+
+#importer-pull, #importer-upload {
+    display: none;
+    border-top: 1px solid $strokesForFolks;
+    margin-top: 1rem;
+    padding-top: 1rem;
+}

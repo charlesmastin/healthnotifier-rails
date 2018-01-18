@@ -1,0 +1,31 @@
+section.page-title {
+    @include clearfix;
+    h1 {
+        display: block;
+        a.baby-got-back {
+            margin-right: 0.25rem;
+            color: $textgray;
+            &:hover {
+                color: $blue2016;
+            }
+        }
+    }
+    h2 {
+        float: left;
+    }
+    section.flow-control {
+        float: right;
+    }
+
+    &.add-new {
+        h1 {
+            float: left;
+        }
+        a.circler {
+            margin-left: 0.5rem;
+            float: left;
+            position: relative;
+            top: -2px;
+        }
+    }
+}

@@ -1,0 +1,35 @@
+<section id="bb-view-shipping" class="pillbox">
+    <article>
+        <div class="title">
+            <h3><%= image_tag "icons/house.png", :alt => "" %><br>Shipping<br />Address</h3>
+        </div>
+        <div class="content">
+            <% if addresses.length > 0 %>
+            <div class="row" id="shipping-form">
+                <div class="span5">
+                    <label>Your LifeStickers will be sent to:</label>
+                    <% addresses.each_with_index do |residence, index|%>
+                    <p id="<%= "residence_#{index}" %>" class="address-label"<%= ' style="display: none"'.html_safe if index != @selected_residence_index %>>
+                        <%= format_address(residence) %>
+                    </p>
+                    <% end %>
+                </div>
+                <div class="span7" <% if addresses.size < 2 %>style="display: none"<% end %>>
+                    <label for="mailing-address">Want to use a different address?</label>
+                    <select class="custom mailing-address" name="mailing-address" id="mailing-address" size="1">
+                        <%= options_for_select(addresses.map {|r| [format_address(r,nil,' '), r.patient_residence_id] },
+                                               addresses[selected_index].patient_residence_id) %>
+                    </select>
+                </div>
+            </div>
+            <div class="row" id="no-shipping">
+                <p>We won’t be mailing any stickers. You may request additional stickers after assignment is complete.</p>
+            </div>
+            <% else %>
+            <div class="row">
+                <p>No addresses on file.</p>
+            </div>
+            <% end %>
+        </div>
+    </article>
+</section>

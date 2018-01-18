@@ -1,0 +1,21 @@
+#
+# database-local.yml is file not managed under source control
+# use this as a template and further define local/non-shared credentials
+# etc there
+#
+
+dev_postgresql_login: &dev_postgresql_login
+  host: db
+  database: lifesquare
+  username: lifesquare
+
+production_login: &production_login
+  <<: *dev_postgresql_login
+
+profile_login: &profile_login
+  <<: *dev_postgresql_login
+
+#test_postgresql_login: &test_postgresql_login
+#  host: localhost
+#  database: lifesquare_test
+#

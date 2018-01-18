@@ -1,0 +1,83 @@
+<section id="payment" class="pillbox">
+  <article>
+    <div class="title" data-balloon="HealthNotifier uses Stripe to securely process your payments. Your billing details are never stored on HealthNotifier servers and all transactions occur over SSL. Previously charged cards are made available for use from Stripe but not stored or transmitted." data-balloon-pos="right" data-balloon-length="large">
+      <h3>
+        <img alt="" height="30" src="<%= asset_path('icons/card.png') %>" width="32"><br />
+        Payment<br />Information
+      </h3>
+      <p style="margin-top: 0.5rem;"><i class="material-icons">info</i></p>
+    </div>
+
+    <div class="content">
+      <span class="payment-errors"></span>
+
+      <% if defined? subscription and subscription %>
+      
+      <div class="field">
+          <p style="margin-bottom: 0.25rem;">Auto-renew at the end of coverage on <strong><%= subscription_end.strftime('%m/%d/%-Y') %></strong></p>
+          <label>
+            <input type="checkbox" checked="checked" name="subscription" /> Yes, create a subscription
+          </label>
+      </div>
+      <% end %>
+
+      <% if defined? promo and promo %>
+      
+
+      <% end %>
+
+      <div class="field" id="payment-totals">
+        <label>Total Cost</label>
+        <input id="payment-total" type="text" disabled="disabled" class="no-border" placeholder="$0.00" value="<% if defined? total %><%= number_to_currency(total / 100) %><% end %>" />
+      </div>
+
+      <% if available_cards.size > 0 %>
+      <div class="field">
+        <label for="existing-card">Select billing method</label>
+        <select id="existing-card" name="existing-card-id">
+          <option value="">Add a new card</option>
+          <%= options_for_select(available_cards.map {|obj| [obj.brand + ' card ending in: ' + obj.last4, obj.id] }, available_cards[0].id) %>
+        </select>
+      </div>
+      <!--<p style="margin-top: 1rem;"><a href="#" class="button small action-add-new-card">Add another card</a></p>-->
+      <% end %>
+      
+      <div style="margin-top: 1rem;" id="stripe-card-fields-container" class="line<% if available_cards.size > 0 %> hidden<% end %>">
+        <div class="field">
+          <label for="s-card-number" data-balloon="We accept Visa, MasterCard, American Express, JCB, Discover, and Diners Club.">Card Number</label>
+          <input id="s-card-number" placeholder="123…" type="text" size="20" data-stripe="number" />
+        </div>
+
+        <div class="field">
+          <label for="s-cvc">CVC</label>
+          <input id="s-cvc" placeholder="123" type="text" class="span1" size="4" data-stripe="cvc" />
+        </div>
+
+        <div class="field">
+          <label for="s-exp-month">Expiration</label>
+          <select name="" id="s-exp-month" data-stripe="exp-month">
+            <option value=""></option>
+            <option value="01">01</option>
+            <option value="02">02</option>
+            <option value="03">03</option>
+            <option value="04">04</option>
+            <option value="05">05</option>
+            <option value="06">06</option>
+            <option value="07">07</option>
+            <option value="08">08</option>
+            <option value="09">09</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+          </select>
+          <!--<input id="s-exp-month" placeholder="MM" class="span1" maxlength="2" type="text" size="2" data-stripe="exp-month" />-->
+        </div>
+
+        <div class="field span2">
+          <label>&nbsp;</label>
+          <input type="text" placeholder="YYYY" class="span2" maxlength="4" size="4" data-stripe="exp-year" />
+        </div>
+      </div>
+    </div>
+  </article>
+</section>

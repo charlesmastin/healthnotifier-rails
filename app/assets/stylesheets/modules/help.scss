@@ -1,0 +1,10 @@
+a.inline-help {
+    color: $textgray;
+    font-weight: normal;
+    position: relative;
+    top: 3px;
+
+    &:hover {
+        color: $blue2016;
+    }
+}

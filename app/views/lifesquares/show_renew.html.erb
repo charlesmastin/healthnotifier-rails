@@ -1,0 +1,92 @@
+<!-- TODO single profile account context, show patient bar -->
+<% if @patients.count == 1 %>
+
+<% content_for :below_header do %>
+
+<section id="patient-transaction-bar">
+    <div class="inner">
+    <%= render :partial => 'components/patient_avatar', :locals => { :patient => @patients[0], :size => 'small' } %>
+    <h4 class="patient_name"><%= @patients[0].name_extended %></h4>
+    <div class="actions">
+        <a id="action-transaction-save" href="#" xdisabled="disabled" class="button primary xdisabled">Submit</a>
+        <a id="action-transaction-cancel" href="<%= patient_show_path(@patients[0].uuid) %>" class="button">Cancel</a>
+    </div>
+    </div>
+</section>
+
+<% end %>
+
+<% else %>
+
+<% content_for :pagetitle do %>
+<h1>Renew Annual HealthNotifier Coverage</h1>
+<% end %>
+
+<% end %>
+
+
+<% if @patients.count == 1 %>
+<h2>Renew Annual HealthNotifier Coverage</h2>
+<p>We’ll renew coverage and mail a fresh sticker sheet.</p>
+<% else %>
+<p>We’ll renew coverage and mail a fresh sticker sheet for each profile you select.</p>
+<% end %>
+
+<div id="bb-view-renew-stickers" data-action="<%= api_lifesquares_renew_path %>" class="basic-form <% if @requires_payment %>requires-payment<% else %>no-payment<% end %>">
+
+<section id="stickers" class="cards<% if @patients.size < 2 %> single-item<% end %>">
+    <!-- it's a list of one, but whatever -->
+    <% @patients.each_with_index do |patient, index| %>
+      <article class="patient" data-patient-uuid="<%= patient.uuid %>" data-coverage-cost="<%= patient.coverage_cost %>">
+            <header>
+                <input type="checkbox" class="renewal" data-patient-uuid="<%= patient.uuid %>" id="replacement-<%= patient.uuid %>" checked="checked" />
+                <h3><%= patient.name_extended %></h3>
+            </header>
+            <section>
+                <%= render :partial => 'components/patient_avatar', :locals => { :patient => patient } %>
+                <% if patient.age_str != "2015 years old" %><small class="age"><%= patient.age_str %></small><% else %><small class="age">&nbsp;</small><% end %>
+                <% if patient.lifesquare_code_str and patient.lifesquare_code_str.length > 0 %>
+                <article class="lifesquare">
+                    <img class="lifesquare" src="<%= api_lifesquare_image_path(patient.lifesquare_uid_str) %>" width="100" height="100" />
+                    <div class="lifesquare-code"><%= patient.lifesquare_code_str %></div>
+                </article>
+                <% end %>
+            </section>
+        </article>
+    <% end %>
+</section>
+
+<%= render :partial => 'components/shipping', :locals => { :addresses => @residences, :selected_index => @selected_residence_index } %>
+
+<% if @requires_payment %>
+
+<%= render :partial => 'components/plan_level' %>
+
+<%= render :partial => 'components/payment', :locals => { :subscription_end => @coverage_end, :subscription => true, :available_cards => @cards_on_file, :total => @total } %>
+<% end %>
+
+<% if @patients.count > 1 %>
+<section class="flow-control">
+  <button type="submit" class="button primary">Submit</button>
+  <a href="<%= patient_index_path %>" class="button">Cancel</a>
+</section>
+<% end %>
+
+</div>
+
+<% content_for :js_head do %>
+<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+<script type="text/javascript">
+  Stripe.setPublishableKey('<%= @publishable_key %>');
+</script>
+<% end %>
+<% content_for :js_bootstrap do %>
+<script>
+    (function() {
+        var Account = app.module('account');
+        var Patient = app.module('patient');
+        var stickersView = new Patient.Views.LifesquaresRenew({ el: '#bb-view-renew-stickers' });
+        var addressPickerView = new Patient.Views.AddressPicker({ el: '#bb-view-shipping' });
+    })();
+</script>
+<% end %>

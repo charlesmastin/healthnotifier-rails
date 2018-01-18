@@ -1,0 +1,24 @@
+<h2>Email a Friend</h2>
+<p class="error"></p>
+<%= form_for(Account.new, :as => :account, :url => account_session_path, :html => { :class => "auth-form modal" }) do |f| %>
+    <div id="email-form">
+        <div class="field required">
+            <%= f.label :emails, "Friend's Email Address", :class => :first %>
+            <%= f.text_field :emails, :placeholder => 'Email', :value => '', :class => :emails, :size => '27', 'data-validation' => :validEmail, 'data-field' => :emails, :type => :text %>
+            <p class="error-message" data-for="account_emails" style="display: none;">Please enter only valid email addresses (e.g. “friend@here.com, dad@email.com”)</p>
+        </div>
+        <div class="field">
+            <%= f.label "Your Name" %>
+            <%= f.text_field :name, :placeholder => 'Name', :value => "", :class => :name, :size => '27' %>
+            <p class="error-message" data-for="account_name" style="display: none;">Please enter your name</p>
+        </div>
+        <div class="required">
+            <%= f.label :message, 'Message' %>
+            <%= f.text_area :message, :class => :message, :value => "I just signed up for HealthNotifier and created a profile with my essential health information. It's fast and easy to sign up.", :cols => 43, :rows => 4 %>
+            <div class="message-required" style="opacity: 0.5;">---<br>HealthNotifier securely relays your essential health information to paramedics in an emergency. Visit https://www.domain.com to learn more and sign up your family.</div>
+        </div>
+    </div>
+    <section class="modal-flow-control">
+        <button type="submit" class="primary button">Send</button>
+    </section>
+<% end %>

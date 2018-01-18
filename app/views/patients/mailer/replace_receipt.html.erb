@@ -1,0 +1,17 @@
+<% if payment %>
+<p>We have successfully processed your payment of <%= number_to_currency(payment.amount / 100) %> for the following replacement LifeStickers</p>
+<% else %>
+<p>The following LifeStickers were reprinted</p>
+<% end %>
+<hr />
+<% lifesquares.each do |lifesquare| %>
+<p><strong><%= lifesquare.patient.name_extended %></strong><br /><%= render :partial => 'components/lifesquare_masked', :locals => { :lifesquare => lifesquare.lifesquare_uid } %></p>
+<% end %>
+
+<% if false %>
+<p>HealthNotifier coverage has been extended until <%= coverage.coverage_end.strftime("%m/%d/%Y") %>.</p>
+<% end %>
+
+<hr />
+
+<p>Your stickers will be mailed shortly and should arrive within the next 7-10 days.</p>

@@ -1,0 +1,88 @@
+<% content_for :below_header do %>
+<section id="patient-transaction-bar">
+    <div class="inner">
+    <a class="backzone" href="<%= patient_show_path(@patient.uuid) %>">
+        <%= render :partial => 'components/patient_avatar', :locals => { :patient => @patient, :size => 'small' } %>
+        <h4 class="patient_name"><%= @patient.name_extended %></h4>
+    </a>
+    <div class="actions">
+        <a href="<%= patient_show_path(@patient.uuid) %>" class="button primary" style="xfloat: left;">Review Your Profile</a>
+        <!--<a href="#" class="action actions" data-popover="patient-actions-<%= @patient.uuid %>"><i class="material-icons">more_vert</i></a>-->
+    </div>
+    </div>
+</section>
+<% end %>
+
+<% content_for :pagetitle do %>
+<h1>Congratulations, setup is complete!</h1>
+<% end %>
+
+<section id="main-column">
+    <section class="pillbox xjuicebox">
+        <article>
+            <div class="title">
+                <center>
+                <div class="sweet-alert jw">
+                    <div class="sa-icon sa-success animate" style="display: block;">
+                      <span class="sa-line sa-tip animateSuccessTip"></span>
+                      <span class="sa-line sa-long animateSuccessLong"></span>
+                      <div class="sa-placeholder"></div>
+                      <div class="sa-fix"></div>
+                    </div>
+                </div>
+                </center>
+            </div>
+            <div class="content" id="notification-placeholder">
+                <!--<h2>Payment successful and LifeStickers assigned! Your stickers should arrive in the next 7-10 days.</h2>-->
+                <p style="margin-bottom: 0rem;">If you haven't already, take a moment to download our apps so you can be fully connected with HealthNotifier. Our apps let you securely manage your medical documents while on the go.</p>
+                
+
+                
+
+                <% if false %><!-- TODO: SOCIAL SHARE THIS BIZZLE TIZZLE SIZZLE LIKE IT BE HOT SAUCE --><% end %>
+                <% if false %><!-- TODO: SURVEY HOOK SON --><% end %>
+                <!--
+                <p style="margin-bottom: 0; overflow: auto;">
+                    <a href="<%= patient_show_path(@patient.uuid) %>" class="button primary" style="float: left;">Review Your Profile</a>
+                    <a href="<%= patient_index_path %>" class="button small" style="float: right;">Create Another Profile</a>
+                </p>
+                -->
+                
+            </div>
+        </article>
+        <article>
+            <div class="title">
+            </div>
+            <div class="content">
+                <div class="apps-promo">
+                    <a class="badge-ios" href="#" style="display:inline-block;overflow:hidden;background:url(https://linkmaker.itunes.apple.com/images/badges/en-us/badge_appstore-lrg.svg) no-repeat;width:140px;height:40px; zoom: 1.23"></a>
+                    
+                    <a class="badge-android" href="#"><img style="width:165px;" alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/images/apps/en-play-badge.png" /></a>
+                    
+                </div>
+            </div>
+        </article>
+    </section>
+</section>
+
+<% content_for :bodyextra do %>
+<%= render :partial => 'components/patient_popover', :locals => { :patient => @patient, :context => 'detail' } %>
+<% end %>
+
+<% content_for :js_bootstrap do %>
+<script>
+    "use strict";
+
+    (function () {
+        popover.init($('#patient-transaction-bar a.actions, #patient-transaction-bar .onboarding-summary'));
+
+        // GHETTO RIG THE ALERT INTO H2 inside the content son
+        if($('.notification.notice').length) {
+            var t = $('.notification.notice').text();
+            $('#notification-placeholder').prepend($('<h2>' + t + '</h2>'));
+            $('.notification.notice').hide();
+        }
+
+    })();
+</script>
+<% end %>

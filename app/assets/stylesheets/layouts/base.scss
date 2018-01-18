@@ -1,0 +1,37 @@
+// slim(narrow) - a single column centered
+// 
+// default - a single column full width
+// 
+// main + sidebar
+// 
+// 
+   
+// common blocks
+// messaging
+// pagetitle (except on slim)
+// main
+// sidebar
+// js
+// bodyextra (modals, popovers, etc)
+
+#main-column {
+
+}
+
+#sidebar {
+    width: 20%;
+    float: right;
+
+    h6 {
+        margin-left: 0.5rem;
+    }
+}
+
+#sidebar + #main-column {
+    width: 77%;
+    float: left;
+}
+
+#slim-column {
+
+}

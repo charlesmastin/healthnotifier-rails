@@ -1,0 +1,76 @@
+<% content_for :below_header do %>
+<section id="patient-transaction-bar">
+    <div class="inner">
+        <a class="backzone" href="<%= patient_show_path(@patient.uuid) %>">
+            <%= render :partial => 'components/patient_avatar', :locals => { :patient => @patient, :size => 'small' } %>
+            <h4 class="patient_name"><%= @patient.name_extended %></h4>
+        </a>
+        <div class="actions">
+            <a href="#" class="action actions" data-popover="patient-actions-<%= @patient.uuid %>"><i class="material-icons">more_vert</i></a>
+        </div>
+    </div>
+</section>
+<% end %>
+
+<% content_for :pagetitle do %>
+<h1><%= @care_plan.name %></h1>
+<% end %>
+
+<% if false %>
+<aside id="sidebar">
+
+<h6>Workflow Steps</h6>
+
+<nav class="onboarding">
+    <ol>
+        <li class="completed"><i class="material-icons">check</i>Choose Patient</li>
+        <li class="completed"><i class="material-icons">check</i>Choose Condition</li>
+        <li class="completed"><i class="material-icons">check</i>Additional Consult</li>
+        <li class="completed"><i class="material-icons">check</i>Recommendations</li>
+    </ol>
+</nav>
+
+<section class="cards single-item">
+    <article class="patient">
+        <header>
+            <h3><%= @patient.name_extended %></h3>
+        </header>
+        <section>
+            <%= render :partial => 'components/patient_avatar', :locals => { :patient => @patient } %>
+            <% if @patient.age_str != "2015 years old" %><small class="age"><%= @patient.age_str %></small><% else %><small class="age">&nbsp;</small><% end %>
+        </section>
+    </article>
+</section>
+
+</aside>
+
+<% end %>
+
+<section id="main-column">
+<section class="pillbox">
+<% @recommendation.components.each do |component| %>
+<article>
+<section class="title">
+    <h3><%= component["category"] %></h3>
+</section>
+<section class="content">
+    <%= markdown component["data"].html_safe %>
+</section>
+</article>
+<% end %>
+</section>
+
+<!--
+<section class="survey">
+    <p>Was this information useful to you?</p>
+    <div class="radio-options-wrapper">
+        <label><input type="radio" value="0" name="s" />1 - It was harmful</label>
+        <label><input type="radio" value="1" name="s" />2 - Not helpful</label>
+        <label><input type="radio" value="1" name="s" />2 - Meh</label>
+        <label><input type="radio" value="1" name="s" />4 - Good Stuff</label>
+        <label><input type="radio" value="1" name="s" />5 - I'm Cured</label>
+    </div>
+</section>
+-->
+
+</section>

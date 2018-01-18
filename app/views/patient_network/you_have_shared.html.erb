@@ -1,0 +1,315 @@
+<% content_for :below_header do %>
+<section id="patient-transaction-bar">
+    <div class="inner">
+    <a class="backzone" href="<%= patient_show_path(@patient.uuid) %>">
+            <%= render :partial => 'components/patient_avatar', :locals => { :patient => @patient, :size => 'small' } %>
+            <h4 class="patient_name"><%= @patient.name_extended %></h4>
+        </a>
+    <div class="actions">
+        <a href="#" class="action actions" data-popover="patient-actions-<%= @patient.uuid %>"><i class="material-icons">more_vert</i></a>
+    </div>
+    </div>
+</section>
+<% end %>
+
+<% content_for :pagetitle do %>
+    <h1><a href="<%= patient_show_path(@patient.uuid) %>" title="View <%= @patient.fullname %>" data-balloon="View Profile" class="baby-got-back"><i class="material-icons">arrow_back</i></a>LifeCircle</h1>
+    <!--<h2>for <%= @patient.fullname %></h2>-->
+
+<% end %>
+
+<% if false %>
+<aside id="sidebar">
+<%= render :partial => 'shared/patient_nav', :locals => {:patient => @patient } %>
+</aside>
+<% end %>
+
+<section id="main-column">
+
+<section class="pillbox">
+<article>
+<!--<div class="title"></div>-->
+<div class="content">
+  
+  <p>Securely share <%= @patient.first_name %>’s LifeSticker with other members (extended family, medical professionals, neighbors, etc). You control the visibility of <%= @patient.first_name %>’s personal details and may revoke access at any time.</p>
+  <div class="basic-form">
+      <!-- <label>Search Terms</label> -->
+      <div class="field">
+        <input id="search-keywords" name="keywords" style="width: 100%;" type="text" placeholder="Search by First and Last Name, Email, or Street Address" />
+      </div>
+      <button id="search-submit" type="submit" class="primary button">Search</button>
+  </div>
+
+  <div id="search-results"></div>
+</div>
+</article>
+</section>
+
+<script id="template-search-result-add" type="text/html">
+  <tr>
+    <td class="avatar">
+      <div class="user-thumbnail-circle small">
+          <p class="user-thumbnail">
+              [[ if (profile.Photo) { ]]
+              <img src="/api/v1/profiles/{{ profile.PatientUuid }}/profile-photo?width=32&amp;height=32" alt="Profile Photo" />
+              [[ } else { ]]
+              <img src="<%= asset_path('user-thumbnail-default.png') %>" alt="Profile Photo" />
+              [[ } ]]
+          </p>
+      </div>
+    </td>
+    <td><strong>{{ profile.LastName }}, {{ profile.FirstName }}</strong>[[ if (profile.IsProvider) { ]]<span class="tag provider-account"><i class="material-icons">verified_user</i>Health care provider</span>[[ } ]]</td>
+    <td><a href="#" data-popover="grant-{{ profile.PatientUuid }}"><i class="material-icons">more_horizon</i></a></td>
+  </tr>
+</script>
+
+<script id="template-popover-grant" type="text/html">
+  <div id="popover-grant-{{ AuditorId }}" class="popover" data-auditor-id="{{ AuditorId }}" data-granter-id="{{ GranterId }}">
+    <h6>{{ AuditorName }}</h6>
+    <ul class="actions">
+        <li><small>Grant w/ Privacy</small></li>
+        [[ if (Provider) { ]]
+        <% @privacy_options.each_with_index do |option, index2| %>
+        <% if index2 > 0 %>
+        <li><a href="#" class="privacy action-network-add-<%= option[:value] %>"><i class="material-icons"><%= option[:icon] %></i><%= option[:name] %></a></li>
+        <% end %>
+        <% end %>
+        [[ } else { ]]
+        <% @privacy_options.each do |option| %>
+        <li><a href="#" class="privacy action-network-add-<%= option[:value] %>"><i class="material-icons"><%= option[:icon] %></i><%= option[:name] %></a></li>
+        <% end %>
+        [[ } ]]
+    </ul>
+  </div>
+</script>
+
+<% if @objects.length > 0 %>
+<section class="pillbox">
+<article>
+<div class="content">
+<table class="default">
+<thead>
+  <tr>
+    <th></th>
+    <th>Name</th>
+    <!-- <th>Access Period</th> -->
+    <th>Privacy Level</th>
+    <!-- <th>Notifications</th> -->
+    <th>Actions</th>
+  </tr>
+</thead>
+<tbody>
+  <% @objects.each_with_index do |patient_network, index| %>
+  <% patient = patient_network.auditor_patient %>
+  <% if patient %>
+  <tr>
+    <td class="avatar"><%= render :partial => 'components/patient_avatar', :locals => { :patient => patient, :size => 'small' } %></td>
+    <td><strong><%= patient.last_name %>, <%= patient.first_name %></strong><% if patient.account.provider? %><span class="tag provider-account" style="display: inline-block;position: relative; margin-left: 0.5rem; top: -2px;"><i class="material-icons">verified_user</i>Health care provider</span><% end %></td>
+    <% if false %><td><% if patient_network.expires_at == nil %><small>Continuing</small><% else %><small>Until <%= patient_network.expires_at.strftime("%m/%d/%Y") %></small><% end %></td><% end %>
+    <td><small><%= privacy_label(patient_network.privacy) %></small></td>
+    <!-- we can do multiple here -->
+    <% if false %><td><% if patient_network.notification_postscan %><span class="tag">LifeSticker Scanned</span><% end %></td><% end %>
+    <td><a href="#" data-popover="<%= index %>"><i class="material-icons">more_horizon</i></a></td>
+  </tr>
+  <% end %>
+  <% end %>
+</tbody>
+</table>
+</div>
+</article>
+</section>
+<% end %>
+
+<%= render :partial => 'admin/pagination', :locals => { :objects => @objects } %>
+
+
+<% if @patient.network_auditors_pending.length > 0 %>
+<h3>Pending Requests to View <%= @patient.first_name %>’s LifeSticker</h3>
+<section class="pillbox" name="pending" id="pending">
+<article>
+<div class="content">
+
+<table class="default">
+<thead>
+  <tr>
+    <th></th>
+    <th>Name</th>
+    <th>Requested</th>
+    <th>Actions</th>
+  </tr>
+</thead>
+<tbody>
+  <% @patient.network_auditors_pending.each_with_index do |patient_network, index| %>
+  <% patient = patient_network.auditor_patient %>
+  <% if patient %>
+  <tr>
+    <td class="avatar"><%= render :partial => 'components/patient_avatar', :locals => { :patient => patient, :size => 'small' } %></td>
+    <td><strong><%= patient.last_name %>, <%= patient.first_name %></strong><% if patient.account.provider? %><span class="tag provider-account" style="display: inline-block;position: relative; margin-left: 0.5rem; top: -2px;"><i class="material-icons">verified_user</i>Health care provider</span><% end %></td>
+    <td><%= patient_network.created_at.strftime("%m/%d/%Y") %></td>
+    <td><a href="#" data-popover="request-<%= index %>"><i class="material-icons">more_horizon</i></a></td>
+  </tr>
+  <% end %>
+  <% end %>
+</tbody>
+</table>
+
+</div>
+</article>
+</section>
+<% end %>
+
+
+<!--
+<section class="flow-control left">
+    <a href="#" class="button primary" id="add-connection" data-balloon-length="medium" data-balloon="Search for members and grant them viewing permission for your LifeSticker.">Add Connection</a>
+</section>
+-->
+
+</section>
+
+
+
+<% content_for :bodyextra do %>
+<%= render :partial => 'components/patient_popover', :locals => { :patient => @patient, :context => 'detail' } %>
+
+
+<div id="search-results-popovers"></div>
+
+<% @objects.each_with_index do |item, index| %>
+<div id="popover-<%= index %>" class="popover" data-auditor-id="<%= item.auditor_patient.uuid %>" data-granter-id="<%= item.granter_patient.uuid %>">
+    <h6><%= item.auditor_patient.name_extended %></h6>
+    <ul class="actions">
+        <li><a href="#" class="action-network-revoke">Remove Access</a></li>
+        <li class="divider"></li>
+        <li><small>Set Privacy To</small></li>
+
+        <% if item.auditor_patient.account.provider? %>
+        <% @privacy_options.each_with_index do |option, index2| %>
+        <% if index2 > 0 %>
+        <li><a href="#" class="privacy action-network-update-<%= option[:value] %>"><i class="material-icons"><%= option[:icon] %></i><%= option[:name] %></a></li>
+        <% end %>
+        <% end %>
+        <% else %>
+        <% @privacy_options.each do |option| %>
+        <li><a href="#" class="privacy action-network-update-<%= option[:value] %>"><i class="material-icons"><%= option[:icon] %></i><%= option[:name] %></a></li>
+        <% end %>
+        <% end %>
+
+        <li class="divider"></li>
+        <li><a href="<%= patient_show_webview_path(@patient.uuid, item.privacy) %>" class="">See how <%= item.auditor_patient.first_name %> sees your LifeSticker</a></li>
+    </ul>
+</div>
+<% end %>
+
+<% @patient.network_auditors_pending.each_with_index do |patient_network, index| %>
+<div id="popover-request-<%= index %>" class="popover" data-auditor-id="<%= patient_network.auditor_patient.uuid %>" data-granter-id="<%= patient_network.granter_patient.uuid %>">
+    <h6><%= patient_network.auditor_patient.name_extended %></h6>
+    <ul class="actions">
+        <li><a href="#" class="action-network-decline">Decline Request</a></li>
+        <li class="divider"></li>
+        <li><small>Accept w/ Privacy</small></li>
+        <% if patient_network.auditor_patient.account.provider? %>
+        <% @privacy_options.each_with_index do |option, index| %>
+        <% if index > 0 %>
+        <li><a href="#" class="privacy action-network-accept-<%= option[:value] %>"><i class="material-icons"><%= option[:icon] %></i><%= option[:name] %></a></li>
+        <% end %>
+        <% end %>
+        <% else %>
+        <% @privacy_options.each do |option| %>
+        <li><a href="#" class="privacy action-network-accept-<%= option[:value] %>"><i class="material-icons"><%= option[:icon] %></i><%= option[:name] %></a></li>
+        <% end %>
+        <% end %>
+    </ul>
+</div>
+<% end %>
+
+<% end %>
+
+
+<% content_for :js_bootstrap do %>
+<script>
+    // wire up the object actions
+    popover.init();
+
+
+    $(function(){
+
+      // STRAIGHT GHETTO TOWN
+    $('a.export-records').parent().hide();
+    $('a.import-records').parent().hide();
+      
+      $('#patientnav-network-outbound').addClass('active');
+    // common code for handling search UX
+    var PATIENT_UUID = '<%= @patient.uuid %>';
+
+    $('#search-submit').click(function(e){
+      search();
+    });
+
+    $('#search-keywords').on('keydown', function(e){
+      if(e.which == 27){
+        $(this).blur();
+      }
+      if(e.which == 13){
+        search();
+      }
+    });
+
+    function search(){
+      window.networkApi.search(
+        '<%= @patient.uuid %>',
+        { keywords: $('#search-keywords').val() },
+        function(data){
+          // render dem results son
+          dd007_renderSearchResults(data);
+        },
+        function(data){
+          window.alert(data);
+        }
+      );
+    }
+
+    function dd007_renderSearchResults(data){
+      // ok, we should be smart so we don't have to keep reloading our cells, but w/e
+      $('#search-results').empty();
+      
+      if(data.Patients.length){
+        // timewasters . com son
+        var t = $('<table class="default"><thead><tr><th></th><th>Name</th><th>Action</th></tr></thead><tbody></tbody></table>');
+        // ghetto wrapper son
+        var views = [];
+        var popovers = [];
+        // more compliant iterator, lol
+        var template = _.template($("#template-search-result-add").html());
+        var popTemplate = _.template($("#template-popover-grant").html());
+        data.Patients.forEach(function(item, index){
+          if(!item.IsAuditor){
+            views.push(template({profile: item}));
+            popovers.push(popTemplate({
+              AuditorName: item.FirstName + ' ' + item.LastName,
+              AuditorId: item.PatientUuid,
+              GranterId: PATIENT_UUID,
+              Provider: item.IsProvider
+            }));
+          }
+        });
+        t.find('tbody').append(views);
+        $('#search-results').append(t);
+
+        // clear da popovers son
+        $('#search-results-popovers').empty().append(popovers);
+        popover.init();
+
+      } else {
+        $('#search-results').html('<small>0 Results</small>');
+      }
+
+    }
+});
+
+
+</script>
+
+
+
+<% end %>

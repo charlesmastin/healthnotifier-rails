@@ -1,0 +1,21 @@
+<article class="user-thumbnail-circle<% if defined? size %> <%= size %><% end %>">
+    <p class="user-thumbnail">
+        <% if patient.photo_uid %>
+            <% pixels = 128 %>
+            <% if defined? size %>
+                <% if size == "xxlarge" %>
+                <% pixels = 640 %>
+                <% end %>
+                <% if size == "xlarge" %>
+                <% pixels = 320 %>
+                <% end %>
+                <% if size == "large" %>
+                <% pixels = 128 %>
+                <% end %>
+            <% end %>
+            <img src="<%= api_patient_photo_path(patient.uuid) %>?width=<%= pixels %>&amp;height=<%= pixels %>" alt="Profile Pic" />
+        <% else %>
+        <img src="<%= asset_path('user-thumbnail-default.png') %>" alt="Profile Photo" />
+        <% end %>
+    </p>
+</article>

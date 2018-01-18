@@ -1,0 +1,8 @@
+<% if state[:progress_index] < 7 %>
+<div class="onboarding-summary" id="component-onboarding-summary" data-popover="patient-onboarding">
+    <small>Setup Step <%= state[:display_step] %> of <%= state[:total_steps] %></small><i class="material-icons">arrow_drop_down</i>
+</div>
+<% if false %>
+<%= render :partial => 'components/patient_onboarding_progress', :locals => { :patient => @patient, :step => 2, :state => state } %>
+<% end %>
+<% end %>

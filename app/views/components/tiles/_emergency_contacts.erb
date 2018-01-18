@@ -1,0 +1,20 @@
+<article data-url="#">
+    <header><h4>Emergency Contacts</h4></header>
+    <section>
+        <% if @patient_details['emergency'].count > 0 %>
+        <% @patient_details['emergency'].each do |contact| %>
+        <article>
+            <strong><%= contact.first_name %> <%= contact.last_name %></strong>
+            <% if contact.list_advise_send_date %>
+            <small>Confirmed!</small>
+            <% else %>
+            <small>Re-send Confirmation</small>
+            <% end %>
+        </article>
+        <% end %>
+        <a style="margin-left: -0.5rem; margin-top: 0.5rem;" href="<%= patient_edit_emergency_contacts_path(patient.uuid) %>" class="button small xprimary">Edit Contacts</a>
+        <% else %>
+        <div class="blankstate"><p>There aren’t any contacts on file. We recommend adding at least one so we can notify them when your LifeSticker is scanned.</p><p><a href="<%= patient_edit_emergency_contacts_path(patient.uuid) %>" class="button small xprimary">Add Contact</a></p></div>
+        <% end %>
+    </section>
+</article>

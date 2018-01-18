@@ -1,0 +1,38 @@
+<section class="reveal-modal add-document" data-patient-uuid="<%= patient.uuid %>" data-endpoint="<%= api_document_upload_path %>" id="add-document-modal">    
+    <div class="modal-content">
+        <h2 class="title">Add Document</h2>
+
+        <!-- for for privacy, and document type -->
+        <!-- TODO: UI friendly version of picking doc type visually -->
+        <div class="line form-items">
+            <div class="xspan3 item xrequired">
+                <label for="add-document-document-type">Document Type</label>
+                <select id="add-document-document-type" name="document_type" size="1">
+                </select>
+            </div>
+            <div class="xspan2 item xrequired privacy-wrapper">
+                <label class="privacy-label" for="add-document-privacy">Privacy <a class="privacy-tooltip" href="#" title="Explain Privacy Settings"><i class="material-icons">help</i></a></label>
+                <select class="privacy" id="add-document-privacy" name="privacy" size="1">
+                    <% @privacy_options.each do |option| %>
+                    <option value="<%= option[:value] %>"><%= option[:name] %></option>
+                    <% end %>
+                </select>
+            </div>
+        </div>
+
+        <div id="photo-drop-target" class="drop-target">
+            <p>Drag and drop files here</p>
+            <span class="or">or</span>
+            <input type="file" accept="image/*,application/pdf" name="photo" class="photo-file" id="photo-file" multiple />
+        </div>
+
+        <section class="files"></section>
+
+        <p class="error-message"></p>
+
+        <section class="modal-flow-control">
+            <a href="#" class="button primary action-save">Save</a>
+            <a href="#" class="button action-cancel">Cancel</a>
+        </section>
+    </div>
+</section>

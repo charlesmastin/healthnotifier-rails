@@ -1,0 +1,143 @@
+<%= fields_for @campaign do |f| %>
+
+<article>
+    <div class="title">
+        <h3>Basics</h3>
+    </div>
+
+    <div class="content">
+        <div class="field">
+            <%= f.label :name, required: true %>
+            <%= f.text_field :name, :placeholder => 'Public name, something easily identifiable', required: true %>
+        </div>
+        <div class="field">
+            <%= f.label :campaign_status, required: true %>
+            <%= f.select :campaign_status, Campaign.campaign_statuses.keys.to_a %>
+            <small class="meta">Master active state (combine with dates)</small>
+        </div>
+        <div class="field">
+            <%= f.label :organization, required: true %>
+            <%= f.select :organization_id, Organization.all.collect { |p| [ p.name, p.id ] }, include_blank: true, required: true %>
+        </div>
+    </div>
+</article>
+
+<article>
+    <div class="title">
+        <h3>Dates</h3>
+    </div>
+    <div class="content">
+        <div class="field">
+            <%= f.label :start_date, required: true %>
+            <%= f.date_field :start_date %>
+            <small class="meta">Active for enrollment</small>
+        </div>
+        <div class="field">
+            <%= f.label :renewal_date %>
+            <%= f.date_field :renewal_date %>
+            <div><small>Unsure what this does</small></div>
+        </div>
+        <div class="field">
+            <%= f.label :end_date, required: true %>
+            <%= f.date_field :end_date %>
+            <small class="meta">Must Fill Out: No longer active for enrollment</small>
+        </div>
+    </div>
+</article>
+
+<article>
+    <div class="title">
+        <h3>Standard Pricing</h3>
+    </div>
+    <div class="content">
+        <div class="field">
+            <%= f.label :price_per_lifesquare_per_year, required: true %>
+            <%= f.number_field :price_per_lifesquare_per_year %>
+            <small class="meta">Unsure of this field, set to user shared cost<br />In USD cents (100 = $1.00)</small>
+        </div>
+        <div class="field">
+            <%= f.label :user_shared_cost_for_campaign, required: true %>
+            <%= f.number_field :user_shared_cost_for_campaign %>
+            <small class="meta">In USD cents (100 = $1.00)</small>
+        </div>
+        <% if @plans != nil and @plans.size > 0 %>
+        <div class="field">
+            <%= f.label :stripe_plan_key, required: true %>
+            <%= f.select :stripe_plan_key, @plans.map { |p| [ p[:name], p[:value] ] } %>
+        </div>
+        <% else %>
+        <div class="field">
+            <%= f.label :stripe_plan_key %>
+            <%= f.text_field :stripe_plan_key %>
+            <p><small>Unable to find any stripe plans, proceed with caution, be sure to validate plan on stripe</small></p>
+        </div>
+        <% end %>
+    </div>
+</article>
+
+<article>
+    <div class="title">
+        <h3>Promotions</h3>
+    </div>
+    <div class="content">
+        <div class="field">
+            <%= f.label :promo_code %>
+            <%= f.text_field :promo_code %>
+        </div>
+        <div class="field">
+            <%= f.label :promo_price %>
+            <%= f.number_field :promo_price %>
+            <small class="meta">In USD cents (100 = $1.00)</small>
+        </div>
+        <div class="field">
+            <%= f.label :promo_start_date %>
+            <%= f.date_field :promo_start_date %>
+        </div>
+        <div class="field">
+            <%= f.label :promo_end_date %>
+            <%= f.date_field :promo_end_date %>
+        </div>
+    </div>
+</article>
+
+<article>
+    <div class="title">
+        <h3>Misc</h3>
+    </div>
+    <div class="content">
+        <% if !@campaign.new_record? %>
+        <div class="field">
+            <%= f.label :uuid %>
+            <%= f.text_field :uuid, :placeholder => 'UUID', readonly: true %>
+        </div>
+        <% end %>
+        <div class="field">
+            <%= f.label :requires_shipping %>
+            <%= f.check_box :requires_shipping %>
+        </div>
+        <div class="field">
+            <%= f.label :pre_signup_memo %>
+            <%= f.text_area :pre_signup_memo, :placeholder => 'Custom note displayed before checkout success but after entering a tagged lifesquare / campaign promo code' %>
+        </div>
+        <div class="field">
+            <%= f.label :post_signup_memo %>
+            <%= f.text_area :post_signup_memo, :placeholder => 'Custom note displayed after checkout success' %>
+        </div>
+        <div class="field">
+            <%= f.label :start_up_fee %>
+            <%= f.number_field :start_up_fee %>
+        </div>
+        <div class="field">
+            <%= f.label :description %>
+            <%= f.text_area :description %>
+        </div>
+        <% if !@campaign.new_record? %>
+        <div class="field">
+            <label>Landing Page URL</label>
+            <div><a href="<%= campaign_show_url(@campaign.uuid) %>" target="_blank"><%= campaign_show_url(@campaign.uuid) %></a></div>
+        </div>
+        <% end %>
+    </div>
+</article>
+
+<% end %>

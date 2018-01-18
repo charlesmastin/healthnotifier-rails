@@ -1,0 +1,29 @@
+<script id="allergy-item" type="text/html">
+    <div class="item-view row" style="display: none;">
+        <h3>{{allergen}}</h3>
+        <p>{{reaction}}</p>
+    </div>
+    <div class="item-edit row">
+        <input type="hidden" name="allergy-name" id="allergy-{{record_order}}-name" value="{{allergy}}">
+        <input type="hidden" name="allergy-imo" id="allergy-{{record_order}}-imo" value="{{imo_code}}">
+        <input type="hidden" name="allergy-icd9" id="allergy-{{record_order}}-icd9" value="{{icd9_code}}">
+        <input type="hidden" name="allergy-icd10" id="allergy-{{record_order}}-icd10" value="{{icd10_code}}">
+        <div class="field span4 required">
+            <label for="allergy-{{record_order}}">Allergy</label>
+            <input class="item-input span4 allergy" type="text" name="allergen" value="{{allergen}}" id="allergy-{{record_order}}" placeholder="Name">
+            <p class="error-message span4" data-for="allergy-{{record_order}}">Please enter an allergy</p>
+        </div>
+        <div class="field span3">
+            <label for="reaction-{{record_order}}">Reaction</label>
+            <select class="span3 reaction" name="reaction" id="reaction-{{record_order}}" size="1">
+                <option value="">&mdash;</option>
+                <%= options_for_select(@reactions.map {|item| [item[:name], item[:value]] }) %>
+            </select>
+            <p class="error-message span3" data-for="reaction-{{record_order}}">Reaction is required</p>
+        </div>
+        <div class="field span1 privacy-wrap">
+            <%= render :partial => 'components/privacy', :locals => { :field => 'allergy' } %>
+        </div>
+        <%= render :partial => 'components/remove_row_button' %>
+    </div>
+</script>

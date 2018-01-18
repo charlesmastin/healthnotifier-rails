@@ -1,0 +1,130 @@
+#plan-designer-tm {
+
+    .question-groups {
+        box-sizing: border-box;
+    }
+
+    .question-group {
+        padding: 1rem;
+        margin-bottom: 2rem;
+        @include surface-alt-1;
+        border-radius: 0.5rem;
+
+        header {
+            @include clearfix;
+            h6 {
+                float: left;
+            }
+            div.actions {
+                float: right;
+            }
+        }
+
+    }
+
+    .question-editor {
+        header {
+            input, textarea {
+                width: 30rem;
+            }
+            textarea {
+                height: 2rem;
+                width: 100%;
+            }
+
+        }
+        & + .question-editor {
+            border-top: 1px solid $black-30;
+            padding-top: 2rem;
+        }
+    }
+
+    .choices {
+        margin-bottom: 1rem;
+    }
+
+    .triggers {
+        border: 2px dashed $green2016;
+        padding: 0.5rem;
+        ul {
+            li {
+                margin-bottom: 0.25rem;
+            }
+        }
+        i {
+            position: relative;
+            top: 0.3rem;
+            color: $red2016;
+        }
+
+        &.aggregate {
+            margin-top: 3rem;
+        }
+    }
+
+    .recommendation {
+        padding: 1rem;
+        margin-bottom: 2rem;
+        @include surface-alt-1;
+        border-radius: 0.5rem;
+
+        // background: $green2016;
+
+        textarea {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 0.5rem;
+            background: white;
+            height: 10rem !important;
+        }
+
+        // knowingly duplicated this from .question-group
+        header {
+            @include clearfix;
+            h6 {
+                float: left;
+            }
+            div.actions {
+                float: right;
+            }
+        }
+    }
+
+    input.slim {
+        width: 4rem;
+    }
+
+    ul.choices {
+        margin-top: 1rem;
+        margin-left: 2rem;
+    }
+
+    .insert-group {
+        text-align: center;
+        margin-bottom: 1rem;
+    }
+
+    a.removeitson {
+        
+    }
+
+    select.monospaced {
+        font-family: monospace;
+        option {
+            font-family: monospace;
+        }
+    }
+
+    .row.floated-elements {
+        @include clearfix;
+        div.field {
+            float: left;
+            margin-left: 2rem;
+            &:first-child {
+                margin-left: 0;
+            }
+        }
+    }
+
+}
+

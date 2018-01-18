@@ -1,0 +1,25 @@
+<section id="delete-patient-modal" class="reveal-modal account-modal delete-modal">
+    <div class="modal-content">
+        <h2>Delete profile?</h2>
+
+        <section class="patients-summary">
+            <%= render :partial => 'components/patient_summary_item', :locals => { :patient => patient } %>
+        </section>
+
+        <p>Paramedics won’t be able to retrieve essential health information in an emergency. Any recurring subscriptions will be cancelled and no partial refunds will be issued. If you would like to continue, please type <strong>DELETE</strong> into the confirmation field.</p>
+
+        <p>If you haven’t already, we encourage you to <a href="#" class="export-records">download a copy</a> of your HealthNotifier profile. Health care providers may be able to import this data into their systems.</p>
+
+        <div class="basic-form" style="margin-bottom: 2rem;">
+            <div class="field span2">
+                <label>Confirmation</label>
+                <input class="south-of-the-border delete-confirmation" type="text" placeholder="" id="delete-patient-confirmation" name="confirmation" />
+            </div>
+        </div>
+
+        <section class="modal-flow-control">
+            <a href="#" class="button primary cancel-delete-patient">Cancel</a>
+            <a href="#" data-patient-uuid="<%= patient.uuid %>" data-url="<%= api_patient_delete_path(patient.uuid) %>" class="button delete-patient-action">Delete Profile</a>
+        </section>
+    </div>
+</section>

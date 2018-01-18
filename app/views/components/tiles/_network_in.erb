@@ -1,0 +1,45 @@
+<% if patient.has_current_coverage %>
+<article data-url="#" class="tile tile-network-out">
+    <header><h4>Shared With You</h4><% if patient.network_granters.count > 0 %><span class="bolt-on">(<%= patient.network_granters.count %> total)</span><% end %></header>
+    <section>
+        
+        <!-- shared with you -->
+        <% if patient.network_granters.count > 0 %>
+        <section class="connection-wrapper">
+        <!-- <h6>Connections</h6> -->
+        <% patient.network_granters.each_with_index do |patient_network, index| %>
+        <% if index < 10 %>
+        <% thepatient = patient_network.granter_patient %>
+        <% if thepatient %>
+        <article class="connection" title="<%= thepatient.name %>">
+            <a href="<%= network_webview_path(patient_network.granter_patient.uuid, patient_network.auditor_patient.uuid) %>"><%= render :partial => 'components/patient_avatar', :locals => { :patient => thepatient, :size => 'small' } %></a>
+        </article>
+        <% end %>
+        <% end %>
+        <% end %>
+        <% if patient.network_granters.count > 10 %>
+        <article class="connection">
+            <span class="tag" style="position: relative; top: 7px;">+ <%= (patient.network_granters.count - 10) %> more</span>
+        </article>
+        <% end %>
+        </section>
+        <p><a style="position: relative; left: -0.5rem;" href="<%= patient_show_network_inbound_path(patient.uuid) %>" class="button small xprimary">Manage Connections</a></p>
+        <% end %>
+
+        <!-- pending invites -->
+        <% if patient.network_granters_pending.count > 0 %>
+        <div class="blankstate">
+            <p>There are <strong><%= patient.network_granters_pending.count %></strong> invites you have sent.</p>
+            <% if patient.network_granters.count == 0 %>
+            <p><a href="<%= patient_show_network_inbound_path(patient.uuid) %>" class="button small xprimary">Find Connections</a></p>
+            <% end %>
+        </div>
+        <% end %>
+        
+        <!-- blank state -->
+        <% if patient.network_granters.count == 0 && patient.network_granters_pending.count == 0 %>
+        <div class="blankstate"><p>There aren’t any connections on file.</p><p><a href="<%= patient_show_network_inbound_path(patient.uuid) %>" class="button small xprimary">Find Connections</a></p></div>
+        <% end %>
+    </section>
+</article>
+<% end %>

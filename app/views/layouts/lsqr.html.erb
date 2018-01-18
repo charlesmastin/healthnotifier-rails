@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>HealthNotifier</title>
+    <meta name="description" content="">
+    <meta name="author" content="HealthNotifier">
+    <meta name="apple-itunes-app" content="#">
+    <!-- , app-argument=myURL -->
+    <link href="/favicon.png" rel="shortcut icon" type="image/png" />
+    <%= stylesheet_link_tag "application" %>
+    <link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <%= yield :stylesheets %>
+    <%= javascript_include_tag "application" %>
+    <%= yield :js_head %>
+    <%= csrf_meta_tags %>
+    <!-- IE edge times? -->
+    <meta name="Content-Security-Policy" content="img-src *">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+</head>
+<body<%= yield :body_class %>>
+    <%= yield :below_header %>
+    <main id="main">
+        <%= render :partial => 'shared/notifications' %>
+        <%= yield :messaging %>
+        <section class="page-title">
+        <%= yield :pagetitle %>
+        </section>
+        <!-- main guts -->
+        <%= yield %>
+    </main>
+    <%= yield :bodyextra %>
+    <footer>
+        <h3>For full functionality, please get our apps</h3>
+        <div class="apps-promo-neue">
+        <a class="badge-ios" href="#">
+            <%= image_tag "badge-ios.png" %>
+        </a>
+        <a class="badge-android" href="#">
+            <%= image_tag "badge-android.png" %>
+        </a>
+        </div>
+        <hr />
+        <span class="copyright">© <%= Time.now.strftime("%Y") %> LifeQode, Inc.</span>
+        <ul class="inline">
+            <li><a href="https://www.domain.com/about/">About Us</a></li>
+            <li><a href="https://www.domain.com/help/">Support</a></li>
+            <li><a href="https://www.domain.com/privacy/">Privacy</a></li>
+            <li><a href="https://www.domain.com/terms/">Terms</a></li>
+            <li><a href="mailto:feedback@domain.com">Feedback</a></li>
+        </ul>
+    </footer>
+    <%= yield :js_bootstrap %>
+    <% if request.host.include? "domain.com" %>
+    <script type="text/javascript">
+        <%= render :partial => "shared/google_analytics" %>
+    </script>
+    <% end %>    
+</body>
+</html>

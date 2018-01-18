@@ -1,0 +1,93 @@
+<script id="physician-item" type="text/html">
+    <div class="row">
+        <div class="field span4">
+            <label for="doctor-first-name-{{record_order}}">First Name</label>
+            <input class="span3" type="text" name="first_name" value="{{first_name}}" id="doctor-first-name-{{record_order}}">
+            <p class="error-message" data-for="doctor-first-name-{{record_order}}">Please enter a first name</p>
+        </div>
+        <div class="field span4 required">
+            <label for="doctor-last-name-{{record_order}}">Last Name</label>
+            <input class="span4" type="text" name="last_name" value="{{last_name}}" id="doctor-last-name-{{record_order}}">
+            <p class="error-message" data-for="doctor-last-name-{{record_order}}">Please enter a last name</p>
+        </div>
+        <%= render :partial => 'components/remove_row_button' %>
+    </div>
+
+    <div class="row">
+        <div class="field span3">
+            <label for="doctor-phone-{{record_order}}">Phone Number</label>
+            <input class="span3" type="phone" name="phone1" value="{{phone1}}" id="doctor-phone-{{record_order}}">
+            <p class="error-message" data-for="doctor-phone-{{record_order}}">Please enter a valid phone number</p>
+        </div>
+        <div class="field span4">
+            <label for="doctor-specialization-{{record_order}}">Specialization</label>
+            <select class="span4 care_provider_class" name="care_provider_class" id="doctor-specialization-{{record_order}}" size="1">
+                <option value="">&mdash;</option>
+                <%= options_for_select(@care_provider_classes.map {|item| [item[:name], item[:value]] }) %>
+            </select>
+            <p class="error-message" data-for="doctor-specialization-{{record_order}}">Please select a specialization</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="field span5">
+            <label for="doctor-facility-name-{{record_order}}">Facility Name</label>
+            <input class="span5" type="text" name="medical_facility_name" value="{{medical_facility_name}}" id="doctor-facility-name-{{record_order}}">
+            <p class="error-message" data-for="doctor-facility-name-{{record_order}}">Please enter a facility name</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="field span4">
+            <label for="doctor-home-street-address-{{record_order}}">Street Address</label>
+            <input class="span4" type="text" name="address_line1" value="{{address_line1}}" id="doctor-home-street-address-{{record_order}}">
+            <br>
+            <span class="error-message" data-for="doctor-home-street-address-{{record_order}}">Please enter a street address</span>
+        </div>
+        <div class="field span2">
+            <label class="span2" for="doctor-home-apt-{{record_order}}">Suite</label>
+            <input class="span2" type="text" name="address_line2" value="{{address_line2}}" id="doctor-home-apt-{{record_order}}">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="field span4">
+            <label for="doctor-home-city-{{record_order}}">City</label>
+            <input type="text" class="span4" name="city" value="{{city}}" id="doctor-home-city-{{record_order}}">
+            <br>
+            <span class="error-message" data-for="doctor-home-city-{{record_order}}">Please enter a city</span>
+        </div>
+        <div class="field span3">
+            <label class="span3" for="doctor-home-state-{{record_order}}">State / Province</label>
+            <select class="span3 state_province" name="state_province" id="doctor-home-state-{{record_order}}">
+                <option value="">&mdash;</option>
+                <%= options_for_select(@us_states.map {|item| [item[:name], item[:value]] }) %>
+            </select>
+            <input class="span1 state_province" type="text" name="state_province" value="{{state_province}}" id="doctor-home-state-{{record_order}}">
+            <span class="error-message" data-for="doctor-home-state-{{record_order}}">Please enter a valid state</span>
+        </div>
+        <div class="field span2">
+            <label class="span2" for="doctor-home-postal-code-{{record_order}}">Postal Code</label>
+            <input class="span2" type="text" name="postal_code" value="{{postal_code}}" id="doctor-home-postal-code-{{record_order}}">
+            <br>
+            <span class="error-message" data-for="doctor-home-postal-code-{{record_order}}">Please enter a valid postal code</span>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="field span4 x-required">
+            <label class="span4" for="doctor-country-{{record_order}}">Country</label>
+            <select class="span4 country" name="country" id="doctor-country-{{record_order}}">
+                <option value="">&mdash;</option>
+                <%= options_for_select(@countries.map {|item| [item[:name], item[:value]] }) %>
+            </select>
+            <span class="error-message" data-for="doctor-country-{{record_order}}"><br>Please select a country</span>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="field span2">
+            <%= render :partial => 'components/privacy', :locals => { :field => 'doctor' } %>
+        </div>
+    </div>
+</script>

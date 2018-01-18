@@ -1,0 +1,11 @@
+<article>
+<%= pharmacy.name %>
+<span class="tag privacy <%= pharmacy.privacy %>"><%= privacy_label(pharmacy.privacy) %></span>
+<br>
+<% if pharmacy.phone.present? %>
+    <%= format_phone(pharmacy.phone) %><br>
+<% end %>
+<% if (addr = format_address(pharmacy)).present? %>
+    <%= addr %><br>
+<% end %>
+</article>

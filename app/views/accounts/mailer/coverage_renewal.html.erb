@@ -1,0 +1,12 @@
+<p>Thank you for using HealthNotifier. The subscription for the HealthNotifier member <%= patient.name %> is going to expire.</p>
+
+<% if campaign %>
+  <p>This HealthNotifier account was originally sponsored under <% campaign.name %></p>
+  <% if(campaign.user_shared_cost_for_campaign > 0)%>
+    <p>Your subsidized subscription costs $<% campaign.user_shared_cost_for_campaign %> per year.</p>
+  <% end %>
+<% end %>
+
+<p>You can renew your subscription through the following link: </p>
+
+<%= link_to "Account profiles", patients_path %>

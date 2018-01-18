@@ -1,0 +1,75 @@
+<section class="page-title">
+	<h1>Sticker fullfillment queue</h1>
+	<p>Items must be downloaded, printed, and mailed. Full workflow management coming as scale demands</p>
+</section>
+
+<%= render :partial => 'shared/admin_sidebar' %>
+
+<section id="main-column">
+<section class="pillbox">
+<article>
+<div class="content">
+<form action="download" method="post">
+<input type="hidden" name="mode" value="" />
+<table class="default">
+	<thead>
+		<tr>
+			<th>Kind</th>
+			<th>Num Lifesquares</th>
+			<th>Num Sheets</th>
+			<th>Action</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><strong>New Requests</strong></td>
+			<td><%= @outstanding_request_new_count.to_s %></td>
+			<td><%= (@outstanding_request_new_count.to_f / 3.to_f).ceil %></td>
+			<td><% if @outstanding_request_new_count > 0 %><a href="#" id="download-new" class="button primary">Download Latest</a><% end %></td> 
+		</tr>
+		<tr>
+			<td><strong>Reprint Requests</strong></td>
+			<td><%= @outstanding_request_reprint_count.to_s %></td>
+			<td><%= (@outstanding_request_reprint_count.to_f / 3.to_f).ceil %></td>
+			<td><% if @outstanding_request_reprint_count > 0 %><a href="#" id="download-reprint" class="buton primary">Download Latest</a><% end %></td> 
+		</tr>
+		<!--
+		<tr>
+			<td>Total Outstanding</td>
+			<td><%= @outstanding_request_count.to_s %></td>
+			<td></td>
+			<td></td>
+		</tr>
+		-->
+	</tbody>
+</table>
+</form>
+</div>
+</article>
+</section>
+
+<section class="flow-control left">
+	<a href="<%= admin_create_test_sheet_path %>" class="button">Create Test Sheet</a>
+</section>
+
+</section>
+
+<% content_for :js_bootstrap do %>
+<script>
+$(function(){
+	// TODO: handle a reload, of this page, after submission? because of the controller send file business.
+	// Submit the form with ajax, son, maybe?
+	var form = $('form')[0];
+	$('#download-new').click(function(){
+		$('input[name="mode"]').val('new');
+		form.submit();
+		return false;
+	});
+	$('#download-reprint').click(function(){
+		$('input[name="mode"]').val('reprint');
+		form.submit();
+		return false;
+	});
+});
+</script>
+<% end %>

@@ -1,0 +1,14 @@
+<!-- semi sketchy -->
+<p><strong>Applicant</strong><br />
+<%= provider_credential.patient.fullname %><br />
+<%= provider_credential.patient.account.email %><br />
+<%= provider_credential.patient.account.mobile_phone %></p>
+
+<p><strong>Supervisor</strong><br />
+<%= provider_credential.supervisor_name %><br />
+<%= provider_credential.supervisor_contact_email %><br />
+<%= provider_credential.supervisor_contact_phone %> <%= provider_credential.supervisor_contact_phone_ext %></p>
+
+<hr />
+
+<p style="font-size: 1.4rem"><a href="<%= admin_provider_credentials_show_url(provider_credential.id) %>">Review Submission</a></p> 

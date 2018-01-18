@@ -1,0 +1,62 @@
+<% if account_signed_in? %>
+<footer id="footer" class="authenticated">
+    <div class="inner">
+        <span class="copyright">© <%= Time.now.strftime("%Y") %> LifeQode, Inc.</span>
+        <ul class="inline">
+            <li><a href="https://www.domain.com/about/">About Us</a></li>
+            <li><a href="https://www.domain.com/help/">Support</a></li>
+            <li><a href="https://www.domain.com/privacy/">Privacy</a></li>
+            <li><a href="https://www.domain.com/terms/">Terms</a></li>
+            <li><a href="mailto:feedback@domain.com">Feedback</a></li>
+        </ul>
+        <ul class="inline">
+            <li><a href="#" target="_blank">Get iOS App</a></li>
+            <li><a href="#" target="_blank">Get Android App</a></li>
+        </ul>
+    </div>
+</footer>
+
+<% else %>
+<footer id="footer" class="public">
+    <div class="inner">
+        <article>
+            <h6>Additional Information</h6>
+            <nav>
+                <ul>
+                    <li><a href="https://www.domain.com/about/">About Us</a></li>
+                    <li><a href="https://www.domain.com/help/">Support</a></li>
+                    <li><a href="https://www.domain.com/privacy/">Privacy</a></li>
+                    <li><a href="https://www.domain.com/terms/">Terms</a></li>
+                    <li><a href="https://www.domain.com/press/">Press</a></li>
+                </ul>
+            </nav>
+            <p><small class="copyright">© <%= Time.now.strftime("%Y") %> LifeQode, Inc.</small></p>
+        </article>
+        
+        <article>
+            <h6>Contact Us</h6>
+
+            <p style="margin-bottom: 0.5rem;"><a href="mailto:feedback@domain.com" class="button action-feedback"><i class="material-icons">feedback</i>Provide Feedback</a></p>
+
+            <p><small>HealthNotifier<br />
+            50 Hawthorne St,<br />
+            San Francisco, CA 94105<br />
+            <a href="mailto:info@domain.com">info@domain.com</a></small></p>
+
+
+        </article>
+
+        <article>
+            <h6>HealthNotifier Apps</h6>
+            
+            <p style="margin-bottom: 0;">
+                <a class="badge-ios" href="#" style="display:inline-block;overflow:hidden;background:url(https://linkmaker.itunes.apple.com/images/badges/en-us/badge_appstore-lrg.svg) no-repeat;width:165px;height:40px; margin-bottom: 0.25rem; zoom: 1.23"></a>
+            </p>
+            <p style="margin-top: 0;">
+                <a class="badge-android" href="#"><img style="width:165px;" alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/images/apps/en-play-badge.png" /></a>
+            </p>
+        </article>
+        
+    </div>
+</footer>
+<% end %>

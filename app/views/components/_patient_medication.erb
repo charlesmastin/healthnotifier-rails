@@ -1,0 +1,6 @@
+<article>
+<%= medication.therapy %>
+&nbsp;<span class="fine-detail"><%= medication.strength_dose(false) %></span>
+&nbsp;<span class="tag privacy <%= medication.privacy %>"><%= privacy_label(medication.privacy) %></span>
+<% if medication.is_flagged %><span class="alert-med"><i class="material-icons">warning</i></span><% end %>
+</article>

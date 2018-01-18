@@ -1,0 +1,62 @@
+<section class="page-title">
+    <h1>Campaigns</h1>
+</section>
+
+<%= render :partial => 'admin/sidebar' %>
+
+<section id="main-column">
+
+<section class="pillbox">
+<article>
+<div class="content">
+<table class="default datagrid">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Org</th>
+        <th title="Claimed / total provisioned"># LSQ</th>
+        <th>Status</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @objects.each do |item| %>
+      <tr>
+        <td><a href="<%= admin_campaign_edit_path(item.id) %>"><strong><%= item.name %></strong></a></td>
+        <td><% if item.organization %><%= item.organization.name %><% end %></td>
+        <td><small><strong><%= item.claimed_lifesquares_count %></strong> of <%= item.total_lifesquares_count %></small></td>
+        <td><%= item.campaign_status.titleize %></td>
+        <td>
+            <a href="#" style="display: inline-block;" data-popover="campaign-<%= item.id %>"><i class="material-icons">more_horizon</i></a>
+        </td>
+      </tr>
+    <% end %>
+    </tbody>
+</table>
+</div>
+</article>
+</section>
+
+<a data-balloon="Create Campaign" class="circler" href="<%= admin_campaign_new_path %>"><i class="material-icons md-48">add_circle</i></a>
+
+<%= render :partial => 'admin/pagination', :locals => { :objects => @objects } %>
+
+</section>
+
+<% @objects.each do |item| %>
+<div id="popover-campaign-<%= item.id %>" class="popover">
+    <ul class="actions">
+        <li><a href="<%= admin_campaign_edit_path(item.id) %>">Edit</a></li>
+        <li><a href="#" class="disabled">Add Batch</a></li>
+        <li class="divider"></li>
+        <li><a href="<%= admin_campaign_destroy_path(item.id) %>">Delete</a></li>
+    </ul>
+</div>
+<% end %>
+
+<% content_for :js_bootstrap do %>
+<script>
+    // wire up the object actions
+    popover.init();
+</script>
+<% end %>

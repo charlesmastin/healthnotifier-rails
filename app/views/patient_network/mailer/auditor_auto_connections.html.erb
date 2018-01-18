@@ -1,0 +1,16 @@
+<p>The following profiles were automatically added as network connections per your campaign TOS:</p>
+
+<table>
+<thead>
+<tr>
+    <th>Profiles</th>
+</tr>
+</thead>
+<tbody>
+<% connections.each do |connection| %>
+<tr>
+    <td><span style="font-size: 1.2rem;"><%= render :partial => 'components/lifesquare_masked', :locals => { :lifesquare => connection.granter_patient.lifesquare_code_str } %></span></td>
+</tr>
+<% end %>
+</tbody>
+</table>

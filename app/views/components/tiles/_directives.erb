@@ -1,0 +1,10 @@
+<% if @patient_details['directives'].length > 0 %>
+<article>
+    <header><%= image_tag "icons/caduceus.png" %><h4><a href="<%= patient_edit_medical_path(@patient.uuid) %>#directive">Directives</a></h4></header>
+    <section>
+        <% @patient_details['directives'].each do |pha| %>
+        <article><a href="<%= document_show_path(pha.document_digitized.uid) %>"><%= humanize_dd_category(pha.document_digitized.category) %></a></article>
+        <% end %>
+    </section>
+</article>
+<% end %>

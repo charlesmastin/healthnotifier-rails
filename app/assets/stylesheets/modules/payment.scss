@@ -1,0 +1,51 @@
+.payment-errors {
+    color: #A92727;
+}
+
+#stripe-card-fields-container.hidden {
+    display: none;
+}
+
+#promo-status {
+    margin-left: 0.5rem;
+    span, img {
+        display: none;
+        &.active {
+            display: inline;
+        }
+    }
+}
+
+#payment .success {
+    color: $green2016;
+    i {
+        position: relative;
+        top: 6px;
+        margin-right: 0.25rem;
+    }
+}
+
+#payment .error {
+    color: $red2016;
+    i {
+        position: relative;
+        top: 6px;
+        margin-right: 0.25rem;
+    }
+}
+
+#coverage-cost-formatted {
+    .og-cost {
+
+    }
+    .promo-cost {
+        display: none;
+        background: $blue2016;
+        // color: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 0 0.5rem;
+        &.active {
+            display: inline;
+        }
+    }
+}

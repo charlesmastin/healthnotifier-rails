@@ -1,0 +1,119 @@
+// setup some critical media queries for width
+@media only screen and (max-width: 1280px) {
+    // retune the app width
+    $w: 90%;
+    header.app-header div.inner,
+    footer#footer div.inner,
+    #patient-transaction-bar div.inner,
+    body main#main {
+        width: $w;
+    }
+}
+
+@media only screen and (max-width: 960px) {
+    // retune the app width
+    $w: 90%;
+    header.app-header div.inner,
+    footer#footer div.inner,
+    #patient-transaction-bar div.inner,
+    body main#main {
+        width: $w;
+    }
+    // cards grid include son
+
+    section.cards {
+        & > article {
+            @include grid-columns(2, 1, 2.5%);
+        }
+    }
+    /*
+    section.tiles {
+        & > article {
+            @include grid-columns(1, 1, 2.5%);
+        }
+    }
+    */
+}
+
+@media only screen and (max-width: 640px) {
+    // retune the app width
+    $w: 95%;
+    header.app-header div.inner,
+    footer#footer div.inner,
+    #patient-transaction-bar div.inner,
+    body main#main {
+        width: $w;
+    }
+
+    footer#footer .inner {
+        article {
+            @include grid-columns(1, 1, 10%);
+        }
+    }
+
+    // cards grid include son
+
+    section.cards {
+        & > article {
+            @include grid-columns(1, 1, 2.5%);
+        }
+    }
+
+    .pillbox {
+        & > article {
+            & > .title {
+                width: 100%;
+                text-align: center;
+                float: none;
+                clear: both;
+                // border-bottom: 1px solid;
+            }
+
+            & > .content {
+                width: 100% !important;
+                float: none;
+                clear: both;
+                padding: 1rem !important;
+                box-sizing: border-box;
+            }
+        }
+    }
+
+    .entries {
+        p.add {
+            text-align: center;
+        }
+    }
+
+    .reveal-modal {
+        width: 100%;
+        top: 0 !important;
+        box-sizing: border-box !important;
+        padding: 1rem;
+        left: 0;
+        // right: 0.5rem;
+        // margin-left: 0.5rem;
+        margin-left: 0;
+        margin-top: 0rem;
+    }
+
+    // drop the width definition of literally all of our old bootsface balls
+    .span6, .span7, .span8, .span9, .span10, .span11, .span12 {
+        width: auto !important;
+    }
+}
+
+// for height
+@media only screen and (max-height: 640px) {
+    .reveal-modal {
+        width: 100%;
+        top: 0 !important;
+        box-sizing: border-box !important;
+        padding: 1rem;
+        left: 0;
+        // right: 0.5rem;
+        // margin-left: 0.5rem;
+        margin-left: 0;
+        margin-top: 0rem;
+    }    
+}

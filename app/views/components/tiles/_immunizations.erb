@@ -1,0 +1,10 @@
+<% if @patient_details['immunizations'].length > 0 %>
+<article data-url="#">
+    <header><%= image_tag "icons/pill.png" %><h4><a href="<%= patient_edit_medical_path(@patient.uuid) %>#immunization">Immunizations</a></h4></header>
+    <section>
+        <% @patient_details['immunizations'].each do |immunization| %>
+        <%= render :partial => 'components/patient_immunization', :locals => { :immunization => immunization } %>
+        <% end %> 
+    </section>
+</article>
+<% end %>

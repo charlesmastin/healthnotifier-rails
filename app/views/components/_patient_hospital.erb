@@ -1,0 +1,11 @@
+<article>
+<%= hospital.name %>
+<span class="tag privacy <%= hospital.privacy %>"><%= privacy_label(hospital.privacy) %></span>
+<br>
+<% if hospital.phone.present? %>
+    <%= format_phone(hospital.phone) %><br>
+<% end %>
+<% if (addr = format_address(hospital)).present? %>
+    <%= addr %>
+<% end %>
+</article>

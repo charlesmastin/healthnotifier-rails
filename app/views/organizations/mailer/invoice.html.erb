@@ -1,0 +1,19 @@
+<h3><%= account.this_is_me_maybe.first_name %></h3>,
+<p>We have created an invoice for the organization <strong><%= organization.name %></strong> and you are listed as an admin contact. Our customer support staff will follow up to make any necessary changes to your organization within 24 hours of submitting payment. Thank you for your continued use of HealthNotifier.</p>
+<hr />
+<dl>
+    <dt>Invoice Id</dt>
+    <dd><%= invoice.uuid %></dd>
+    <dt>Invoice Name</dt>
+    <dd><%= invoice.title %></dd>
+    <dt>Invoice Amount</dt>
+    <dd><%= number_to_currency(invoice.amount / 100) %></dd>
+    <dt>Invoice Due Date</dt>
+    <dd><%= invoice.due_date.strftime('%m/%d/%-Y') %></dd>
+    <dt>Invoice Description</dt>
+    <dd><%= simple_format invoice.description.html_safe %></dd>
+</dl>
+<hr />
+
+<p>To review and pay the invoice on our secure portal, please log in at https://www.domain.com and click My Business in the top navigation. Then click the link for this invoice on your organization homepage.</p>
+

@@ -1,0 +1,269 @@
+#main-column {
+    div.line.title {
+        @include clearfix;
+        margin-bottom: 1rem;
+        h2 {
+            display: inline;
+        }
+        a {
+            position: relative;
+            top: -1px;
+            display: inline;
+            line-height: auto;
+            padding: 0 0.25rem 0.25rem 0.25rem;
+            margin-left: 0.25rem;
+        }
+    }
+}
+
+#patient-coverage-summary {
+    padding: 0 0.5rem;
+}
+
+// edit profile, jank placeholder
+#signup-personal {
+    h3 {
+        margin: 1rem 0 0.25rem 0;
+    }
+}
+
+section.flow-control {
+    text-align: right;
+    &.left {
+        text-align: left;
+    }
+}
+
+section.modal-flow-control {
+    padding-top: 2rem;
+    border-top: 1px solid $strokesForFolks;
+}
+
+.privacy-tooltip {
+    color: $textgray;
+    position: relative;
+    top: 3px;
+    .material-icons {
+        font-size: 1rem;
+    }
+    &:hover {
+        color: $blue2016;
+    }
+}
+
+p.blankstate {
+    opacity: 0.5;
+}
+
+// janktown USA backbone stuffs son
+input.presence {
+    margin-left: 1rem;
+    margin-right: 0.25rem;
+}
+
+.entries {
+
+    @include clearfix;
+    // TODO: between entries that need HR like separation SON
+
+    .destroy-container {
+        position: relative;
+        top: 1.25rem;
+        margin-left: 1rem;
+        // opacity: 0.3;
+        a.destroy {
+            outline: none;
+            i {
+                color: $red2016;
+                color: $textgray;
+                color: $black-30;
+            }
+            &:hover {
+                i {
+                    color: $red2016;
+                }
+            }
+        }
+    }
+
+    // slim content
+    &.compact {
+        .item + .item {
+            margin-top: 1rem;
+        }
+    }
+
+    // dense forms that need space
+    &.expanded {
+        .item + .item {
+            margin-top: 4rem;
+        }
+    }
+
+    .item:hover {
+        .destroy-container {
+            //opacity: 1.0;
+        }
+    }
+
+    .privacy-control {
+        position: relative;
+        top: 4px;
+    }
+}
+
+.entries + .create {
+    margin-top: 1rem;
+    // display: none;
+}
+
+.entries + .create.always-visible {
+    display: inline-block;
+}
+
+label.privacy-label {
+    position: relative;
+    // top: -2px;
+    & + .custom-select-container {
+        top: 2px;
+    }
+}
+a.privacy-tooltip {
+    position: relative;
+}
+select.privacy {
+    position: relative;
+}
+
+
+#blue-button-promo {
+    p.promo {
+        font-size: 2rem;
+    }
+}
+
+.delete-confirmation {
+    padding: 0.5rem;
+    font-size: 1.2rem;
+    font-family: 'OperatorMono', monospace;
+}
+
+.alert-med {
+    position: relative;
+    top: 3px;
+    left: -4px;
+    i {
+        font-size: 0.95rem;
+        color: $red2016;
+    }
+}
+
+.component.privacy-control {
+    label {
+
+    }
+    a {
+        color: inherit;
+        position: relative;
+        top: -1px;
+    }
+}
+
+
+li {
+    a.privacy {
+        i {
+            font-size: 1rem;
+            position: relative;
+            top: 2px;
+            margin-right: 0.25rem;
+        }
+    }
+}
+
+
+#privacy-details-modal {
+    i.material-icons {
+        position: relative;
+        top: 4px;
+    }
+}
+
+table.privacy-summary {
+    tr {
+        td:first-child {
+            text-align: center;
+            i {
+                display: block;
+                margin-bottom: 0.5rem;
+            }
+        }
+    }
+}
+
+
+p.blankslate {
+    font-size: 0.8rem;
+    color: $black-30;
+    margin-bottom: 0;
+    text-align: center;
+
+    a.button {
+        margin-top: 0.5rem;
+    }
+}
+
+h1 {
+    a.inline-edit {
+        color: $textgray;
+        margin-left: 0.5rem;
+        &:hover {
+            color: $blue2016;
+        }
+    }
+
+}
+
+#address-validator {
+    .options {
+        div {
+            margin-bottom: 1rem;
+            input {
+                margin-right: 0.25rem;
+            }
+            label {
+                font-size: 1rem;
+            }
+            small {
+                display: block;
+                margin-top: 0.25rem;
+                margin-left: 1.4rem;
+            }
+        }
+    }
+}
+
+article.profile-search-result {
+    @include clearfix;
+    box-sizing: border-box;
+    article.user-thumbnail-circle {
+        display: inline-block;
+        // margin-right: rem;
+    }
+    article.details {
+        display: inline-block;
+        float: left;
+        width: 70%;
+        padding-right: 1rem;
+        h4 {
+            margin: 0;
+        }
+        .provider-account {
+            display: inline-block;
+            margin-top: 0.5rem;
+        }
+        .email {
+            display: block;
+        }
+    }
+}

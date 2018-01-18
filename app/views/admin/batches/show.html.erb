@@ -1,0 +1,85 @@
+
+<section class="page-title">
+  <h1><a href="<%= admin_batch_index_path %>" data-balloon="View All Batches" class="baby-got-back"><i class="material-icons">arrow_back</i></a>Batch <%= @batch_id.to_s %></h1>
+  <p><%= @batch.notes %></p>
+</section>
+
+<%= render :partial => 'admin/sidebar' %>
+
+<section id="main-column">
+<section class="pillbox">
+  <article>
+    <div class="title">
+      <h3>Accepted</h3>
+    </div>
+    <div class="content">
+    <section class="lifesquares">
+    <% @codes.each do |item| %>
+      <% if item.valid_state==1  %>
+          <div>
+            <img src="<%= api_lifesquare_image_path(item.lifesquare_uid) %>" />
+            <div class="lifesquare-code"><%= item.formatted_str %></div>
+            <% if item.campaign %>
+              <dl class="basic">
+              <dt>Org</dt>
+              <dd><%= item.campaign.organization.name %></dd>
+              <dt>Campaign</dt>
+              <dd><%= item.campaign.name %></dd>
+              
+              </dl>
+            <% end %>
+          </div>
+       <% end %>
+    <% end %>
+    </section>
+    </div>
+  </article>
+
+  <article>
+    <div class="title">
+      <h3>Rejected</h3>
+    </div>
+    <div class="content">
+    <section class="lifesquares">
+    <% @codes.each do |item| %>
+    <% if item.valid_state==2  %>
+      <div>
+            <div class="lifesquare-code"><%= item.formatted_str %></div>
+        </div>
+    <% end %>
+    <% end %>
+    </section>
+    </div>
+  </article>
+
+  <article>
+    <div class="title">
+      <h3>Unset</h3>
+    </div>
+    <div class="content">
+      <section class="lifesquares">
+      <% @codes.each do |item| %>
+      <% if item.valid_state==0  %>
+        <div>
+          <a href="<%= api_lifesquare_image_path(item.lifesquare_uid) %>" target="_blank">
+            <img src="<%= api_lifesquare_image_path(item.lifesquare_uid) %>?width=100&height=100" />
+            <div class="lifesquare-code"><%= item.formatted_str %></div>
+            <% if item.campaign %>
+              <dl class="basic">
+              <dt>Org</dt>
+              <dd><%= item.campaign.organization.name %></dd>
+              <dt>Campaign</dt>
+              <dd><%= item.campaign.name %></dd>
+              
+              </dl>
+            <% end %>
+          </a>
+        </div>
+      <% end %>
+      <% end %>
+      </section>
+    </div>
+  </article>
+</section>
+
+</section>

@@ -1,0 +1,89 @@
+<% content_for :body_class do %> class="register"<% end %>
+
+<section class="main-column">
+
+<section class="page-title">
+    <h1>Create a Personal Account</h1>
+</section>
+
+<section class="pillbox" id="new_account" data-api-endpoint="<%= api_account_create_path %>">
+    <article>
+        <div class="content auth-form">
+            <div class="line floaters">
+                <div class="field">
+                    <label for="create_first_name" class="required">First Name</label>
+                    <input type="text" name="first_name" id="create_first_name" autocomplete="off" placeholder="Jane" />
+                    <p class="error-message" data-for="create_first_name" style="display: none;">Please enter first name</p>
+                </div>
+                <div class="field">
+                    <label for="create_last_name" class="required">Last Name</label>
+                    <input type="text" name="last_name" id="create_last_name" autocomplete="off" placeholder="Doe" />
+                    <p class="error-message" data-for="create_last_name" style="display: none;">Please enter last name</p>
+                </div>
+            </div>
+            <div class="line floaters">
+                <div class="field">
+                    <label for="create_dob" dd-data-balloon="A logical explanation why we require your DOB" class="required">Date of Birth</label>
+                    <input type="text" name="dob" id="create_dob" maxlength="10" autocomplete="off" placeholder="MM/DD/YYYY" />
+                    <p class="error-message" data-for="create_dob" style="display: none;">Please enter your dob MM/DD/YYYY</p>
+                </div>
+                <div class="field">
+                    <label for="create_mobile_phone" xdata-balloon="Your mobile phone will be used to assist in account recovery in the event you forget your password" xdata-balloon-length="medium" class="required">Mobile Phone</label>
+                    <input type="text" name="mobile_phone_country" id="create_mobile_phone_country" autocapitalize="off" autocomplete="off" placeholder="+1" value="+1" dd-data-balloon="Country Code (+1) for US" data-balloon-length="small" />
+                    <input type="text" name="mobile_phone" id="create_mobile_phone" autocapitalize="off" autocomplete="off" placeholder="(415) 209-5050" pattern="[0-9]*" max-length="15" />
+                    <!--<p class="error-message" data-for="create_mobile_phone" style="display: none;">Invalid email address format</p>-->
+                </div>
+            </div>
+            <div class="line floaters">
+                <div class="field">
+                    <label for="create_email" class="required">Email</label>
+                    <input type="email" name="email" id="create_email" autocapitalize="off" autocomplete="off" placeholder="jane.doe@gmail.com" />
+                    <p class="error-message" data-for="create_email" style="display: none;">Invalid email address format</p>
+                    <p class="bad-email-host" style="display: none;"></p>
+                </div>
+                <div class="field">
+                    <label style="display: block;" for="create_password" x-data-balloon="Password must be at least 8 characters long and include a letter and a number or symbol." x-data-balloon-length="medium" class="required">Password</label>
+                    <input type="password" name="password" id="create_password" /><!-- html attributes for pre-validation validation -->
+                    <p class="error-message" data-for="create_password" style="display: none;">Password must be at least 8 characters long and include a letter and a number or symbol</p>
+            </div>
+            </div>
+            
+            <div class="field inline-checkbox">
+                <input type="checkbox" name="accept_terms" id="create_terms" />
+                <label for="create_terms">I agree to the <a href="https://www.domain.com/terms/" target="_blank" >Terms of Use</a>.</label>
+                <p class="error-message" data-for="create_terms" style="display: none;">You must agree to the Terms of Use to sign up</p>
+            </div>
+            <div class="flow-control">
+                <button type="submit" class="button primary">Submit</button>
+                <a href="<%= signup_choose_path %>" class="button small">Cancel</a>
+            </div>
+        </div>
+    </article>
+</section>
+
+<% if false %>
+<section class="additional-info">
+    <h6>Common Questions</h6>
+    <hr />
+    <ul class="basic">
+        <li>Have an account? <a href="<%= login_path %>">Log In</a>.</li>
+        <li>Need to create a business account instead? <a href="<%= signup_enterprise_path %>">Create Business Account</a>.</li>
+        <!-- <li>Already have LifeStickers? You can activate them after signing up.</li> -->
+        <!--<li>Need LifeStickers? We&rsquo;ll send them to you for free.</li>-->
+        <!--<li>HealthNotifier protects your information. Read our <a href="https://www.domain.com/privacy/" target="_blank">Privacy Policy</a> to learn more.</li>-->
+    </ul>
+</section>   
+<% end %>         
+
+</section>
+
+<% content_for :js_bootstrap do %>
+    <script>
+        (function () {
+            "use strict";
+            var Account = app.module('account'),
+                model = new Account.SignupModel(),
+                createView = new Account.Views.Create({ el: $('#new_account'), model: model });
+        })();
+    </script>
+<% end %>

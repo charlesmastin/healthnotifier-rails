@@ -1,0 +1,38 @@
+<article class="question" data-question-uuid="<%= question.uuid %>" data-question-choice-type="<%= question[:choice_type] %>">
+    <!-- show an alpha index if the containing group has more than 1 -->
+    <!-- aka render in some form of li -->
+    <h3><%= question.name %></h3>
+    <!-- are we a yes/no -->
+    <!-- having difficulties accessing the enum here??? -->
+
+    <% if question[:choice_type] == 'YES_NO' %>
+    <%= render :partial => 'care_plans/radio_choices', :locals => { :question => question } %>
+    <% end %>
+    <!-- always radios -->
+
+    <!-- single answer -->
+    <% if question[:choice_type] == 'SINGLE_ANSWER' %>
+    <% if question.choices.length > 3 %>
+    <!-- select -->
+
+    <select name="question_<%= question.uuid %>" id="" size="1">
+        <option value="">Please Choose</option>
+        <%= options_for_select(question.choices.map {|item| [item.name, item.uuid]}) %>
+    </select>
+
+    <% else %>
+    <!-- radios -->
+    <%= render :partial => 'care_plans/radio_choices', :locals => { :question => question } %>
+    <% end %>
+    <% end %>
+
+    <!-- multiple answer -->
+    <!-- checkboxes only, ever, no multi-select widget stuffs -->
+    <% if question[:choice_type] == 'MULTI_ANSWER' %>
+    <ul class="inline">
+    <% question.choices.each do |choice| %>
+    <li><label><input type="checkbox" name="question_<%= question.uuid %>" value="<%= choice.uuid %>" /><span><%= choice.name %></span></label></li>
+    <% end %>
+    </ul>
+    <% end %>
+</article>

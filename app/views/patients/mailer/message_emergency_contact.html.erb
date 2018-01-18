@@ -1,0 +1,9 @@
+<p><%= message %></p>
+
+<% if geo %>
+<hr />
+<p>
+    <strong><%= patient.first_name %>’s last known location</strong>
+    <br /><%= geo.formatted_address %></p>
+</p>
+<% end %>

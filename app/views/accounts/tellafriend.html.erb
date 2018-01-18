@@ -1,0 +1,30 @@
+<div id="tellafriend" class="row" style="margin-bottom: 40px">
+	<section class="content span8 session-mgmt">
+		<%= render 'shared/emailfriend' %>
+	</section>
+	
+	<section class="successful-email center-text" style="display: none;">
+		<h2>Message sent</h2>
+		<p>Thanks for telling your friends about HealthNotifier! You may now return back to <%= link_to 'your profiles', patients_path %>.</p>
+	</section>
+
+	<section class="modal-sidebar account-sidebar">
+		<p class="more">
+			<strong>Sending to multiple people?</strong><br>
+			Separate addresses with a comma
+		</p>
+		<p class="more"><strong>List emergency contacts?</strong><br/>Let your emergency contacts know about HealthNotifier</p>
+	</section>
+	
+</div>
+
+<% content_for :js_bootstrap do %>
+<script>
+	(function () {
+		"use strict";
+		var Account = app.module('account'),
+			EmailFriend = app.module('emailfriend'),
+			emailView = new Account.Views.EmailFriend({ el: '#tellafriend', model: new EmailFriend.Model });
+	})();
+</script>
+<% end %>

@@ -1,0 +1,122 @@
+<% content_for :below_header do %>
+<section id="patient-transaction-bar">
+    <div class="inner">
+        <a class="backzone" href="<%= patient_show_path(@patient.uuid) %>">
+            <%= render :partial => 'components/patient_avatar', :locals => { :patient => @patient, :size => 'small' } %>
+            <h4 class="patient_name"><%= @patient.name_extended %></h4>
+        </a>
+        <div class="actions">
+            <a href="#" class="action actions" data-popover="patient-actions-<%= @patient.uuid %>"><i class="material-icons">more_vert</i></a>
+        </div>
+    </div>
+</section>
+<% end %>
+
+<h1><%= @care_plan.name %><% if @patient.account.lifesquare_employee? %> <span class="tag"><%= @care_plan[:status] %></span><% end %></h1>
+
+<p><%= @question_group.description %></p>
+
+<section class="pillbox">
+    <article>
+        <% if false %>
+        <div class="title">
+            <h3><small>Question <%= (@question_group.position) %>.</small><%= @question_group.name %></h3>
+        </div>
+        <% end %>
+        <div class="content">
+        <section class="question-group" data-question-group-uuid="<%= @question_group.uuid %>">
+        <% @question_group.questions.each_with_index do |question, index| %>
+            <%= render :partial => 'care_plans/question', :locals => { :question => question, :index => index } %>
+        <% end %>
+        </section>
+        </div>
+    </article>
+</section>
+
+<hr />
+
+<div class="flow-control" style="margin-top: 2rem;">
+    <!-- meh flip through url now hahahahahaha -->
+    <% if @next %>
+    <a href="#" class="button primary action-submit">Continue</a>
+    <% else %>
+    <a href="#" class="button primary action-submit">Submit</a>
+    <% end %>
+    <a href="<%= care_plans_question_group_path(@patient.uuid, @care_plan.uuid, @care_plan.question_groups[0].uuid) %>" class="button">Restart</a>
+</div>
+
+<% content_for :js_bootstrap do %>
+<script type="text/javascript">
+    var API_ENDPOINT = "<%= api_care_plans_process_response_url(@patient.uuid) %>";
+    var CARE_PLAN_UUID = "<%= @care_plan.uuid %>";
+    $('.action-submit').click(function(e){
+        submitToApi();
+        return false;
+    });
+    function submitToApi(){
+        // perform validation
+        // all questions must be answered
+        // double confirm on assumption pre-fills? meh
+        var answers = [];
+        // can't break from the each loop here
+        var valid = true;
+        $('article.question').each(function(index, item){
+           var question_uuid = $(item).attr('data-question-uuid');
+           // use the ghetto logic from jquery to get "selected" form values or some swill
+           if($(item).attr('data-question-choice-type') == 'MULTI_ANSWER'){
+            // an array of choices son,
+            // use the first for now?
+            // we could be checkboxes only for now son
+           }else{
+            // obtain a single answer (from radios, or from a select)
+            // MEH suck it up
+            var choice_uuid = $('select[name="question_' + question_uuid + '"], input[name="question_' + question_uuid + '"]:checked').val();
+            if(choice_uuid == undefined || choice_uuid == ""){
+                app.alert('Please answer all questions');
+                valid = false;
+            }else{
+                answers.push({
+                    question_uuid: question_uuid,
+                    choice_uuid: choice_uuid
+                });
+            }
+           }
+        });
+
+        // ghetto control structes
+        if(!valid){
+            return;
+        }
+
+        // SELECT_MULTI bla blabla later son
+        var payload = {
+            question_group_uuid: $('section.question-group').attr('data-question-group-uuid'),
+            answers: answers
+        }
+
+        $.ajax({
+            url: API_ENDPOINT,
+            type: 'POST',
+            dataType: 'json',
+            contentType: 'application/json',
+            data: JSON.stringify(payload),
+            success: function(data){
+                // get your redirect on son
+                window.location = data.redirect_url;              
+            },
+            error: function(data){
+                // problem with validation of data
+                if(data.status == 400){
+                    app.alert('A failure has occurred ✌');
+                }
+                // some catch all cluster bomb
+                if(data.status == 500){
+                    app.alert('A failure has occurred ✌');
+                }
+            }
+        });
+        
+        
+    }
+</script>
+<% end %>

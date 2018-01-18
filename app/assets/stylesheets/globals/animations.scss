@@ -1,0 +1,33 @@
+@-webkit-keyframes slideInSubtle {
+  0% {
+    opacity: 0;
+    -webkit-transform: translateY(-10px);
+    transform: translateY(-10px);
+  }
+  /*
+  85% {
+    -webkit-transform: translateY(5px);
+    transform: translateY(5px);
+  }
+  */
+
+  100% {
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+  }
+}
+
+@-webkit-keyframes show-popover-supreme {
+  from {
+    opacity: 0.0;
+    transform: translateY(3.0%) scale(1.0);
+  }
+  to {
+    opacity: 1.0;
+    transform: translateY(0) scale(1.0);
+  }
+}
+
+
+// sping yourself silly and loop yourself
+

@@ -1,0 +1,35 @@
+<section class="page-title">
+    <h1>New Print Request</h1>
+</section>
+
+<%= render :partial => 'admin/sidebar' %>
+
+<section id="main-column">
+
+<form id="object-form" action="<%= admin_code_sheet_create_path %>" method="post">
+<%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+<section class="pillbox auth-form">
+    <%= render :partial => 'admin/code_sheets/form' %>
+</section>
+<section class="flow-control left">
+    <button id="red-button-do-not-touch-it" type="submit" class="button primary">Submit</button>
+    <a href="<%= admin_code_sheet_index_path %>" class="button">Cancel</a>
+</section>
+</form>
+
+</section>
+
+<% content_for :js_bootstrap do %>
+    <script>
+        (function () {
+            "use strict";
+            $('#code_sheet_print_request_lifesquares').focus();
+
+            $('button[type="submit"]').click(function(e){
+                // some mccheesy basic validation up in this bizzle
+                $('#object-form').get(0).submit();
+            });
+
+        })();
+    </script>
+<% end %>

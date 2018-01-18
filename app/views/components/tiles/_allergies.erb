@@ -1,0 +1,10 @@
+<% if @patient_details['allergies'].length > 0 %>
+<article data-url="#">
+    <header><%= image_tag "icons/bee.png" %><h4><a href="<%= patient_edit_medical_path(@patient.uuid) %>#allergy">Allergies</a></h4></header>
+    <section>
+        <% @patient_details['allergies'].each do |allergy| %>
+        <%= render :partial => 'components/patient_allergy', :locals => { :allergy => allergy } %>
+        <% end %>
+    </section>
+</article>
+<% end %>

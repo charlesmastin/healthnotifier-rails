@@ -1,0 +1,31 @@
+<% if patient.confirmed? && patient.lifesquare_code_str.present? %>
+<article data-url="#">
+    <header>
+        <h4>Recent Access Log</h4>
+        <!--
+        <a href="#" data-popover="#" class="actions" title="More Actions" ><i class="material-icons">more_horiz</i></a>-->
+    </header>
+    <section>
+            <% if patient.get_recent_audit.count > 0 %>
+            <table class="slim" style="width: 100%;">
+            <% patient.get_recent_audit.each do |audit| %>
+            <tr>
+                <% if audit.scanner_phone_number && audit.platform == 'sms' %>
+                <td><span class="tag">SMS</span></td>
+                <td><small><%= audit.scanner_phone_number %></small></td>
+                <% else %>
+                <td><% if audit.account.provider? %><div data-balloon="Licensed health care provider"><i class="material-icons privacy-provider" style="font-size: 1rem;">verified_user</i></div><% end %></td>
+                <td><small><strong><%= audit.account.this_is_me_maybe.name %></strong></small></td>
+                <% end %>
+                <td title="<%= audit.created_at.strftime("%m/%d/%Y %I:%M %p") %>"><small><%= audit.created_at.strftime("%m/%d/%Y") %></small></td>
+            </tr>
+            <% end %>
+            </table>
+            <% else %>
+            <div class="blankstate">
+                <p>No activity was found (no mobile scans, or LifeCircle network views).</p>
+            </div>
+            <% end %>
+    </section>
+</article>
+<% end %>

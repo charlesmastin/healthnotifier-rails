@@ -1,0 +1,29 @@
+ul.conditions {
+    margin: 0;
+    padding: 0;
+    column-count: 2;
+    li {
+        list-style: none;
+        // margin-bottom: 1rem;
+    }
+}
+
+section.question-group {
+
+}
+
+article.question {
+    margin-bottom: 1rem;
+
+    ul.inline {
+        li {
+            margin-right: 1rem;
+            label {
+                span {
+                    margin-left: 0.25rem;
+                }
+            }
+        }
+    }
+
+}

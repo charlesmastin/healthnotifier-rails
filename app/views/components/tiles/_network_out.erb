@@ -1,0 +1,57 @@
+<% if patient.has_current_coverage %>
+<article data-url="#" class="tile tile-network-out">
+    <header>
+        <% if patient.network_auditors_pending.count > 0 %><i class="material-icons alert-town">error</i><% end %>
+        <h4>LifeCircle</h4>
+        <% if patient.network_auditors.count > 0 %><span class="bolt-on">(<%= patient.network_auditors.count %> total)</span><% end %>
+    </header>
+    <section>
+        
+
+        
+
+        <!-- shared out -->
+        <% if patient.network_auditors.count > 0 %>
+        <!--<h6 style="margin-top: 0.5rem; margin-bottom: 0.5rem;">Connections</h6>-->
+        <section class="connection-wrapper">
+        <% patient.network_auditors.each_with_index do |patient_network, index| %>
+        <% if index < 10 %>
+        <% thepatient = patient_network.auditor_patient %>
+        <% if thepatient %>
+        <article class="connection" title="<%= thepatient.name %>">
+            <div><%= render :partial => 'components/patient_avatar', :locals => { :patient => thepatient, :size => 'small' } %></div>
+        </article>
+        <% end %>
+        <% end %>
+        <% end %>
+        <% if patient.network_auditors.count > 10 %>
+        <article class="connection">
+            <span class="tag" style="position: relative; top: 7px;">+ <%= (patient.network_auditors.count - 10) %> more</span>
+        </article>
+        <% end %>
+        </section>
+        <% end %>
+
+        <!-- blank state -->
+        <% if patient.network_auditors.count == 0 && patient.network_auditors_pending.count == 0 %>
+        <div class="blankstate"><p>You haven't shared your profile with any friends, family or care providers.</p><p><a href="<%= patient_show_network_outbound_path(patient.uuid) %>" class="button small xprimary">Add Connection</a></p></div>
+        <% else %>
+
+        <p style="margin-top: 0.5rem; margin-bottom: 0;">
+
+            <a style="position: relative; left: -0.5rem;" href="<%= patient_show_network_outbound_path(patient.uuid) %>" class="button small xprimary">Manage Connections</a>
+
+        <!-- pending requests to view -->
+        <% if patient.network_auditors_pending.count > 0 %>
+        <!--<h6 style="margin-top: 0.5rem; margin-bottom: 0.5rem;">Pending Requests</h6>-->
+        <br /><a style="position: relative; left: -0.5rem;" href="<%= patient_show_network_outbound_path(patient.uuid) %>#pending" class="button small"><%= patient.network_auditors_pending.count %> Pending Requests</a>
+
+        <% end %>
+
+        </p>
+        <% end %>
+
+
+    </section>
+</article>
+<% end %>

@@ -1,0 +1,20 @@
+<section id="cancel-subscription-modal" class="reveal-modal account-modal delete-modal">
+    <div class="modal-content">
+        <h2>Cancel Recurring Coverage?</h2>
+        <section class="patients-summary">
+            <%= render :partial => 'components/patient_summary_item', :locals => { :patient => patient } %>
+        </section>
+
+        <% if patient.current_coverage and patient.current_coverage.recurring %>
+
+        <p>Subscription is set to auto-renew on <strong><%= patient.current_coverage.coverage_end.strftime("%m/%d/%Y") %></strong>. If you cancel you will need to submit payment at the end of your current coverage period. Don’t worry, we’ll send you an email reminder.</p>
+
+        <section class="modal-flow-control">
+            <a href="#" data-patient-id="<%= patient.patient_id %>" data-url="<%= api_coverage_cancel_recurring_path(patient.uuid) %>" class="button primary action-cancel-subscription">Cancel Recurring Subscription</a>
+            <a href="#" class="button cancel-cancel-subscription">Close</a>
+        </section>
+        <% else %>
+            <p>No recurring coverage found</p>
+        <% end %>
+    </div>
+</section>

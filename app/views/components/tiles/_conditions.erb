@@ -1,0 +1,10 @@
+<% if @patient_details['conditions'].length > 0 %>
+<article data-url="#">
+    <header><%= image_tag "icons/heartbeat.png" %><h4><a href="<%= patient_edit_medical_path(@patient.uuid) %>#condition">Conditions</a></h4></header>
+    <section>
+        <% @patient_details['conditions'].each do |condition| %>
+        <%= render :partial => 'components/patient_condition', :locals => { :condition => condition } %>
+        <% end %> 
+    </section>
+</article>
+<% end %>

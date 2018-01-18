@@ -1,0 +1,42 @@
+
+# Common sections
+# yml technique for inheritance
+postgresql_common: &postgresql_common
+  adapter: postgresql
+  encoding: utf8
+
+# Local include (non-shared uname/passwords, etc)
+<% include_fname = Rails.root.join('config/database-local.yml') %>
+<% if File.exist? include_fname %>
+<%= `cat #{include_fname}` %>
+<% end %>
+
+# custom environments
+
+dev_postgresql:
+  <<: *postgresql_common
+  <<: *dev_postgresql_login
+
+development:
+  <<: *postgresql_common
+  <<: *dev_postgresql_login
+
+production:
+  <<: *postgresql_common
+  <<: *production_login
+
+profile:
+  <<: *profile_login
+
+# Warning: The database defined as "test" will be erased and
+# re-generated from your development database when you run "rake (test)".
+# Do not set this db to the same as development or production.
+#
+test:
+  <<: *postgresql_common
+  <<: *test_postgresql_login
+
+test_postgresql:
+  <<: *postgresql_common
+  <<: *test_postgresql_login
+

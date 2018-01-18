@@ -1,0 +1,14 @@
+<div class="component erb privacy-control" data-attr="<%= attr %>">
+    <label class="required">Privacy</label>
+    <a href="#" class="privacy-control" data-popover="privacy-control" data-balloon="Change Privacy" data-balloon-pos="down">
+        <i class="material-icons privacy-<%= privacy %>">
+            <% if privacy == 'public' %>
+            people
+            <% elsif privacy == 'provider' %>
+            verified_user
+            <% else %>
+            lock
+            <% end %>
+        </i>
+    </a>
+</div>

@@ -1,0 +1,155 @@
+<% if @patients.size == 1 %>
+<% content_for :below_header do %>
+
+<section id="patient-transaction-bar">
+    <div class="inner">
+    <%= render :partial => 'components/patient_avatar', :locals => { :patient => @patients[0], :size => 'small' } %>
+    <h4 class="patient_name"><%= @patients[0].name_extended %></h4>
+    <div class="actions">
+        <a id="action-transaction-save" href="#" xdisabled="disabled" class="button primary xdisabled">Submit</a>
+        <a id="action-transaction-cancel" href="<%= patient_show_path(@patients[0].uuid) %>" class="button">Cancel</a>
+    </div>
+    <%= render :partial => 'components/patient_onboarding_summary', :locals => { :patient => @patients[0], :state => @onboarding_details } %>
+    </div>
+</section>
+
+<% end %>
+<% else %>
+
+<% content_for :pagetitle do %>
+<h1>Assign LifeStickers</h1>
+<% end %>
+
+<% end %>
+
+<!-- TODO: if we're only a single patient.count -->
+
+<!-- SHOW THE ONBOARDING BAR SONNY BUNS -->
+<% if @patients.size == 1 %>
+<h2>Assign LifeStickers</h2>
+<% end %>
+
+<p>We’ll now ship you a LifeSticker sheet. If you’ve already picked up LifeStickers for a profile, choose "I have LifeStickers" and type in the 9-digit code. Each profile will have a unique 9-digit code and a unique sheet of LifeStickers.</p>
+
+<div id="bb-view-assign-stickers" class="basic-form" data-validation="<%= api_lifesquares_validate_path %>" data-action="<%= api_lifesquares_assign_path %>">
+
+<section id="stickers" class="cards<% if @patients.size < 2 %> single-item<% end %>">
+    <!-- it's a list of one, but whatever -->
+    <% @patients.each_with_index do |patient, index| %>
+        <article class="patient patient-assign no-hover" data-patient-uuid="<%= patient.uuid %>">
+            <header>
+                <h3><%= patient.name_extended %></h3>
+            </header>
+            <section>
+                <%= render :partial => 'components/patient_avatar', :locals => { :patient => patient } %>
+                <% if patient.age_str != "2015 years old" %><small class="age"><%= patient.age_str %></small><% else %><small class="age">&nbsp;</small><% end %>
+            </section>
+            <footer>
+                <div class="sticker-options">
+                <% if patient.confirmed? %>
+                    <input type="hidden" name="patient_id_<%= index %>" value="<%= patient.patient_id %>">
+                    <label><input type="radio" name="sticker_status_<%= index %>" value="1" class="need-code" checked>
+                    &nbsp;I need LifeStickers</label><br />
+                    <label><input type="radio" name="sticker_status_<%= index %>" value="0" class="enter-code">
+                    &nbsp;I have LifeStickers</label>
+                <% else %>
+                    <p>Profile incomplete, please <a href="<%= patient_show_path(patient.uuid) %>">review</a> and confirm before requesting a LifeSticker</p>
+                <% end %>
+                </div>
+                <div class="sticker-code" style="display: none;">
+                    <small><strong>Enter your 9-digit code</strong></small>
+                    <div class="line">
+                        <i class="state-valid material-icons">check</i>
+                        <i class="state-invalid material-icons">error</i>
+                        <img class="state-loading" src="<%= asset_path('indicator.white.gif') %>" />
+                        <input type="text" class="lifesquare-code lifesquare-uid" name="lifesquare_uid_formatted" id="lifesquare_code_<%= index %>" maxlength="11" placeholder="XXX XXX XXX">
+                        <a href="#" class="cancel-code close-icon mir">×</a>
+                    </div>
+                </div>
+                
+            </footer>
+        </article>
+    <% end %>
+</section>
+
+<%= render :partial => 'components/shipping', :locals => { :addresses => @residences, :selected_index => @selected_residence_index } %>
+
+<section class="pillbox">
+    <article>
+        <div class="title">
+            <h3>Promo Code</h3>
+        </div>
+        <div class="content">
+            <div class="field">
+              <label for="promo-code">Do you have a Promotional Code?</label>
+              <input id="promo-code" name="promo_code" placeholder="123…" type="text" size="20" />
+              <div id="promo-state">
+                <i class="state-valid material-icons">check</i><small id="promo-price"></small>
+                <i class="state-invalid material-icons">error</i>
+                <img class="state-loading" src="<%= asset_path('indicator.white.gif') %>" />
+              </div>
+          </div>
+        </div>
+    </article>
+</section>
+
+<%= render :partial => 'components/plan_level' %>
+
+<%= render :partial => 'components/payment', :locals => { :available_cards => @cards_on_file, :total => @total, :promo => true, :subscription => true, :subscription_end => @coverage_end } %>
+
+<section class="pillbox" id="no-payment-info">
+    <article>
+    <div class="title">
+
+    </div>
+    <div class="content">
+        <p>There is no payment required at this time. Your coverage will begin immediately and remain active until <strong><%= @coverage_end.strftime('%m/%d/%-Y') %></strong>.</p><p><small>After your complimentary coverage period ends you may be required to pay an annual subscription fee, depending on the sponsoring organization.</small></p>
+    </div>
+    </article>
+</section>
+
+<% if @patients.size > 1 %>
+<section class="flow-control">
+    <button type="submit" class="button primary">Submit</button>
+    <a href="<%= patient_index_path %>" class="button">Cancel</a>
+</section>
+<% end %>
+
+</div>
+
+<% content_for :bodyextra do %>
+<% if @patients.size == 1 %>
+<%= render :partial => 'components/patient_onboarding_popover', :locals => { :patient => @patients[0], :state => @onboarding_details } %>
+<% end %>
+<% end %>
+
+<% content_for :js_head do %>
+<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+<script type="text/javascript">
+  Stripe.setPublishableKey('<%= @publishable_key %>');
+</script>
+<% end %>
+<% content_for :js_bootstrap do %>
+<script>
+    (function() {
+        window.DEFAULT_TOTAL_COST = <%= @total %>; // TODO: why is this unused?
+        var Account = app.module('account');
+        var Patient = app.module('patient');
+        var stickersView = new Patient.Views.LifesquaresAssign({ el: '#bb-view-assign-stickers', collection: new Patient.Collections.Sticker });
+        var addressPickerView = new Patient.Views.AddressPicker({ el: '#bb-view-shipping' });
+        
+        <% if @patients.size == 1 %>
+        popover.init($('#patient-transaction-bar a.actions, #patient-transaction-bar .onboarding-summary'));
+
+        // bangers n mash
+        try {
+            var c = document.getElementById('component-onboarding-summary');
+            c.appendChild( pieChart(<%= @onboarding_details[:progress_percent] %>, 32) );
+        } catch (e){
+
+        }
+        <% end %>
+
+    })();
+</script>
+<% end %>

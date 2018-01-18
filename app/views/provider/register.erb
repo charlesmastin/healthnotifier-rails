@@ -1,0 +1,125 @@
+<section class="page-title">
+    <h1>Register as a health care provider</h1>
+</section>
+
+<div class="basic-form" id="provider-form" data-action="<%= api_provider_credentials_path %>" data-success="<%= edit_account_path %>">
+
+<section class="pillbox">
+    <article>
+        <div class="title">
+            <h3>HealthNotifier<br />Profile</h3>
+        </div>
+        <div class="content">
+            <!-- revisit with edge cases, this is not entirely valid -->
+            <section class="patients-summary<% if current_account.active_patients.size > 1 %> selectable<% end %>">
+                <% current_account.active_patients.each do |patient| %>
+                <%= render :partial => 'components/patient_summary_item', :locals => { :patient => patient } %>
+                <% end %>
+            </section>
+        </div>
+    </article>
+
+    <article>
+        <div class="title">
+            <h3>License<br />Information</h3>
+        </div>
+        <div class="content">
+            <div class="field">
+                <label class="required">License Number</label>
+                <input type="text" name="license-number" />
+            </div>
+
+            <div class="field">
+                <label class="required">Licensing Board</label>
+                <input type="text" name="license-board" />
+            </div>
+
+            <!-- ONLY allow US -->
+
+            <div class="field">
+                <label class="required">Licensing State</label>
+                <!-- US States list, lol, where it be son ? -->
+                <!-- <input type="text" name="state" /> -->
+
+                <select class="span3 state_province" name="state_province" id="">
+                    <option value="">&mdash;</option>
+                    <%= options_for_select(@us_states.map {|item| [item[:name], item[:value]] }) %>
+                </select>
+
+            </div>
+
+
+
+            <div class="field">
+                <label class="required">Expiration</label>
+                <input type="text" maxlength="10" id="license-expiration" name="expiration" placeholder="MM/DD/YYYY" />
+            </div>
+
+            <div class="field">
+                <label>License File 1</label>
+                <input type="file" name="credentials-file-1" />
+            </div>
+
+            <div class="field">
+                <label>License File 2</label>
+                <input type="file" name="credentials-file-2" />
+            </div>
+        </div>
+    </article>
+
+    <article>
+        <div class="title">
+            <h3>Supervisor<br />Information</h3>
+        </div>
+        <div class="content">
+
+            <div class="field">
+                <label class="required">Name</label>
+                <input type="text" name="supervisor-name" />
+            </div>
+
+            <div class="field">
+                <label class="required">Email</label>
+                <input type="email" name="supervisor-email" />
+            </div>
+
+            <div class="field">
+                <label class="required">Phone</label>
+                <input type="text" name="supervisor-phone" />
+            </div>
+
+            <div class="field">
+                <label>Ext</label>
+                <input type="text" name="supervisor-ext" />
+            </div>
+            
+        </div>
+
+    </article>
+
+    <article>
+        <div class="title"></div>
+        <div class="content">
+            <div class="field">
+                <!-- TODO grab me some actual copy here soonish -->
+                <label><input type="checkbox" name="confirmation" style="margin-right: 0.5rem;" />I am a licensed health care professional and understand impersonation is a Felony offense.</label>
+            </div>
+        </div>
+    </article>
+</section>
+
+<section class="flow-control left">
+    <a href="#" class="button primary submit-credentials">Submit</a>
+    <a href="<%= edit_account_path %>" class="button">Cancel</a>
+</section>
+
+</div>
+
+<% content_for :js_bootstrap do %>
+<script>
+    (function() {
+        var Signup = app.module('signup');
+        var providerView = new Signup.Views.Provider({ el: '#provider-form' });
+    })();
+</script>
+<% end %>

@@ -1,0 +1,86 @@
+<script id="address-item" type="text/html">
+    <div class="row">
+        <div class="field span4 required">
+            <label for="signup-address-{{record_order}}">Street Address</label>
+            <input class="span4" type="text" name="address_line1" value="{{address_line1}}" placeholder="Address 1" id="signup-address-street-{{record_order}}">
+            <br>
+            <span class="error-message" data-for="signup-address-street-{{record_order}}">Please enter a street address</span>
+        </div>
+        <div class="field span4">
+            <label for="signup-address-{{record_order}}">Address 2</label>
+            <input class="span4" type="text" name="address_line2" placeholder="Address 2" value="{{address_line2}}" id="signup-address-street2-{{record_order}}">
+        </div>
+        <%= render :partial => 'components/remove_row_button' %>
+    </div>
+    <div class="row">
+        <div class="field span4 required">
+            <label for="signup-address-city-{{record_order}}">City</label>
+            <input type="text" name="city" value="{{city}}" id="signup-address-city-{{record_order}}">
+            <br>
+            <span class="error-message" data-for="signup-address-city-{{record_order}}">Please enter a city</span>
+        </div>
+        <div class="field span3 required">
+            <label class="span3" for="signup-address-state-{{record_order}}">State / Province</label>
+            <select class="span3 state_province" name="state_province" id="signup-address-state-{{record_order}}">
+                <option value="">&mdash;</option>
+                <%= options_for_select(@us_states.map {|item| [item[:name], item[:value]] }) %>
+            </select>
+            <input class="span1 state_province" type="text" name="state_province" value="{{state_province}}" id="signup-address-state-{{record_order}}">
+            <span class="error-message" data-for="signup-address-state-{{record_order}}">Please enter a valid state</span>
+        </div>
+        <div class="field span2 required">
+            <label class="span2" for="signup-address-postal-code-{{record_order}}">Postal Code</label>
+            <input class="span2" type="text" name="postal_code" value="{{postal_code}}" id="signup-address-postal-code-{{record_order}}">
+            <br>
+            <span class="error-message" data-for="signup-address-postal-code-{{record_order}}">Please enter a valid Postal code</span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="field span4 required">
+            <label class="span4" for="signup-country-{{record_order}}">Country</label>
+            <select class="span4 country" name="country" id="signup-country-{{record_order}}">
+                <option value="">&mdash;</option>
+                <%= options_for_select(@countries.map {|item| [item[:name], item[:value]] }) %>
+            </select>
+            <span class="error-message" data-for="signup-country-{{record_order}}"><br>Please select a country</span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="field span4 required">
+            <label class="span4" for="signup-adress-type-{{record_order}}">Type</label>
+            <select class="span4 residence_type" name="residence_type" id="signup-residence-type-{{record_order}}" size="1">
+                <option value="">&mdash;</option>
+                <%= options_for_select(@residenceTypes.map {|item| [item[:name], item[:value]] }) %>
+            </select>
+            <span class="error-message" data-for="signup-residence-type-{{record_order}}"><br>Please select a type</span>
+        </div>
+
+        <div class="field span4 inline-labels">
+            <label class="span4 radio" for="signup-address-mailing-address-{{record_order}}">&nbsp;</label>
+            <input type="radio" name="mailing_address" value="1" id="signup-address-mailing-address-{{record_order}}" class="mailing-address-radio" xstyle="margin-top: 1.5rem;" [[ if(mailing_address) { ]] checked [[ } ]]>
+            <label class="inline radio" for="signup-address-mailing-address-{{record_order}}"> &nbsp;Use as mailing address</label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="field span6 required">
+            <label class="span6" for="signup-lifesquare-location-type-{{record_order}}" xdata-balloon="Where will you stick your LifeStickers">LifeSticker Location</label>
+            <select class="span6 lifesquare_location_type" name="lifesquare_location_type" id="signup-lifesquare-location-type-{{record_order}}" size="1" style="margin-bottom: 0.5rem;">
+                <option value="">&mdash;</option>
+                <%= options_for_select(@lifesquareLocationTypes.map {|item| [item[:value], item[:value]] }) %>
+            </select>
+            <!-- this is workaround for the balloon tips not rendering in bb views -->
+            <small style="font-size: 0.75rem;">Where should health care professionals look for your stickers?</small>
+            <span class="error-message" data-for="signup-lifesquare-location-type-{{record_order}}"><br>Please select a location</span>
+        </div>
+        <div class="field span4 lifesquare-location-other" style="display:none;">
+            <label class="span4" for="signup-address-lifesquare-location-{{record_order}}">Specify Location</label>
+            <input class="span4" type="text" name="lifesquare_location_other" value="{{lifesquare_location_other}}" id="signup-address-lifesquare-location-{{record_order}}">
+            <span class="error-message" data-for="signup-lifesquare-location-other-{{record_order}}"><br>Please specify a location</span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="field span2">
+            <%= render :partial => 'components/privacy', :locals => { :field => 'signup-address' } %>
+        </div>
+    </div>
+</script>

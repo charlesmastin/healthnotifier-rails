@@ -1,0 +1,11 @@
+<article data-url="#" class="tile tile-manage-records">
+    <header><h4>Manage Your Information</h4></header>
+    <section>
+        <ul class="actions with-icons">
+            <li><a href="<%= patient_edit_personal_path(patient.uuid) %>" class="button small"><i class="material-icons">account_circle</i><span>Personal Details</span></a></li>
+            <li><a href="<%= patient_edit_medical_path(patient.uuid) %>" class="button small"><i class="material-icons">assignment</i><span>Medical Records</span></a></li>
+            <li><a href="<%= patient_edit_contacts_path(patient.uuid) %>" class="button small"><i class="material-icons">contact_phone</i><span>Insurance &amp; Care Providers</span></a></li>
+            <!-- <li><a href="#" class="button export-records small"><i class="material-icons">save</i><span>Export Profile</span></a></li> -->
+        </ul>
+    </section>
+</article>

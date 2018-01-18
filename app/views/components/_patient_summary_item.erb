@@ -1,0 +1,4 @@
+<article class="patient-summary" data-patient-uuid="<%= patient.uuid %>">
+    <%= render :partial => 'components/patient_avatar', :locals => { :patient => patient, :size => 'medium' } %>
+    <h3><%= patient.name_extended %></h3>
+</article>

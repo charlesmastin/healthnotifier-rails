@@ -1,0 +1,82 @@
+<% if account_signed_in? %>
+<header class="app-header">
+    <div class="inner">
+        <a id="logo" href="<%= patient_index_path %>">HealthNotifier</a>
+        <nav class="extra-offset">
+            
+
+            <% pending_invites = current_account.pending_invites %>
+            <% if pending_invites.length > 0 %>
+            <span class="badge" style="display: inline-block; position: relative; top: -1px;"><%= pending_invites.length %></span><a class="button" href="<%= network_show_all_pending_invites_path %>">Pending Requests</a>
+            <div class="divider">&nbsp;</div>
+            <% end %>
+
+            <% if current_account.owner_orgs.count > 0 %>
+                <a class="button" href="<%= organization_show_path current_account.owner_orgs[0].uuid %>">My Business</a>
+                <div class="divider">&nbsp;</div>
+            <% end %>
+
+            <% if current_account.active_patients.count == 1 %>
+                <!-- TODO: use a helper to determine if we should show the Continue Setup button -->
+                <% if !current_account.this_is_me_maybe.confirmed %>
+                    <% if request.path != patient_edit_personal_path(current_account.this_is_me_maybe.uuid) && request.path != patient_edit_medical_path(current_account.this_is_me_maybe.uuid) && request.path != patient_edit_contacts_path(current_account.this_is_me_maybe.uuid) %>
+                    <a class="button" href="<%= patient_continue_setup_path(current_account.this_is_me_maybe.uuid) %>">Continue Profile Setup</a>
+                    <div class="divider">&nbsp;</div>
+                    <% end %>
+                <% else %>
+                    <a class="button" href="<%= patient_show_path(current_account.this_is_me_maybe.uuid) %>">My Profile</a>
+                    <div class="divider">&nbsp;</div>
+                <% end %>
+            <% else %>
+            <a class="button" href="<%= patient_index_path %>">My Profiles</a>
+            <div class="divider">&nbsp;</div>
+            <% end %>
+            
+            <a class="button account-drop-trigger" href="#">Account <i class="material-icons">arrow_drop_down</i></a>    
+            
+        </nav>
+        <div id="account-dropdown">
+            <p><small>Signed in as<br /><strong><%= current_account.email %></strong></small></p>
+            <% if current_account.provider? %>
+            <span class="tag provider-account" style="display: inline-block;position: relative; margin-left: 0.5rem; top: -2px;"><i class="material-icons">verified_user</i>Health care provider</span>
+            <!--<span class="tag provider-status">Approved Provider</span>-->
+            <% end %>
+            <% if current_account.owner_orgs.count > 0 %>
+            <ul class="actions">
+                <li><a class="button" href="<%= organization_show_path current_account.owner_orgs[0].uuid %>">Manage My Business<br /><small><%= current_account.owner_orgs[0].name %></small></a></li>
+            </ul>
+            <% end %>
+            <ul class="actions">
+                <% if !current_account.confirmed? %>
+                <!-- TODO: a nice way would be auto submit the form, lul -->
+                <li><a class="small button" href="<%= confirm_account_path %>">Confirm Account</a></li>
+                <% end %>
+                <li><a class="button" href="<%= edit_account_path %>"><i class="material-icons">account_circle</i> Edit Account</a></li>
+                <li><a class="button" href="<%= logout_path %>" data-method="delete" rel="nofollow"><i class="material-icons">exit_to_app</i> Log Out</a></li>
+            </ul>
+            <% if current_account.lifesquare_employee? %>
+            <ul class="actions">
+                <li><a class="button" href="<%= admin_index_path %>"><i class="material-icons">supervisor_account</i> System Admin</a></li>
+            </ul>
+            <% end %>
+        </div>
+    </div>
+</header>
+<% else %>
+<header class="app-header">
+    <div class="inner">
+        <a id="logo" href="https://www.domain.com/">HealthNotifier</a>
+        <nav>
+            <a class="button" href="https://www.domain.com/#how-it-works">How it Works</a>
+            <a class="button" href="https://www.domain.com/#benefits">Benefits</a>
+            <div class="divider">&nbsp;</div>
+            <% if !request.path.include? "/login" %>
+            <a class="button" href="<%= login_path %>">Log In</a>
+            <% end %>
+            <% if !request.path.include? "/signup" %>
+            <a class="button primary inverse" href="<%= signup_choose_path %>">Create Account</a>
+            <% end %>
+        </nav>
+    </div>
+</header>
+<% end %>

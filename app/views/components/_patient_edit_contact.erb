@@ -1,0 +1,62 @@
+<script id="emergency-item" type="text/html">
+    <div class="row">
+        <div class="field span3 required">
+            <label for="contact-first-name-{{record_order}}">First Name</label>
+            <input class="span3" type="text" name="first_name" value="{{first_name}}" id="contact-first-name-{{record_order}}">
+            <p class="error-message" data-for="contact-first-name-{{record_order}}">Please enter a first name</p>
+        </div>
+        <div class="field span3 required">
+            <label for="contact-last-name-{{record_order}}">Last Name</label>
+            <input class="span4" type="text" name="last_name" value="{{last_name}}" id="contact-last-name-{{record_order}}">
+            <p class="error-message" data-for="contact-last-name-{{record_order}}">Please enter a last name</p>
+        </div>
+
+         <div class="field span3">
+            <label for="contact-relationship-{{record_order}}">Relationship</label>
+            <select class="span3 contact_relationship" name="contact_relationship" id="contact-relationship-{{record_order}}" size="1">
+                <option value="">&mdash;</option>
+                <%= options_for_select(@contact_relationships.map {|item| [item[:name], item[:value]] }) %>
+            </select>
+            <p class="error-message" data-for="contact-relationship-{{record_order}}">Please select a relationship</p>
+        </div>
+
+        <%= render :partial => 'components/remove_row_button' %>
+    </div>
+
+    <div class="row">
+        <div class="field span3 required">
+            <label for="contact-home-phone-{{record_order}}">Phone Number</label>
+            <input class="span3" type="phone" name="home_phone" value="{{home_phone}}" id="contact-home-phone-{{record_order}}">
+            <p class="error-message" data-for="contact-home-phone-{{record_order}}">Please enter a valid phone number</p>
+        </div>
+
+        <div class="field span7">
+            <label for="contact-email-{{record_order}}">Email</label>
+            <input class="span7" type="email" name="email" value="{{email}}" id="contact-email-{{record_order}}">
+            <p class="error-message" data-for="contact-email-{{record_order}}">Please enter an email</p>
+        </div>       
+    </div>
+
+    [[ if (list_advise_send_date) { ]] <div class="row"><div class="field span9" style="margin-bottom: 0; min-height: auto;"><p><small><em>{{first_name}} has been notified via email / text message</em></small></p></div></div> [[ } ]]
+
+    <div class="row slim">
+        <div class="field">
+            <input type="checkbox" name="notification_postscan" id="notification-postscan-{{record_order}}" [[ if (notification_postscan) { ]] checked="checked" [[ } ]]>
+            <label class="inline" for="notification-postscan-{{record_order}}">Receives LifeSticker Scan Notification</label>
+        </div>
+        <div class="field">
+            <input type="checkbox" name="power_of_attorney" id="contact-power-of-attorney-{{record_order}}" [[ if (power_of_attorney) { ]] checked="checked" [[ } ]]>
+            <label class="inline" for="contact-power-of-attorney-{{record_order}}">Durable health care Power of Attorney</label>
+        </div>
+        <div class="field">
+            <input type="checkbox" name="next_of_kin" id="next-of-kin-{{record_order}}" [[ if (next_of_kin) { ]] checked="checked" [[ } ]]>
+            <label class="inline" for="next-of-kin-{{record_order}}">Next of Kin</label>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="field span2">
+            <%= render :partial => 'components/privacy', :locals => { :field => 'contact' } %>
+        </div>
+    </div>
+</script>

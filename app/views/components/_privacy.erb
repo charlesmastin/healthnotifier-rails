@@ -1,0 +1,16 @@
+<div class="component privacy-control">
+    <label class="required">Privacy</label>
+    <a href="#" class="privacy-control" data-popover="privacy-control" data-balloon="Change Privacy" data-balloon-pos="down">
+        <i class="material-icons privacy-{{privacy}}">
+            [[ if (privacy == 'private') { ]]
+            lock
+            [[ } ]]
+            [[ if (privacy == 'public') { ]]
+            people
+            [[ } ]]
+            [[ if (privacy == 'provider') { ]]
+            verified_user
+            [[ } ]]
+        </i>
+    </a>
+</div>

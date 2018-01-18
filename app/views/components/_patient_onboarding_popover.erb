@@ -1,0 +1,47 @@
+<div id="popover-patient-onboarding" class="popover patient-onboarding" data-offset-x="72" data-offset-y="8">
+    <h6>Setup Steps</h6>
+    <ul class="actions">
+
+        <!-- TODO: swap to some more dynamic component, due to the comical amount of rendering complexity -->
+        <% if patient.account.active_patients.size == 1 %>
+        <li class="completed"><i class="material-icons">check</i>Create Account</li>
+        <% end %>
+
+        <% if state[:progress_index] >= 1 %>
+        <li class="<% if state[:progress_index] >= 2 %>completed <% end %> <% if state[:active_index] == 2 %>active <% end %>"><a href="<%= patient_edit_personal_path(patient.uuid) %>"><i class="material-icons">check</i>Add Personal Details</a></li>
+        <% else %>
+        <li class="incomplete <% if state[:active_index] == 2 %>active <% end %>">Add Personal Details</li>
+        <% end %>
+
+        <% if state[:progress_index] >= 2 %>
+        <li class="<% if state[:progress_index] >= 3 %>completed <% end %> <% if state[:active_index] == 3 %>active <% end %>"><a href="<%= patient_edit_medical_path(patient.uuid) %>"><i class="material-icons">check</i>Add Medical History</a></li>
+        <% else %>
+        <li class="incomplete <% if state[:active_index] == 3 %>active <% end %>">Add Medical History</li>
+        <% end %>
+
+        <% if state[:progress_index] >= 3 %>
+        <li class="<% if state[:progress_index] >= 4 %>completed <% end %> <% if state[:active_index] == 4 %>active <% end %>"><a href="<%= patient_edit_contacts_path(patient.uuid) %>"><i class="material-icons">check</i>Add Medical Contacts</a></li>
+        <% else %>
+        <li class="incomplete <% if state[:active_index] == 4 %>active <% end %>">Add Medical Contacts</li>
+        <% end %>
+
+        <% if state[:progress_index] >= 4 %>
+        <li class="<% if state[:progress_index] >= 5 %>completed <% end %> <% if state[:active_index] == 5 %>active <% end %>"><a href="<%= patient_edit_emergency_contacts_path(patient.uuid) %>"><i class="material-icons">check</i>Add Emergency Contacts</a></li>
+        <% else %>
+        <li class="incomplete <% if state[:active_index] == 5 %>active <% end %>">Add Emergency Contacts</li>
+        <% end %>
+
+        <% if state[:progress_index] >= 5 %>
+        <li class="<% if state[:progress_index] >= 6 %>completed <% end %> <% if state[:active_index] == 6 %>active <% end %>"><i class="material-icons">check</i>Confirm</li>
+        <% else %>
+        <li class="incomplete <% if state[:active_index] == 6 %>active <% end %>">Confirm</li>
+        <% end %>
+
+        <% if state[:progress_index] >= 6 %>
+        <li class="<% if state[:active_index] == 7 %>active <% end %>"><a href="<%= lifesquares_show_assign_path %>"><i class="material-icons">check</i>Get LifeStickers</a></li>
+        <% else %>
+        <li class="incomplete <% if state[:active_index] == 7 %>active <% end %>">Get LifeStickers</li>
+        <% end %>
+
+    </ul>
+</div>

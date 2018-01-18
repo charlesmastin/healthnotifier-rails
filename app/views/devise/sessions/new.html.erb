@@ -1,0 +1,72 @@
+<% content_for :body_class do %> class="login register"<% end %>
+
+
+<section class="main-column">
+
+<section class="page-title">
+    <h1>Log In to HealthNotifier</h1>
+</section>
+
+<%= form_for(Account.new, :as => :account, :url => do_login_path, :html => { :class => "auth-form" }) do |f| %>
+<section class="pillbox">
+    <article>
+        <div class="content">
+            <div class="field">
+                <%= f.label :email, 'Email' %>
+                <%= f.email_field :email, :value => "", :id => "login-email", :size => "27", 'data-validation' => "validEmail", 'data-field' => "account_email", :autocomplete => "off", :placeholder => "name@example.com", :autocapitalize => "off" %>
+                <p class="error-message" style="display: none;">Please enter a valid email address</p>
+            </div>
+
+            <div class="field">
+                <%= f.label :password %>
+                <%= f.password_field :password, :value => "", :id => "login-password", :size => "27", 'data-validation' => "validPassword", 'data-field' => "account_password" %>
+                <p class="error-message" style="display: none;">Password must be at least 8 characters long and include a letter and a number or symbol</p>
+            </div>  
+
+            <div class="flow-control">
+                <button type="submit" class="button primary">Log In</button>
+                <!--<a href="<%= create_account_path %>" class="button small">Create Account</a>-->
+                <a href="<%= recover_account_path %>" class="button small">Forgot Password</a>
+            </div>
+
+        </div>
+    </article>
+</section>
+
+
+<section class="additional-info">
+    <!--<h6>Common Questions</h6>-->
+    <hr />
+    <ul class="basic">
+        <li>Need to confirm your account? <a href="<%= confirm_account_path %>">Confirm account</a>.</li>
+        <!--<li>Forgot your password? <a href="<%= recover_account_path %>">Recover account</a>.</li>-->
+        <!--<li>HealthNotifier protects your information. Read our <a href="https://www.domain.com/privacy/" target="_blank">Privacy Policy</a> to learn more.</li>-->
+    </ul>
+</section>  
+
+<!--
+<section class="flow-control left">
+    <button type="submit" class="button primary">Submit</button>
+</section>
+-->
+
+<% end %>
+
+</section>
+
+<% content_for :js_bootstrap do %>
+    <script>
+        (function () {
+            "use strict";
+            $('#login-email').focus();
+
+            var e = qs('email');
+            // TODO: hook a core validator for thoroughness, but we kinda trust it
+            if(e && e.length > 6){
+                self.$('#login-email').val(e);
+                $('#login-password').focus();
+            }
+
+        })();
+    </script>
+<% end %>

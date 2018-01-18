@@ -1,0 +1,116 @@
+<% content_for :below_header do %>
+<!-- LUL -->
+<div id="plan-designer-tm">
+
+<section id="patient-transaction-bar">
+    <div class="inner">
+        <a class="backzone" href="#">
+            <h4 class="patient_name">Plan Name</h4>
+        </a>
+        <div class="actions">
+            <a id="donkey-rides" href="#" disabled="disabled" class="button primary disabled">Save Changes</a>
+            <a id="donkey-cancel" href="#" class="button">Cancel</a>
+            <a href="#" class="action actions" data-popover="#"><i class="material-icons">more_vert</i></a>
+        </div>
+    </div>
+</section>
+<% end %>
+
+<section class="question-groups">
+
+<section class="question-group">
+<h6>Group 1</h6>
+<!-- summary of question group -->
+<!-- name, description -->
+<article>
+    <h3>What is your favorite color? <span class="tag">SELECT ONE</span></h3>
+    <div class="choices">Red, Green, Blue, Orange, Brown, Purple, Pink, Yellow, Black / Hate Color</div>
+
+</article>
+
+</section>
+
+
+
+<section class="question-group">
+<!-- summary of question group -->
+<h6>Group 2: Silly Preferences</h6>
+<!-- name, description -->
+<article>
+    <h3>Do You Like Flowers? <span class="tag">Y/N</span></h3>
+</article>
+
+<article>
+    <h3>Do You Like Rainbows? <span class="tag">Y/N</span></h3>
+</article>
+
+<article>
+    <h3>Do You Like Scooping Unicorn Poop? <span class="tag">Y/N</span></h3>
+</article>
+
+</section>
+
+<section class="question-group">
+<h6>Group 3</h6>
+<article>
+    <h3>Can you consume food without a tube? <span class="tag">Y/N</span></h3>
+    <!-- <h4 style="margin-bottom: 0.5rem;">Choice Triggers</h4> -->
+    <div class="triggers">
+        <ul class="basic">
+            <li>If <strong>Yes</strong> Jump To <strong>Group 4: Tasty Preferences</strong></li>
+            <li>If <strong>No</strong> Jump To <strong>Group 5: Liquid Preferences</strong></li>
+        </ul>
+    </div>
+</article>
+</section>
+
+<section class="question-group">
+<!-- summary of question group -->
+<h6>Group 4: Tasty Preferences</h6>
+<!-- name, description -->
+<article>
+    <h3>What are some of your favorite foods? <span class="tag">SELECT MULTIPLE</span></h3>
+    <div class="choices">Taco, Lasagna, Pizza, Kobe Beef, Foie Gras, Donkey Hide</div>
+</article>
+
+<article>
+    <h3>Do You Have Food Allergies? <span class="tag">Y/N</span></h3>
+</article>
+
+<article>
+    <h3>Do You Like Ice Cream? <span class="tag">Y/N</span></h3>
+</article>
+
+<div class="triggers aggregate">
+    <ul class="basic">
+        <li>Any Choices Jump To <strong>Recommendations</strong></li>
+    </ul>
+</div>
+
+</section>
+
+<section class="question-group">
+<h6>Group 5: Liquid Preferences</h6>
+<article>
+    <h3>What's your favorite liquid diet? <span class="tag">SELECT ONE</span></h3>
+    <div class="choices">water, sports drink, grain alcohol</div>
+</article>
+
+<div class="triggers aggregate">
+        <ul class="basic">
+            <li>Any Choices Jump To <strong>Recommendations</strong></li>
+        </ul>
+    </div>
+
+</section>
+
+
+</section>
+
+<article class="recommendation">
+    <h6>Recommendations</h6>
+    <p>So many details in here…</p>
+</article>
+
+<!-- LUL -->
+</div>

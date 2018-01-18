@@ -1,0 +1,14 @@
+<section id="export-modal" class="reveal-modal">
+    <div class="modal-content">
+        <h2>Export Your Records</h2>
+        <div class="initial"><p>Export in industry standard CCD XML format for maximum compatibilty.</p></div>
+        <div class="success" style="display: none;"><p>Export processing, please check your browser downloads. You may close this dialog.</p><!--<p><i class="material-icons">cloud_done</i></p>--></div>
+        <section class="modal-flow-control initial">
+            <a href="<%= api_patient_export_path(@patient.uuid) %>" class="button primary action-download-records">Download</a>
+            <a href="#" class="button cancel-export-records">Cancel</a>
+        </section>
+        <section class="modal-flow-control success" style="display: none;">
+            <a href="#" class="button cancel-export-records primary">Close</a>
+        </section>
+    </div>
+</section>

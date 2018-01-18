@@ -1,0 +1,8 @@
+<p>We have successfully processed your payment of <%= number_to_currency(payment.amount / 100) %> for the credit of <%= quantity %> LifeStickers. Your organization members may redeem coverage with the following promotional code: </p>
+<hr />
+<h2><%= campaign.promo_code %></h2>
+<hr />
+<p>Quickstart instructions for downloading HealthNotifier and getting registered with the promo code: <br />
+<a href="<%= campaign_show_url(campaign.uuid) %>" target="_blank"><%= campaign_show_url(campaign.uuid) %></a></p>
+<hr />
+<p>When all <%= quantity %> credits have been redeemed you will be notified.</p>

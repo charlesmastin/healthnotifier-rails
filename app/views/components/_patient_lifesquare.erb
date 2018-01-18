@@ -1,0 +1,19 @@
+<article class="lifesquare">
+    <% if patient.confirmed? %>
+    
+    <% if patient.lifesquare_code_str and patient.lifesquare_code_str.length > 0 %>
+    <a data-balloon="Preview Lifesquare" data-balloon-pos="left" style="display: block;" href="<%= patient_show_webview_path(patient.uuid, 'private') %>">
+
+    <img class="lifesquare" src="<%= api_lifesquare_image_path(patient.lifesquare_uid_str) %>" width="<%= size %>" height="<%= size %>" />
+    <div class="lifesquare-code"><%= patient.lifesquare_code_str %></div>
+    <!--<p><a href="<%= patient_show_webview_path(patient.uuid, 'private') %>" class="button small">Preview</a></p>-->
+    
+    </a>
+    <% else %>
+    <!--<p>No LifeSticker</p>  -->
+    <% end %>
+
+    <!--<p>Not confirmed</p>-->
+
+    <% end %>
+</article>

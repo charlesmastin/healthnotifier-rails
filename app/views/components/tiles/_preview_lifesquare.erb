@@ -1,0 +1,28 @@
+<article data-url="#" class="tile tile-lifesquare">
+    <% if patient.lifesquare_code_str and patient.lifesquare_code_str.length > 0 %>
+    <header><h4>View Your LifeSticker</h4></header>
+    <section>
+        <a xdata-balloon="Preview LifeSticker" data-balloon-pos="top" style="display: block;" href="<%= patient_show_webview_path(patient.uuid, 'provider') %>" title="View LifeSticker <%= patient.lifesquare_code_str %>">
+        <div class="lifesquare-jw">
+            <img class="lifesquare" src="<%= api_lifesquare_image_path(patient.lifesquare_uid_str) %>" width="100" height="100" />
+            <div class="lifesquare-code">
+            <%= render :partial => 'components/lifesquare_masked', :locals => { :lifesquare => patient.lifesquare_uid_str } %>
+            </div>
+        </div>
+
+        <% if false %><%= render :partial => 'components/patient_avatar', :locals => { :patient => patient } %><% end %>
+
+        </a>
+
+        
+    </section>
+    <% else %>
+    <header><i class="material-icons error-town">error</i><h4>No LifeSticker Found</h4></header>
+    <section>
+        <div class="blankstate">
+            <p>Please continue setup and (claim existing / provision) your LifeSticker.</p>
+            <a href="<%= patient_continue_setup_path(patient.uuid) %>" class="button small" style="position: relative; left: -0.5rem;">Continue Setup</a>
+        </div>
+    </section>
+    <% end %>
+</article>

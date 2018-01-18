@@ -1,0 +1,89 @@
+.add-document {
+
+    .line.form-items {
+        @include clearfix;
+        margin-bottom: 1rem;
+        label {
+            display: block;
+        }
+
+        .item {
+            float: left;
+            margin-left: 2rem;
+            &:first-child {
+                margin-left: 0;
+            }
+
+            &.privacy-wrapper {
+                position: relative;
+                top: -2px;
+
+                select {
+                    position: relative;
+                    top: -2px;
+                }
+            }
+        }
+    }
+
+    .drop-target {
+        min-height: 5rem;
+        padding: 2rem;
+        &.over {
+            span.or {
+                display: block;
+            }
+            input[type="file"] {
+                display: inline-block;
+            }
+        }
+        input[type="file"] {
+            width: 95px; // mulitple + chrome, lol
+        }
+    }
+    section.files {
+        margin-top: 1rem;
+        @include clearfix;
+        article {
+            // card it out son
+            @include grid-columns(3, 1, 2.5%);
+
+            box-sizing: border-box;
+            overflow: hidden;
+            
+            border-radius: 0.5rem;
+            -webkit-transition: box-shadow 0.15s linear;
+            margin-bottom: 2.5%;
+            padding: 1rem;
+            background: white;
+
+            img {
+                width: 100%;
+                -webkit-user-select: none;
+                user-select: none;
+            }
+
+            a {
+                position: relative;
+                top: 6px;
+                margin-right: 0.25rem;
+                color: $textgray;
+                &:hover {
+                    color: $red2016;
+                }
+            }
+
+            &.pdf {
+                .icon {
+                    text-align: center;
+                    padding: 2rem 0;
+                    i {
+                        font-size: 5rem;
+                        -webkit-user-select: none;
+                        cursor: default;
+                    }
+                }
+            }
+        }
+    }
+}

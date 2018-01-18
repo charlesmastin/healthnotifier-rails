@@ -1,0 +1,5 @@
+<ul class="inline">
+<% question.choices.each do |choice| %>
+<li><label><input type="radio" name="question_<%= question.uuid %>" value="<%= choice.uuid %>" /><span><%= choice.name %></span></label></li>
+<% end %>
+</ul>

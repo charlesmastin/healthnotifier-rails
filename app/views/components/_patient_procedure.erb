@@ -1,0 +1,3 @@
+<article>
+<%= procedure.health_event %><% if procedure.start_date %> &nbsp;<span class="fine-detail"><%= automaskDate(procedure.start_date, procedure.start_date_mask) %></span><% end %>&nbsp;<span class="tag privacy <%= procedure.privacy %>"><%= privacy_label(procedure.privacy) %></span>
+</article>

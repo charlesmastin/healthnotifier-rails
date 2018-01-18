@@ -1,0 +1,185 @@
+<% content_for :pagetitle do %>
+<h1><a href="<%= care_plans_patient_path(@patient.uuid) %>" data-balloon="Change Condition" class="baby-got-back"><i class="material-icons">arrow_back</i></a><%= @condition.name %></h1>
+<% end %>
+
+<aside id="sidebar">
+
+<h6>Workflow Steps</h6>
+
+<nav class="onboarding">
+    <ol>
+        <li class="completed"><i class="material-icons">check</i>Choose Patient</li>
+        <li class="completed"><i class="material-icons">check</i>Choose Condition</li>
+        <li class="incomplete">Additional Consult</li>
+        <li class="incomplete">Recommendations</li>
+    </ol>
+</nav>
+
+<section class="cards single-item">
+    <article class="patient">
+        <header>
+            <h3><%= @patient.name_extended %></h3>
+        </header>
+        <section>
+            <%= render :partial => 'components/patient_avatar', :locals => { :patient => @patient } %>
+            <% if @patient.age_str != "2015 years old" %><small class="age"><%= @patient.age_str %></small><% else %><small class="age">&nbsp;</small><% end %>
+        </section>
+    </article>
+</section>
+
+</aside>
+
+<section id="main-column">
+
+<section class="pillbox">
+<article>
+<section class="title">
+    <h3>Description</h3>
+</section>
+<section class="content">
+    <p>We have some follow up questions to better understand your condition. Please answer the questions below and confirm any pre-filled data. Some answers may be saved to your profile for your convenience.</p>
+    <div class="basic-form">
+        <div class="line">
+            <div class="field">
+                <label><span class="step">1</span>Date of Birth</label>
+                <input type="text" value="08/26/2014" />
+            </div>
+        </div>
+
+        <div class="line">
+
+            <div class="field">
+                <label><span class="step">2</span>Max Temperature</label>
+                <select>
+                    <option value=""></option>
+                    <option value="1">less than 100.5</option>
+                    <option value="2">100.5 - 103</option>
+                    <option value="3">greater than 103</option>
+                </select>
+            </div>
+
+        </div>
+
+        <div class="line">
+            <div class="field">
+                <label><span class="step">3</span>Cough and Congestion</label>
+                <div class="radio-options-wrapper">
+                    <label><input type="radio" value="yes" name="cc" />Yes</label>
+                    <label><input type="radio" value="no" name="cc" />No</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="line">
+
+            <div class="field">
+                <label><span class="step">4</span>Diarrhea</label>
+                <div class="radio-options-wrapper">
+                    <label><input type="radio" value="yes" name="d" />Yes</label>
+                    <label><input type="radio" value="no" name="d" />No</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="line">
+
+            <div class="field">
+                <label><span class="step">5</span>Vomiting</label>
+                <div class="radio-options-wrapper">
+                    <label><input type="radio" value="yes" name="v" />Yes</label>
+                    <label><input type="radio" value="no" name="v" />No</label>
+                </div>
+            </div>
+        </div>
+
+        <div id="vomit-wrapper" class="nested-wrapper" style="display: none;">
+            <div class="line">
+            <div class="field">
+                <label><span class="step">5.1</span>Stomach Contents</label>
+                <div class="radio-options-wrapper">
+                    <label><input type="radio" value="yes" name="v1" />Yes</label>
+                    <label><input type="radio" value="no" name="v1" />No</label>
+                </div>
+            </div>
+            </div>
+            <div class="line">
+            <div class="field">
+                <label><span class="step">5.2</span>Greenish (bile)</label>
+                <div class="radio-options-wrapper">
+                    <label><input type="radio" value="yes" name="v2" />Yes</label>
+                    <label><input type="radio" value="no" name="v2" />No</label>
+                </div>
+            </div>
+            </div>
+            <div class="line">
+            <div class="field">
+                <label><span class="step">5.3</span>Last Bowel Movement</label>
+                <select name="lbm">
+                    <option value=""></option>
+                    <option value="1">today</option>
+                    <option value="2">yesterday</option>
+                    <option value="3">2 days ago</option>
+                    <option value="4">more than 3 days ago</option>
+                </select>
+            </div>
+            </div>
+        </div>
+
+        <div class="line">
+            <div class="field">
+                <label><span class="step">6</span>Ear Pain</label>
+                <div class="radio-options-wrapper">
+                    <label><input type="radio" value="yes" name="e" />Yes</label>
+                    <label><input type="radio" value="no" name="e" />No</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="line">
+
+            <div class="field">
+                <label><span class="step">7</span>History of Urinary Tract Infection</label>
+                <div class="radio-options-wrapper">
+                    <label><input type="radio" value="yes" name="u" />Yes</label>
+                    <label><input type="radio" value="no" name="u" />No</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="line">
+
+            <div class="field">
+                <label><span class="step">8</span>History of Asthma</label>
+                <div class="radio-options-wrapper">
+                    <label><input type="radio" value="yes" name="a" />Yes</label>
+                    <label><input type="radio" value="no" name="a" />No</label>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+</article>
+</section>
+
+
+<section class="flow-control">
+    <a href="#" class="button primary">Continue</a>
+</section>
+
+</section>
+
+<% content_for :js_bootstrap do %>
+<script>
+    (function () {
+        "use strict";
+        $('input[name="v"]').change(function(e){
+            if($(e.currentTarget).val() == 'yes'){
+                $('#vomit-wrapper').slideDown();
+            }else{
+                $('#vomit-wrapper').slideUp();
+            }
+        });
+    })();
+</script>
+<% end %>

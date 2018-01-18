@@ -1,0 +1,327 @@
+/* from bourbon */
+$prefix-for-webkit:    true;
+$prefix-for-mozilla:   true;
+$prefix-for-microsoft: true;
+$prefix-for-opera:     true;
+$prefix-for-spec:      true;
+
+@mixin prefixer-old($name, $argument) {
+    #{$name}: $argument;
+    -webkit-#{$name}: $argument;
+    -ms-#{$name}: $argument;
+    -moz-#{$name}: $argument;
+    -o-#{$name}: $argument;
+}
+
+@mixin clearfix {
+  &::after {
+    clear: both;
+    content: "";
+    display: block;
+  }
+}
+
+@mixin media($query: $feature $value $columns, $total-columns: $grid-columns) {
+  @if length($query) == 1 {
+    @media screen and ($default-feature: nth($query, 1)) {
+      $default-grid-columns: $grid-columns;
+      $grid-columns: $total-columns;
+      @content;
+      $grid-columns: $default-grid-columns;
+    }
+  } @else {
+    $loop-to: length($query);
+    $media-query: "screen and ";
+    $default-grid-columns: $grid-columns;
+    $grid-columns: $total-columns;
+
+    @if is-not(is-even(length($query))) {
+      $grid-columns: nth($query, $loop-to);
+      $loop-to: $loop-to - 1;
+    }
+
+    $i: 1;
+    @while $i <= $loop-to {
+      $media-query: $media-query + "(" + nth($query, $i) + ": " + nth($query, $i + 1) + ") ";
+
+      @if ($i + 1) != $loop-to {
+        $media-query: $media-query + "and ";
+      }
+
+      $i: $i + 2;
+    }
+
+    @media #{$media-query} {
+      @content;
+      $grid-columns: $default-grid-columns;
+    }
+  }
+}
+
+
+// this is ancient, clean it up, burn it down
+@mixin pillow-emboss {
+	text-shadow: 0px 1px 1px #fff;
+}
+
+//************************************************************************//
+// Example: @include prefixer(border-radius, $radii, webkit ms spec);
+//************************************************************************//
+$prefix-for-webkit:    true !default;
+$prefix-for-mozilla:   true !default;
+$prefix-for-microsoft: true !default;
+$prefix-for-opera:     true !default;
+$prefix-for-spec:      true !default; // required for keyframe mixin
+
+@mixin prefixer ($property, $value, $prefixes) {
+	@each $prefix in $prefixes {
+
+		@if $prefix == webkit and $prefix-for-webkit == true {
+			-webkit-#{$property}: $value;
+		}
+		@else if $prefix == moz and $prefix-for-mozilla == true {
+			-moz-#{$property}: $value;
+		}
+		@else if $prefix == ms and $prefix-for-microsoft == true {
+			-ms-#{$property}: $value;
+		}
+		@else if $prefix == o and $prefix-for-opera == true {
+			-o-#{$property}: $value;
+		}
+		@else if $prefix == spec and $prefix-for-spec == true {
+			#{$property}: $value;
+		}
+		@else  {
+			@warn "Unrecognized prefix: #{$prefix}";
+		}
+	}
+}
+
+@mixin disable-prefix-for-all() {
+	$prefix-for-webkit:    false;
+	$prefix-for-mozilla:   false;
+	$prefix-for-microsoft: false;
+	$prefix-for-opera:     false;
+	$prefix-for-spec:      false;
+}
+
+
+@mixin opentype ($features:'"liga", "dlig"') {
+	-moz-font-feature-settings: $features;
+	-ms-font-feature-settings: $features;
+	-o-font-feature-settings: $features;
+	-webkit-font-feature-settings: $features;
+	font-feature-settings: $features;
+}
+
+@mixin border-radius ($radius) {
+	-webkit-border-radius: $radius;
+	-moz-border-radius: $radius;
+	border-radius: $radius;
+}
+
+@mixin animation($value) {
+    @include prefixer-old(animation, $value);
+}
+
+// Adds keyframes blocks for supported prefixes, removing redundant prefixes in the block's content
+@mixin keyframes($name) {
+	$original-prefix-for-webkit:    $prefix-for-webkit;
+	$original-prefix-for-mozilla:   $prefix-for-mozilla;
+	$original-prefix-for-microsoft: $prefix-for-microsoft;
+	$original-prefix-for-opera:     $prefix-for-opera;
+	$original-prefix-for-spec:      $prefix-for-spec;
+
+	@if $original-prefix-for-webkit {
+			@include disable-prefix-for-all();
+			$prefix-for-webkit: true;
+			@-webkit-keyframes #{$name} {
+					@content;
+			}
+	}
+	@if $original-prefix-for-mozilla {
+			@include disable-prefix-for-all();
+			$prefix-for-mozilla: true;
+			@-moz-keyframes #{$name} {
+					@content;
+			}
+	}
+	@if $original-prefix-for-microsoft {
+			@include disable-prefix-for-all();
+			$prefix-for-microsoft: true;
+			@-ms-keyframes #{$name} {
+					@content;
+			}
+	}
+	@if $original-prefix-for-opera {
+		@include disable-prefix-for-all();
+		$prefix-for-opera: true;
+		@-o-keyframes #{$name} {
+			@content;
+		}
+	}
+	@if $original-prefix-for-spec {
+		$prefix-for-spec:     true !default;
+		@include disable-prefix-for-all();
+		$prefix-for-spec: true;
+		@keyframes #{$name} {
+			@content;
+		}
+	}
+
+	$prefix-for-webkit:    $original-prefix-for-webkit;
+	$prefix-for-mozilla:   $original-prefix-for-mozilla;
+	$prefix-for-microsoft: $original-prefix-for-microsoft;
+	$prefix-for-opera:     $original-prefix-for-opera;
+	$prefix-for-spec:      $original-prefix-for-spec;
+}
+
+
+@mixin flexbox() {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+}
+
+@mixin flex($values) {
+  -webkit-box-flex: $values;
+  -moz-box-flex:  $values;
+  -webkit-flex:  $values;
+  -ms-flex:  $values;
+  flex:  $values;
+}
+
+@mixin order($val) {
+  -webkit-box-ordinal-group: $val;
+  -moz-box-ordinal-group: $val;
+  -ms-flex-order: $val;
+  -webkit-order: $val;
+  order: $val;
+}
+
+// @mixin columns ($column-count: , $column-gap: ) {
+//  -webkit-column-count: 5;
+//     -webkit-column-gap:  .75em;
+//     -moz-column-count: 5;
+//     -moz-column-gap:  .75em;
+//     -o-column-count: 5;
+//     -o-column-gap:  .75em;
+//     column-count: 5;
+//     column-gap:  .75em;
+// }
+
+// These mixins support the in-progress dynamic grid. How these collapse automatically as column narrows still needs to be added/defined.
+
+// @mixin width($colCount: 2, $colSpan: 1, $gutter: 4%) {
+// 	width: $colSpan * ((100% - ($gutter * ($colCount - 1))) / $colCount);
+// 	margin-left: 0;
+// 	margin-right: $gutter;
+// 	float: left;
+
+// 	&:nth-of-type(#{$colCount}n + #{$colCount}) {
+// 		margin-right: 0;
+// 		clear: none; // Should this be right?
+// 		// background-color: teal !important;
+// 	}
+
+// 	&:nth-of-type(#{$colCount}n + 1) {
+// 		clear: left; // Should this be right?
+// 	}
+// }
+
+@mixin width($colCount: 2, $colSpan: 1, $gutter: 4%, $solo: off) {
+    @if $solo == 'left' {
+        width: $colSpan * (100% / $colCount);
+        margin-left: $gutter;
+        margin-right: auto;
+        clear: both;
+        float: left;
+
+    } @else if $solo == 'right' {
+        width: $colSpan * (100% / $colCount);
+        margin-left: auto;
+        margin-right: $gutter;
+        clear: both;
+        float: right;
+
+    } @else if $gutter == 'auto' {
+        width: $colSpan * (100% / $colCount);
+        margin-left: auto;
+        margin-right: auto;
+        clear: both;
+        float: none;
+
+    } @else if $solo == 'mixed' {
+        width: $colSpan * ((100% - $gutter) / $colCount);
+        margin-left: 0;
+        margin-right: $gutter;
+        // clear: both;
+        // float: none;
+
+    } @else if $solo == 'center' {
+        width: $colSpan * ((100% - ($gutter * 12)) / $colCount);
+        margin-left: $gutter;
+        margin-right: $gutter;
+        float: none;
+        display: inline-block;
+        text-align: center;
+
+        &:nth-of-type(#{$colCount}n + #{$colCount}) {
+            // margin-right: 0;
+            // clear: none;
+            // background-color: teal !important;
+        }
+
+        &:nth-of-type(#{$colCount}n + 1) {
+            // clear: left; // Should this be right?
+        }
+
+    } @else if $solo == 'omega' {
+        width: $colSpan * ((100% - ($gutter * ($colCount - 1))) / $colCount) + (($colSpan - 1) * $gutter);
+        margin-left: 0;
+        margin-right: 0;
+        float: left;
+
+    } @else {
+        width: $colSpan * ((100% - ($gutter * ($colCount - 1))) / $colCount) + (($colSpan - 1) * $gutter);
+        margin-left: 0;
+        margin-right: $gutter;
+        float: left;
+
+        &:nth-of-type(#{$colCount}n + #{$colCount}) {
+            margin-right: 0;
+            clear: none;
+        }
+
+        &:nth-of-type(#{$colCount}n + 1) {
+            clear: left; // Should this be right?
+        }
+    }
+}
+
+@mixin grid-columns($colCount: 2, $colSpan: 1, $gutter: 4%, $solo: off) {
+    @include width($colCount, $colSpan, $gutter, $solo);
+    @content;
+}
+
+// https://css-tricks.com/snippets/sass/tint-shade-functions/
+
+/// Slightly lighten a color
+/// @access public
+/// @param {Color} $color - color to tint
+/// @param {Number} $percentage - percentage of `$color` in returned color
+/// @return {Color}
+@function tint($color, $percentage) {
+  @return mix(white, $color, $percentage);
+}
+
+/// Slightly darken a color
+/// @access public
+/// @param {Color} $color - color to shade
+/// @param {Number} $percentage - percentage of `$color` in returned color
+/// @return {Color}
+@function shade($color, $percentage) {
+  @return mix(black, $color, $percentage);
+}

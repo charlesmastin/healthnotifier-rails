@@ -1,0 +1,6 @@
+<article>
+<%= language.language_code_assn.try('user_mask') %>
+<% if language.language_proficiency.present? %>
+    &nbsp;<span class="fine-detail"><%= language.language_proficiency.titlecase %></span>
+<% end %>
+</article>

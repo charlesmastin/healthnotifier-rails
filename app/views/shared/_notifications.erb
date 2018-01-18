@@ -1,0 +1,7 @@
+<% if notice %><div class="notification notice"><%= notice.html_safe %></div><% end %>
+<% if alert %><div class="notification alert"><%= alert.html_safe %></div><% end %>
+<% if not devise_error_messages!.empty? %>
+<div class="notification devise-alert">
+    <%= devise_error_messages!.join('<br>').html_safe %>
+</div>
+<% end %>

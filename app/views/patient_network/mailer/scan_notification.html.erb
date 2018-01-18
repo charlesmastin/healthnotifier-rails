@@ -1,0 +1,70 @@
+
+
+<center>
+<div>
+    <h1 style="color: #666; font-weight: 100;"><%= patient.first_name %> <%= patient.last_name %>’s LifeSticker was scanned<% if geo %> in <%= geo.city %>, <%= geo.state_code %><% end %>.</h1>
+    <img src="<%= api_patient_photo_url(patient.uuid) %>?width=256&amp;height=256&amp;circle=yes" alt="Photo of Patient" />
+    <p>
+        <% if patient.account.mobile_phone %>
+            <a title="Call <%= patient.first_name %>" style="font-size: 2rem; color: #337BD3;" href="tel:<%= patient.account.mobile_phone %>"><%= number_to_phone(patient.account.mobile_phone, area_code: true) %></a><br />
+            <% end %>
+            <a style="text-decoration: none; color: #000;" href="mailto:<%= patient.account.email %>"><%= patient.account.email %></a>
+
+    </p>
+</div>
+    <hr style="border-top: none; border-left: none; border-right: none; border-bottom: 1px solid #BBB"; />
+    <% if scanner %>
+    <h2 style="color: #666; font-weight: 100;">Scanned by <%= scanner.name_extended %><% if scanner.account.provider? %>, a licensed healthcare provider<% if credentials %> in <%= credentials.licensing_state_province %>.<% end %>.<% end %></h2>
+
+    <img src="<%= api_patient_photo_url(scanner.uuid) %>?width=128&amp;height=128&amp;circle=yes" alt="Photo of Scanner" />
+    <p>
+        <% if scanner.account.mobile_phone %>
+        <a title="Call <%= scanner.first_name %>" style="font-size: 2rem; color: #337BD3;" href="tel:<%= scanner.account.mobile_phone %>"><%= number_to_phone(scanner.account.mobile_phone, area_code: true) %></a><br />
+        <% end %>
+        <a style="text-decoration: none; color: #000;" href="mailto:<%= scanner.account.email %>"><%= scanner.account.email %></a>
+    </p>
+    <% else %>
+    <h2 style="color: #666; font-weight: 100;">Scanned via SMS<% if scanner_name %> w/ callerid of <%= scanner_name %><% else %> by an unknown caller<% end %>.</h2>
+
+    <% if false %><img src="<%= asset_url('user-thumbnail-default.png') %>" width="128" height="128" alt="Photo of Scanner" /><% end %>
+    <p>
+        
+            <a title="Callback" style="font-size: 2rem; color: #337BD3;" href="tel:<%= scanner_phone_number %>"><%= number_to_phone(scanner_phone_number, area_code: true) %></a>
+    </p>
+    <% end %>
+    <hr style="border-top: none; border-left: none; border-right: none; border-bottom: 1px solid #BBB"; />
+    
+    <h2 style="color: #666; font-weight: 100;">Details</h2>
+    <p>Scanned at <%= scantime.strftime("%m/%d/%Y %I:%M %p") %></p>
+
+    <% if geo %>
+    
+        <p>near the location <a style="color: #337BD3;" href="http://www.google.com/maps/place/<%= latitude %>,<%= longitude %>" target="_blank" title="View Map"><%= geo.formatted_address %></a></p>
+        <a href="http://www.google.com/maps/place/<%= latitude %>,<%= longitude %>" target="_blank" title="View Map">
+        <img src="https://api.mapbox.com/styles/v1/mapbox/streets-v9/static/pin-l+D80319(<%= longitude %>,<%= latitude %>)/<%= longitude %>,<%= latitude %>,14.0,0.00,0.00/512x512@2x?access_token=pk.eyJ1IjoibGlmZXNxdWFyZSIsImEiOiJjaXBwdGp3MHIwNGhwZnVtM2J1cHJtYWhyIn0._DBeXrTzBchD3zqpcAL3aw" alt="map of scan location" width="512" height="512" >
+        </a>
+    <% end %>
+
+</p>
+
+
+<hr style="border-top: none; border-left: none; border-right: none; border-bottom: 1px solid #BBB"; />
+
+<% if defined? connection %>
+<% if false %>
+<p style="font-size: 1.4rem;"><a href="<%= network_webview_url(patient.uuid, connection.auditor_patient.uuid) %>">View <strong><%= patient.first_name %>’s</strong> LifeSticker</a></p>
+<hr />
+<% end %>
+<p>You have received this notification because you are in the authorized viewers LifeCircle for <%= patient.first_name %>.</p>
+<% end %>
+<% if defined? contact %>
+<p>You have received this notification because you are an emergency contact for <%= patient.name_extended %> on their LifeSticker.</p>
+<% end %>    
+
+</center>
+
+<% if false %>
+<!-- TODO: Advance Directive, DNR, and POLST call outs -->
+<% end %>
+
+

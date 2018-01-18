@@ -1,0 +1,112 @@
+<%= render :partial => 'shared/share', :locals => { :patient => @patient } %>
+
+<% content_for :pagetitle do %>
+<% if @patients.length == 1 %>
+<h1>Welcome to HealthNotifier!</h1>
+<% else %>
+<h1>My Profiles</h1>
+<% end %>
+<% end %>
+
+
+<p style="width: 75%;">
+    <% if @patients.length == 1 %>
+        This is your HealthNotifier profile. Click it to make changes. 
+    <% else %>
+        These are your HealthNotifier profiles. Click one to view it or make changes. 
+    <% end %>
+    Be sure to update your profile whenever your essential health information changes.
+</p>
+
+<% if @deleted_patients and @deleted_patients.size > 0 %>
+<p>Active Profiles <small>(<%= @patients.size %>)</small></p>
+<% end %>
+
+<section id="patients" class="cards<% if @patients.size < 2 %> single-item<% end %>">
+<% @patients.each do |patient| %>
+    <%= render :partial => 'components/patient_card', :locals => { :patient => patient } %>
+<% end %>
+</section>
+
+<p class="add new-patient">
+  <%= link_to 'Create New Profile', patient_new_path, :class => "button primary" %>
+</p>
+
+<% if @deleted_patients and @deleted_patients.size > 0 %>
+
+<hr style="margin-top: 4rem;" />
+
+<div class="line" style="margin-bottom: 0.5rem;">
+    <p style="display: inline;">Deleted Profiles <small>(<%= @deleted_patients.size %>)</small></p> <a href="#" id="toggle-deleted-patients" class="button">Show</a>
+</div>
+
+<table id="deleted-patients" class="default" style="display: none;">
+<thead>
+<tr>
+    <th></th>
+    <th>Name</th>
+    <th>LifeSticker</th>
+    <th>Deleted on</th>
+</tr>
+</thead>
+<tbody>
+<% @deleted_patients.each do |patient| %>
+<tr>
+    <td class="avatar"><%= render :partial => 'components/patient_avatar', :locals => { :patient => patient, :size => 'small' } %></td>
+    <td><%= patient.name_extended %></td>
+    <td><span class="lifesquare-code"><%= patient.lifesquare_code_str %></span></td>
+    <td><small><%= patient.last_update %></small></td>
+</tr>
+<% end %>
+</tbody>
+</table>
+
+
+<section id="deleted-patients2" class="cards">
+<% @deleted_patients.each do |patient| %>
+    <% if false %><%= render :partial => 'components/patient_card', :locals => { :patient => patient } %><% end %>
+<% end %>
+</section>
+
+
+<% end %>
+
+
+<% content_for :bodyextra do %>
+<!-- popovers -->
+<% @patients.each do |patient| %>
+
+<%= render :partial => 'components/patient_popover', :locals => { :patient => patient, :context => 'list' } %>
+
+
+<% end %>
+<% end %>
+
+<% content_for :js_bootstrap do %>
+<script>
+    (function () {
+        "use strict";
+        var Account = app.module('account'),
+            Patient = app.module('patient'),
+            EmailFriend = app.module('emailfriend'),
+            indexView = new Patient.Views.Index({ el: '#patients' }),
+            socialView = new Account.Views.Social({ el: '#social' }),
+            emailView = new Account.Views.EmailFriend({ el: '#email-modal', model: new EmailFriend.Model });
+            $('#toggle-deleted-patients').click(function(){
+                $('#deleted-patients').fadeToggle();
+            });
+    })();
+
+    /*
+    $(document).on('onPatientDelete', function(e, data){
+        // remove da item, technically, move it seamlessly to the deleted side
+        // so let's cheat, and "wait for the modal to close" and then reload
+        setTimeout(function(){
+            window.location.reload();
+        }, 750);
+    });
+    */
+
+    popover.init();
+</script>
+<% end %>

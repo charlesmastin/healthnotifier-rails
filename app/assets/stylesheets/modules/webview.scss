@@ -1,0 +1,354 @@
+// for portal only, lul, to simulate the mobile tabbage patch kidz
+.ghetto-webview-tab-controller {
+    margin: 0;
+    padding: 0;
+    display: block;
+    box-sizing: border-box;
+    li {
+        display: block;
+        float: left;
+        width: 33.33%;
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        //@include grid-columns(3, 1, 2.5%);
+        // border-right: 1px solid $strokesForFolks;
+        &:first-child {
+            border-top-left-radius: 0.5rem;
+            a {
+                border-top-left-radius: 0.5rem;
+            }
+        }
+        &:last-child {
+            border-top-right-radius: 0.5rem;
+            a {
+                border-top-right-radius: 0.5rem;
+            }
+        }
+
+        &.active {
+            background: $blue2016;
+            a {
+                color: white;
+            }
+        }
+
+        a {
+            display: block;
+            padding: 1rem;
+            //padding: 1rem;
+            color: $blue2016;
+            // border-bottom: 2px solid $blue2016;
+
+            &:hover {
+                //text-decoration: underline;
+                // background: rgba(0, 0, 0, 0.05);
+            }
+        }
+    }
+}
+
+.webview {
+
+    font-size: 1.4rem;
+
+    h3 {
+        font-size: 1.2rem;
+        letter-spacing: 0.05rem;
+        text-transform: uppercase;
+    }
+
+    .private {
+
+        // font-style: italic;
+        // color: gray;
+        // font-weight: 600;
+        span {
+            font-style: normal;
+            font-weight: 600;
+            background: #666;
+            padding: 1px 7px;
+            font-size: 0.9em;
+            margin-right: 0.5em;
+            color: white;
+            border-radius: 12px;
+            text-shadow: 1px 1px rgba(0, 0, 0, 0.7);
+        }
+
+    }
+
+    .private-item {
+        background: #f2f2f2;
+    }
+
+    .tab {
+        section {
+            & > div {
+                margin-bottom: 2em;
+
+                h3 {
+                    background: $black-30;
+                    color: white;
+                    padding: 0.25em 0.5em;
+                    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+                    -webkit-user-select: none;
+                    cursor: default;
+                }
+
+                & > article {
+                    border-bottom: 1px solid #ccc;
+
+                    &:last-child {
+                        border-bottom: none;
+                    }
+                    padding: 0.25em 0.5em;
+                }
+            }
+        }
+
+        &#personal {
+            header {
+                color: white;
+                overflow: auto;
+                background: $red2016;
+                padding: 1rem;
+                div.img {
+                    float: left;
+                    width: 33%;
+
+                    .user-thumbnail-circle {
+                        margin: 0;
+                    }
+
+                    img {
+                        border: 2px solid white;
+                        margin: 0;
+                        padding: 0;
+                        // height: auto;
+                    }
+                }
+                div.text {
+                    float: left;
+                    width: 66%;
+                    font-size: 1.8rem;
+                    strong {
+                        display: block;
+                    }
+                }
+            }
+        }
+
+        &#medical {
+
+        }
+    }
+
+    //misc temp table for patient card... what
+    table {
+
+        width: 100%;
+        tr.col2 {
+            td {
+                width: 50%;
+                &:first-child {
+                    border-right: 1px solid #ccc;
+                }
+            }
+        }
+
+        td {
+            border-bottom: 1px solid #ccc;
+            padding: 0.25em 0.5em;
+        }
+
+        &.left-labels {
+
+            td:first-child {
+                width: 15%;
+                font-weight: 600;
+            }
+        }
+        &:last-child {
+            tr:last-child {
+                td {
+                    border-bottom: none;
+                }
+            }
+        }
+    }
+
+    //misc float utils, bootstrap ish
+    .pull-left {
+        float: left;
+    }
+    .pull-right {
+        float: right;
+    }
+
+
+    // GHETTO backport from the ghetto inline version served via the API, LOL FAIL NO TIME™
+
+      a.add-document {
+        display: block;
+        font-size: 17px;
+        margin: 1rem 0 1rem 0.5rem;
+        color: rgba(14, 122, 254, 1.0);
+      }
+
+      a.delete-document {
+
+      }
+
+      article.document {
+
+      }
+
+      ul.files {
+        overflow: auto;
+        margin-top: 0.5rem;
+        margin-bottom: 0.5rem;
+      }
+
+      ul.files li {
+        display: box;
+        float: left;
+        box-sizing: border-box;
+        margin-right: 0.5rem;
+        margin-bottom: 0.5rem;
+      }
+
+      ul.files li div.thumbnail-wrapper {
+        box-sizing: border-box;
+        width: 135px;
+        height: 135px;
+        border: 1px solid #ccc;
+        position: relative;
+      }
+
+      ul.files li div.thumbnail-wrapper img {
+        background: #eee;
+        width: 100% !important;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 999;
+      }
+
+      ul.files li div.thumbnail-wrapper small {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background: rgba(255, 255, 255, 1.0);
+        padding: 0.25rem 0 0.25rem 0.5rem;
+        box-sizing: border-box;
+        z-index: 1000;
+        color: #333;
+        font-weight: normal;
+        font-size: 0.65rem !important;
+        border-top: 1px solid #ccc;
+      }
+
+
+
+      div.alert {
+        background: #eee;
+        margin: -1.5rem -0.5rem 0.5rem -0.5rem;
+        padding: 1rem 1rem 1.5rem 1rem;
+        color: #333;
+      }
+
+      div.alert a {
+        color: #333;
+      }
+
+      div.alert a p {
+        font-weight: normal;
+      }
+
+      div.alert a p strong {
+        font-weight: bold;
+      }
+
+      div.alert h1 {
+        margin-bottom: 0;
+        color: #c4262e;
+      }
+
+    // ghetto times double trouble slime overrides
+    section.dd-webview-jw {
+        padding-top: 1rem;
+        @include clearfix;
+        article {
+            @include grid-columns(4, 1, 2.5%);
+            box-sizing: border-box;
+            padding-left: 1rem;
+        }
+    }
+
+    a.view-directive {
+        display: block;
+        // font-size: 17px;
+        /*margin: 1rem 0 1rem 0.5rem;*/
+        margin-bottom: 0.5rem;
+        // color: rgba(14, 122, 254, 1.0);
+    }
+
+      table#patient-summary {
+        border-collapse: collapse;
+        border-bottom: 1px solid #ccc;
+      }
+
+      table#patient-summary tr td {
+
+      }
+
+      table#patient-summary tr td:first-child {
+        font-weight: bold;
+        width: 33%;
+        vertical-align: top;
+      }
+
+      .alt-units {
+        opacity: 0.6;
+      }
+
+      article.residence + article.residence {
+        margin-top: 0.5rem;
+      }
+
+}
+
+.webview.web {
+    article.tab {
+        display: none;
+        &.active {
+            display: block;
+        }
+    }
+}
+
+nav.privacy-preview {
+    // float: right;
+    display: inline;
+    position: relative;
+    color: $white-75;
+    margin-right: 1rem;
+    // top: 0.9rem;
+    i {
+        position: relative;
+        top: 3px;
+        font-size: 1.2rem;
+    }
+}
+
+i.privacy-provider {
+    color: $green2016;
+}
+i.privacy-private {
+
+}
+i.privacy-public {
+    // color: $red2016;
+}

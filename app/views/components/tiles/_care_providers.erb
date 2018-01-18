@@ -1,0 +1,8 @@
+<% if @patient_details['care_providers'].length > 0 %>
+<article data-url="#">
+    <header><%= image_tag "icons/stethoscope.png" %><h4><a href="<%= patient_edit_contacts_path(@patient.uuid) %>#doctors">Physician</a></h4></header>
+    <section>
+        <%= render :partial => 'components/patient_care_provider', :locals => { :care_provider => @patient_details['care_providers'][0] } %>
+    </section>
+</article>
+<% end %>

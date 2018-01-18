@@ -1,0 +1,130 @@
+<header>
+    <div class="img">
+        <%= render :partial => 'components/patient_avatar', :locals => { :patient => @patient, :size => 'large' } %>
+    </div>
+    <div class="text">
+        <strong><%= @patient.fullname %></strong>
+        <!-- TODO: add privacy constraints here -->
+        <small><%= @patient.age(@patient.birthdate, true) %> <% if @patient.gender %><%= @patient.gender.titlecase %><% end %>
+        <% if @patient.blood_type.present? %>
+        <br />Blood Type <%= Patient.blood_types[@patient.blood_type].to_s %>
+        <% end %>
+        <% if @patient.organ_donor %><br />Organ Donor<% end %>
+        </small>
+    </div>
+</header>
+
+<table id="patient-summary">
+    <% if defined? context and context == 'web' %>
+    <% else %>
+    <% if @patient_details['directives'].length > 0 %>
+    <tr>
+        <td>Directives</td>
+        <td>
+            <% @patient_details['directives'].each do |directive| %>
+            <% if has_view_permission(directive, @view_permission) %>
+            <% if defined? @context and @context == 'web' %>
+            <a href="<%= document_show_path(directive.document_digitized.uid) %>#file-0" class="view-directive">
+            <% else %>
+            <a href="/api/v1/document/view/<%= directive.document_digitized.uid %>/#file-0" target="_blank" class="view-directive">
+            <% end %>
+            <strong><%= humanize_dd_category(directive.document_digitized.category) %></strong>
+            </a>
+            <% else %>
+            <small class="private"><%= @default_privacy_message %></small>
+            <% end %>
+            <% end %>
+        </td>
+    </tr>
+    <% end %>
+    <% end %>
+    <!-- disregarding persmission at this point, because it could be really really bad -->
+    <% if @patient_details['alert_medications'].length > 0 %>
+    <tr>
+        <td>Alert Meds</td>
+        <td><% @patient_details['alert_medications'].each do |med| %><%= med.therapy %> <% end %></td>
+    </tr>
+    <% end %>
+    <% if has_view_permission(@patient, @view_permission, 'biometrics_privacy') %>
+    <% if @patient.height %>
+    <tr>
+        <td>Height</td>
+        <td><%= @patient.imperialHeight %> <span class="alt-units"><small><%= @patient.height.round %> cm</small></span></td>
+    </tr>
+    <% end %>
+    <% if @patient.weight %>
+    <tr>
+        <td>Weight</td>
+        <td><%= @patient.imperialWeight %> <span class="alt-units"><small><%= @patient.weight.round %> kg</small></span></td>
+    </tr>
+    <% end %>
+    <% if @patient.blood_type.present? %>
+    <tr>
+        <td>Blood Type</td>
+        <td><%= Patient.blood_types[@patient.blood_type].to_s %></td>
+    </tr>
+    <% end %>
+    <% if @patient.bp_systolic %>
+    <tr>
+        <td>BP</td>
+        <td><%= @patient.bp_systolic %>/<%= @patient.bp_diastolic %> mmHg</td>
+    </tr>
+    <% end %>
+    <% if @patient.pulse %> 
+    <tr>
+        <td>Pulse</td>
+        <td><%= @patient.pulse %> bpm</td>
+    </tr>
+    <% end %>
+    <% if @patient.hair_color %>
+    <tr>
+        <td>Hair</td>
+        <td><%= Patient.hair_colors[@patient.hair_color].to_s %></td>
+    </tr>
+    <% end %>
+    <% if @patient.eye_color_both %>
+    <tr>
+        <td>Eyes</td>
+        <td><%= @patient.eye_color_both %></td>
+    </tr>
+    <% end %>
+    <% end %>
+    <tr>
+        <td>DOB</td>
+        <td><%= @patient.birthdate.strftime('%m/%d/%Y') %></td>
+    </tr>
+    <% if has_view_permission(@patient, @view_permission, 'demographics_privacy') and @patient[:ethnicity] %>
+    <tr>
+        <td>Race</td>
+        <td><%= Patient.formatted_ethnicities[@patient[:ethnicity].upcase] %></small></td>
+    </tr>
+    <% else %>
+
+    <% end %>
+    <% if @patient_details['languages'].length > 0 %>
+    <tr>
+        <td>Speaks</td>
+        <td><% @patient_details['languages'].each_with_index do |language, i| %><%= language.title %><% if i < (@patient_details['languages'].length - 1) %>,<% end %> <% end %></td>
+    </tr>
+    <% end %>
+    <tr>
+        <td>Residence</td>
+        <td>
+            <% @patient_details['addresses'].each do |address| %>
+            <article class="residence">
+            <% if has_view_permission(address, @view_permission) %>
+            <%= format_address(address) %>
+            <% else %>
+            <small class="private"><%= @default_privacy_message %></small>
+            <% end %>
+            </article>
+            <% end %>
+        </td>
+    </tr>
+    <% if @owner %><!-- or requestor is provider -->
+    <tr>
+        <td>LS #</td>
+        <td><%= render :partial => 'components/lifesquare_masked', :locals => { :lifesquare => @patient.lifesquare_uid_str } %></td>
+    </tr>
+    <% end %>
+</table>

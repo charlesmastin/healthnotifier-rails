@@ -1,0 +1,127 @@
+<% content_for :below_header do %>
+<% if false %><%= render :partial => 'components/patient_transaction_bar', :locals => { :patient => @patient } %><% end %>
+<section id="patient-transaction-bar">
+    <div class="inner">
+        <a class="backzone" href="<%= patient_show_path(@patient.uuid) %>">
+            <%= render :partial => 'components/patient_avatar', :locals => { :patient => @patient, :size => 'small' } %>
+            <h4 class="patient_name"><%= @patient.name_extended %></h4>
+        </a>
+        <div class="actions">
+            <nav class="privacy-preview">
+                Viewing Privacy Level <strong><a href="#" data-popover="privacy-filter"><%= @permission[:name] %></a></strong>
+                <i class="material-icons privacy-<%= @permission[:value] %>"><%= @permission[:icon] %></i>
+            </nav>
+            <a href="#" class="action actions" data-popover="patient-actions-<%= @patient.uuid %>"><i class="material-icons">more_vert</i></a>
+        </div>
+    </div>
+</section>
+<% end %>
+
+<% if false %>
+<% content_for :pagetitle do %>
+    <h1 style="float: left;"><a href="<%= patient_show_path(@patient.uuid) %>" data-balloon="View Patient Summary" class="baby-got-back"><i class="material-icons">arrow_back</i></a>LifeSticker for <%= @patient.first_name %></h1>
+    <nav class="privacy-preview">
+        View Privacy Level <strong><a href="#" data-popover="privacy-filter"><%= @permission[:name] %></a></strong>
+        <i class="material-icons privacy-<%= @permission[:value] %>"><%= @permission[:icon] %></i>
+    </nav>
+<% end %>
+<% end %>
+
+<section id="main-column">
+
+<section class="pillbox webview web">
+    <article class="nav">
+        <ul class="ghetto-webview-tab-controller">
+            <li class="active"><a href="#personal">Personal</a></li>
+            <li><a href="#medical">Medical</a></li>
+            <li><a href="#contacts">Contacts</a></li>
+        </ul>
+    </article>
+    <article class="tab active" id="personal">
+        <div class="content">
+            <%= render :partial => 'shared/patient_personal' %>
+        </div>
+    </article>
+    <article class="tab" id="medical">
+        <div class="content">
+            <%= render :partial => 'shared/patient_medical' %>
+        </div>
+    </article>
+    <article class="tab" id="contacts">
+        <div class="content">
+            <%= render :partial => 'shared/patient_contacts' %>
+        </div>
+    </article>
+</section>
+
+</section>
+
+<% content_for :bodyextra do %>
+
+<%= render :partial => 'components/patient_popover', :locals => { :patient => @patient, :context => 'detail' } %>
+
+
+<div id="popover-privacy-filter" class="popover">
+    <h6>Privacy Level</h6>
+    <ul class="actions">
+        <% @privacy_options.each do |option| %>
+        <li><a class="privacy" data-base-href="<%= patient_show_webview_path(@patient.uuid, option[:value]) %>" href="<%= patient_show_webview_path(@patient.uuid, option[:value]) %>"><i class="material-icons"><%= option[:icon] %></i><%= option[:name] %></a></li>
+        <% end %>
+    </ul>
+</div>
+<% end %>
+
+<% content_for :js_bootstrap do %>
+<script>
+    $(function(){
+        popover.init();
+
+        $('*[data-platform="native"]').hide();
+        // this is a "on change kind of thing, whatever, do it twice"
+        $('#popover-privacy-filter a').each(function(index, elem){
+            elem.href = $(elem).attr('data-base-href') + location.hash;
+        });
+
+        if(location.hash != ''){
+            var hash = '#' + location.hash.split('-')[1];
+            var section = $(hash);
+            $('.ghetto-webview-tab-controller .active').removeClass('active');
+            $('.ghetto-webview-tab-controller a[href="' + hash + '"]').parent().addClass('active');
+            $('.webview .tab.active').removeClass('active');
+            section.addClass('active');
+        }
+
+        /*
+        pubnub = PUBNUB({
+            publish_key : '<%= Rails.application.config.pubnub[:publish_key] %>',
+            subscribe_key : '<%= Rails.application.config.pubnub[:subscribe_key] %>',
+            secret_key : '<%= Rails.application.config.pubnub[:secret_key] %>'
+        });
+
+        pubnub.grant({
+            channel: "patient-<%= @patient.uuid %>",
+            auth_key: "<%= Rails.application.config.pubnub[:subscribe_key] %>",
+            read: true,
+            write: false,
+            ttl: 5,
+            callback: function(m){
+                subscribe();
+            }
+        });
+
+        function subscribe(){
+            pubnub.subscribe({                                     
+                channel : "patient-<%= @patient.uuid %>",
+                message : function (message, envelope, channelOrGroup, time, channel) {
+                    if(message == 'update'){
+                        // we need to understand the event initiator, lol, since this isn't a SPA, fail zones
+                        window.location.reload();
+                    }
+                }
+            });
+        }
+        */
+
+    })
+</script>
+<% end %>

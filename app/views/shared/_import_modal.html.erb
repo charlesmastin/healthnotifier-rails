@@ -1,0 +1,86 @@
+<section id="import-modal" class="reveal-modal">
+    <div class="modal-content">
+        <h2>Import Your Records</h2>
+
+        <div class="basic-form" id="emr-form" data-patient-uuid="<%= @patient.uuid %>" data-action="<%= api_patient_emr_lookup_path(@patient.uuid) %>" data-action-upload="<%= api_patient_import_path(@patient.uuid) %>">
+
+            <section id="importer-decision-tree-alpha">
+                <div>
+                    <label><input type="radio" id="importer-mode-upload" name="mode" value="upload" />I have a current copy of my records and would like to upload</label>
+                </div>
+                <div>
+                    <label><input type="radio" id="importer-mode-pull" name="mode" value="pull" />I need to obtain my records from my provider</label>
+                </div>
+            </section>
+
+            <section id="importer-upload" style="display: none;">
+                <p>
+                    <strong style="display: block;">Upload your Blue Button file</strong>
+                    <!--<small>This file is generated when you export via your health care provider’s Blue Button</small>-->
+                    <input type="file" name="patient_ccd" id="patient_ccd" accept="application/xml" />
+                </p>
+
+                <section class="modal-flow-control" style="margin-top: 2rem;">
+                    <a href="#" class="button primary" id="upload-records">Begin Import</a>
+                    <a href="#" class="button cancel-import-records">Cancel</a>
+                </section>
+            </section>
+
+            <section id="importer-pull" style="display: none;">
+                <p style="margin-bottom: 0;">
+                    <strong style="display: block;">Select an electronic record in which you have a profile</strong>
+                    <small>If your health care provider is not in this list, check if they offer a Blue Button export feature.</small>
+                </p>
+
+                <div class="form-item">
+                    <select style="margin-top: 0.5rem" name="emr_id">
+                        <option value=""></option>
+                        <%= options_for_select(emrs.map {|k, v| [v, k] }) %>
+                    </select>
+                </div>
+
+                <div class="step2" style="display: none;">
+                    <p style="margin-bottom: 0; margin-top: 1rem;"><strong>Enter your account information</strong></p>
+                    <p style="margin-bottom: 1rem;"><small>This data is securely sent to your provider for authentication/identification purposes and is never stored on Lifesquare servers.</small></p>
+                    <div class="row">
+                        <div class="field form-item span3 right-padding">
+                            <label for="import-first-name">First Name</label>
+                            <input id="import-first-name" name="first_name" class="span3" type="text" value="<%= @patient.first_name %>" />
+                        </div>
+
+                        <div class="field form-item span4 right-padding">
+                            <label for="import-last-name">Last Name</label>
+                            <input id="import-last-name" name="last_name" class="span4" type="text" value="<%= @patient.last_name %>" />
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="field form-item span3 right-padding">
+                            <label for="import-dob">DOB</label>
+                            <input id="import-dob" name="dob" class="span3" type="text" value="<%= @patient.birthdate.strftime('%m/%d/%Y') %>" />
+                        </div>
+
+                        <div class="field form-item span3 right-padding">
+                            <label for="import-phone">Phone</label>
+                            <input id="import-phone" name="phone" class="span3" type="text" value="" placeholder="4152238900" />
+                        </div>
+
+                        <div class="field form-item span2">
+                            <label for="import-ssn">SSN</label>
+                            <input id="import-ssn" name="ssn" class="span2" type="text" value="" placeholder="123456789" />
+                        </div>
+                    </div>
+
+                    <section class="modal-flow-control" style="margin-top: 2rem;">
+                        <a href="#" class="button primary" id="import-records">Begin Import</a>
+                        <a href="#" class="button cancel-import-records">Cancel</a>
+                    </section>
+                </div>
+
+            </section>
+        </div>
+
+        <p style="display: none;" class="success-message">Your records have been successfully imported. Please <a href="<%= patient_edit_medical_path(@patient.uuid) %>">review the data.</a></p>
+
+    </div>
+</section>

@@ -1,0 +1,63 @@
+<script id="pharmacy-item" type="text/html">
+    <div class="row">
+        <div class="field span4 required">
+            <label for="pharmacy-name-{{record_order}}">Name</label>
+            <input class="span4" type="text" name="name" value="{{name}}" id="pharmacy-name-{{record_order}}">
+            <p class="error-message" data-for="pharmacy-name-{{record_order}}">Please enter a pharmacy name</p>
+        </div>
+        <div class="field span3">
+            <label for="pharmacy-phone-{{record_order}}">Phone Number</label>
+            <input class="span3" type="phone" name="phone" value="{{phone}}" id="pharmacy-phone-{{record_order}}">
+            <p class="error-message" data-for="pharmacy-phone-{{record_order}}">Please enter a valid phone number</p>
+        </div>
+        <%= render :partial => 'components/remove_row_button' %>
+    </div>
+
+    <div class="row">
+        <div class="field span4">
+            <label for="pharmacy-street-address-{{record_order}}">Street Address</label>
+            <input class="span4" type="text" name="address_line1" value="{{address_line1}}" id="pharmacy-street-address-{{record_order}}">
+            <br>
+            <span class="error-message" data-for="pharmacy-street-address-{{record_order}}">Please enter a street address</span>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="field span4">
+            <label for="pharmacy-city-{{record_order}}">City</label>
+            <input type="text" class="span4" name="city" value="{{city}}" id="pharmacy-city-{{record_order}}">
+            <br>
+            <span class="error-message" data-for="pharmacy-city-{{record_order}}">Please enter a city</span>
+        </div>
+        <div class="field span3">
+            <label class="span3" for="pharmacy-state-{{record_order}}">State / Province</label>
+            <select class="span3 state_province" name="state_province" id="pharmacy-state-{{record_order}}">
+                <option value="">&mdash;</option>
+                <%= options_for_select(@us_states.map {|item| [item[:name], item[:value]] }) %>
+            </select>
+            <input class="span1 state_province" type="text" name="state_province" value="{{state_province}}" id="pharmacy-state-{{record_order}}">
+            <span class="error-message" data-for="pharmacy-state-{{record_order}}">Please enter a valid state</span>
+        </div>
+        <div class="field span2">
+            <label class="span2" for="pharmacy-postal-code-{{record_order}}">Postal Code</label>
+            <input class="span2" type="text" name="postal_code" value="{{postal_code}}" id="pharmacy-postal-code-{{record_order}}">
+            <br>
+            <span class="error-message" data-for="pharmacy-postal-code-{{record_order}}">Please enter a valid postal code</span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="field span4 x-required">
+            <label class="span4" for="pharmacy-country-{{record_order}}">Country</label>
+            <select class="span4 country" name="country" id="pharmacy-country-{{record_order}}">
+                <option value="">&mdash;</option>
+                <%= options_for_select(@countries.map {|item| [item[:name], item[:value]] }) %>
+            </select>
+            <span class="error-message" data-for="pharmacy-country-{{record_order}}"><br>Please select a country</span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="field span2">
+            <%= render :partial => 'components/privacy', :locals => { :field => 'pharmacy' } %>
+        </div>
+    </div>
+</script>

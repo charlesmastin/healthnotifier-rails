@@ -1,0 +1,157 @@
+<% content_for :below_header do %>
+<section id="patient-transaction-bar">
+    <div class="inner">
+        <a class="backzone" href="<%= patient_show_path(@patient.uuid) %>">
+            <%= render :partial => 'components/patient_avatar', :locals => { :patient => @patient, :size => 'small' } %>
+            <h4 class="patient_name"><%= @patient.name_extended %></h4>
+        </a>
+        <div class="actions">
+            <% if @patient.confirmed? %>
+            <a id="action-transaction-save" href="#" disabled="disabled" class="button primary disabled">Save Changes</a>
+            <a id="action-transaction-cancel" href="<%= patient_show_path(@patient.uuid) %>" class="button">Cancel</a>
+            <% else %>
+            <a id="action-transaction-save" href="#" xdisabled="disabled" class="button primary xdisabled">Save &amp; Continue</a>
+            <!-- patient_index_path ???? -->
+            <a id="action-transaction-cancel" href="<%= patient_show_path(@patient.uuid) %>" class="button">Cancel</a>
+            <% end%>
+            <% if @patient.confirmed? %>
+            <a href="#" class="action actions" data-popover="patient-actions-<%= @patient.uuid %>"><i class="material-icons">more_vert</i></a>
+            <% end %>
+        </div>
+        <%= render :partial => 'components/patient_onboarding_summary', :locals => { :patient => @patient, :state => @onboarding_details } %>
+    </div>
+</section>
+<% end %>
+
+<section id="main-column" class="basic-form">
+    <div id="signup-contacts">
+
+    <h2>Edit Insurance &amp; Care Providers</h2>
+    
+    <section id="insurance" class="pillbox">
+        <article>
+            <div class="title">
+                <h3>
+                    <%= image_tag "icons/card.png", :alt => "", :size => "32x22", :style => "margin-top: 7px" %><br>
+                    Insurance
+                </h3>
+            </div>
+            <div class="content">
+                <div class="entries expanded">
+                </div>
+                <%= render :partial => 'components/add_row_button', :locals => { :title => 'Add an Insurance Policy', :visible => true } %>
+            </div>
+        </article>
+    </section>
+
+    <section id="doctors" class="pillbox">
+        <article>
+            <div class="title">
+                <h3>
+                    <%= image_tag "icons/stethoscope.png", :alt => "", :size => "32x33" %><br>
+                    Physician
+                </h3>
+            </div>
+            <div class="content">
+                <div class="entries expanded">
+                </div>
+                <%= render :partial => 'components/add_row_button', :locals => { :title => 'Add a Physician', :visible => true } %>
+            </div>
+        </article>
+    </section>
+
+    <section id="hospital" class="pillbox">
+        <article>
+            <div class="title">
+                <h3>
+                    <%= image_tag "icons/hospital.png", :alt => "", :size => "32x32" %><br>
+                    Hospital
+                </h3>
+            </div>
+            <div class="content">
+                <div class="entries expanded">
+                </div>
+                <%= render :partial => 'components/add_row_button', :locals => { :title => 'Add a Hospital', :visible => true } %>
+            </div>
+        </article>
+    </section>
+
+    <section id="pharmacy" class="pillbox">
+        <article>
+            <div class="title">
+                <h3>
+                    <%= image_tag "icons/rx.png", :alt => "", :size => "32x31" %><br>
+                    Pharmacy
+                </h3>
+            </div>
+            <div class="content">
+                <div class="entries expanded">
+                </div>
+                <%= render :partial => 'components/add_row_button', :locals => { :title => 'Add a Pharmacy', :visible => true } %>
+            </div>
+        </article>
+    </section>
+    </div>
+</section>
+
+<% content_for :bodyextra do %>
+<%= render :partial => "shared/delete_patient_modal", :locals => {:patient => @patient } %>
+<%= render :partial => 'shared/import_modal', :locals => {:patient => @patient, :emrs => @import_emrs } %>
+<%= render :partial => 'shared/export_modal', :locals => {:patient => @patient } %>
+<%= render :partial => 'components/privacy_popover' %>
+<%= render :partial => 'components/patient_popover', :locals => { :patient => @patient, :context => 'detail' } %>
+<%= render :partial => 'components/patient_onboarding_popover', :locals => { :patient => @patient, :state => @onboarding_details } %>
+
+<!-- BB view templates -->
+<%= render :partial => 'components/patient_edit_contact' %>
+<%= render :partial => 'components/patient_edit_insurance' %>
+<%= render :partial => 'components/patient_edit_care_provider' %>
+<%= render :partial => 'components/patient_edit_hospital' %>
+<%= render :partial => 'components/patient_edit_pharmacy' %>
+<% end %>
+
+<% content_for :js_bootstrap do %>
+<script>
+    (function () {
+        "use strict";
+
+        var Patient = app.module('patient');
+        var insuranceData = <%=j @patient_details['insurances'].to_json.html_safe %>;
+        var physicianData = <%=j @patient_details['care_providers'].to_json.html_safe %>;
+        var hospitalData = <%=j @patient_details['hospitals'].to_json.html_safe %>;
+        var pharmacyData = <%=j @patient_details['pharmacies'].to_json.html_safe %>;
+        var patient_uuid = "<%= @patient.uuid %>";
+        var patientData = <%=j @patient.to_json.html_safe %>;
+        var patientModel = new Patient.Models.Profile(patientData);
+
+        var insuranceView = new Patient.Views.Insurance({ el: '#insurance', collection: new Patient.Collections.Insurance(insuranceData, { patient_uuid: patient_uuid }) }),
+            physicianView = new Patient.Views.Physician({ el: '#doctors', collection: new Patient.Collections.Physician(physicianData, { patient_uuid: patient_uuid }) }),
+            hospitalView = new Patient.Views.Hospital({ el: '#hospital', collection: new Patient.Collections.Hospital(hospitalData, { patient_uuid: patient_uuid }) }),
+            pharmacyView = new Patient.Views.Pharmacy({ el: '#pharmacy', collection: new Patient.Collections.Pharmacy(pharmacyData, { patient_uuid: patient_uuid }) });
+        
+        var action = "<%= @patient.confirmed? ? patient_show_path(@patient.uuid) : patient_edit_emergency_contacts_path(@patient.uuid) %>"; 
+        var action_alt = '';
+
+        var contactsView = new Patient.Views.EditContacts({
+            el: '#signup-contacts',
+            views: [insuranceView, physicianView, hospitalView, pharmacyView],
+            model: patientModel,
+            action: action,
+            action_alt: action_alt
+        });
+
+        // TODO: this could be more DRY…
+        var importView = new Patient.Views.Importer({ el: '#emr-form' });
+
+        // THC times DM DD 007
+        // serious quirk workaround times
+        popover.init($('#patient-transaction-bar a.actions, #patient-transaction-bar .onboarding-summary'));
+
+        <% if !@patient.confirmed? %>
+        var c = document.getElementById('component-onboarding-summary');
+        c.appendChild( pieChart(<%= @onboarding_details[:progress_percent] %>, 32) );
+        <% end %>
+
+    })();
+</script>
+<% end %>

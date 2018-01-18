@@ -1,0 +1,30 @@
+<section id="delete-account-modal" class="reveal-modal account-modal delete-modal">
+    <div class="modal-content">
+        <h2>Delete account and all HealthNotifier profiles?</h2>
+        <p>Paramedics won't be able to retrieve essential health information in an emergency. Any recurring subscriptions will be cancelled and no partial refunds will be issued. If you wish to delete your account and all profiles, please confirm by typing <strong>DELETE</strong> below.</p>
+
+        <p>If you havent already, we encourage you to download copies of your HealthNotifier profiles (view each patient and export). Health care providers may be able to import this data into their systems.</p>
+
+        <section class="patients-summary">
+            <% current_account.active_patients.each do |patient| %>
+            <%= render :partial => 'components/patient_summary_item', :locals => { :patient => patient } %>
+            <% end %>
+        </section>
+
+        <div class="basic-form" style="margin-bottom: 2rem;">
+            <div class="field span2">
+                <label>Confirmation</label>
+                <input class="south-of-the-border delete-confirmation" type="text" placeholder="" id="delete-account-confirmation" name="confirmation" />
+            </div>
+        </div>
+
+        <p><small>We’re really sad to see you go, but we would <a href="#" class="open-exit-survey">love to know why you’re cancelling</a> so we can improve our product.</small></p>
+
+        <%= render :partial => 'accounts/exit_survey' %>
+
+        <section class="modal-flow-control">
+            <a href="#" class="button primary cancel-delete-account">Cancel</a>
+            <a href="#" data-account-id="<%= current_account.uid %>" data-url="<%= api_account_delete_path(current_account.uid) %>" class="button delete-account-action">Delete Account</a>
+        </section>
+    </div>
+</section>

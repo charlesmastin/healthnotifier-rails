@@ -1,0 +1,10 @@
+<% if @patient_details['emergency'].length > 0 %>
+<article data-url="#">
+    <header><%= image_tag "icons/phone.png" %><h4><a href="<%= patient_edit_contacts_path(@patient.uuid) %>#emergency">Emergency Contacts</a></h4></header>
+    <section>
+        <% @patient_details['emergency'].each do |contact| %>
+        <%= render :partial => 'components/patient_contact', :locals => { :contact => contact } %>
+        <% end %>
+    </section>
+</article>
+<% end %>

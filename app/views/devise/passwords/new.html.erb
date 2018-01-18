@@ -1,0 +1,142 @@
+<% content_for :body_class do %> class="register"<% end %>
+
+<section class="main-column">
+
+<section class="page-title">
+    <h1>Recover Your Account</h1>
+</section>
+
+<section class="pillbox">
+    <article>
+        <div id="form1" class="content auth-form">
+            <%= fields_for @account do |f| %>
+            <div class="field">
+                <%= f.label :email, 'Via your email' %>
+                <%= f.email_field :email, :size => "27", :value => "", :autocomplete => "off", :autocapitalize => "off", :placeholder => "name@example.com" %>
+                <p class="error-message" data-for="create_email" style="display: none;">Invalid email address format</p>
+            </div>
+            <div class="field">
+                <%= f.label :mobile_phone, 'And we can txt you an unlock code if we recognize you' %>
+                <%= f.text_field :mobile_phone, :size => "27", :value => "", :autocomplete => "off", :autocapitalize => "off", :placeholder => "(415) 209-5050" %>
+            </div>
+            <div class="flow-control">
+                <button type="submit" class="button primary">Send Recovery Instructions</button>
+            </div>
+            <% end %>
+        </div>
+        <div id="form2" class="content auth-form" style="display: none;">
+            <div class="field">
+                <label>Unlock Code</label>
+                <input type="text" name="unlock_code" id="unlock_code" placeholder="123456" />
+            </div>
+            <div class="flow-control">
+                <button type="submit" class="button primary">Submit</button>
+            </div>
+        </div>
+    </article>
+</section>
+
+</section>
+
+<% content_for :js_bootstrap do %>
+<script>
+    document.getElementById('account_email').focus();//take that!
+
+    
+    $(function(){
+        $('#form1 button').click(function(e){
+            // if we're going down the mobile phone pathway
+            // TODO: plug our standard email regex town son
+            var data = {
+                Email: $('#account_email').val()
+            }
+            if(data.Email.length == 0){
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                app.alert('Please input your email');
+                return;
+            }
+            if($('#account_mobile_phone').val() != '' && $('#account_email').val() == ''){
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                app.alert('If you wish to reset via SMS, please also add the email you registered with.');
+                return;
+            }
+            if($('#account_mobile_phone').val() != ''){
+                data.MobilePhone = $('#account_mobile_phone').val();
+            }
+
+            submitForm1(data);
+        });
+
+        $('#form2 button').click(function(e){
+            // validation
+            // lock and unlock on submit
+            var data = {
+                MobilePhone: $('#account_mobile_phone').val(),
+                UnlockCode: $('#unlock_code').val()
+            }
+            submitForm2(data);
+        });
+
+        function submitForm1(data){
+            // TODO: lock/unlock form
+            $.ajax({
+                url: '<%= api_begin_recovery_path %>',
+                type: 'POST',
+                dataType: 'json',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                success: function(data){
+                    if(data.channel == 'sms'){
+                        $('#form1').slideUp();
+                        $('#form2').slideDown();
+                        app.showFlashMessage('Please check your phone');
+                    }else{
+                        // server redirect instead?
+                        $('#form1').slideUp();
+                        app.showFlashMessage('Please check your email for further instructions');
+                    }
+                },
+                error: function(data){
+                    if(data.status == 400){
+                        app.alert('Error: Bad Request');
+                    }
+                    if(data.status == 404){
+                        app.alert('Error: No Account Found');
+                    }
+                    if(data.status == 500){
+                        app.alert('Error: Something Broke, we\'re on it!');
+                    }
+                }
+            });
+        }
+
+        function submitForm2(data){
+            $.ajax({
+                url: '<%= api_recover_path %>',
+                type: 'POST',
+                dataType: 'json',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                success: function(data){
+                    // now send to choose password view
+                    // TODO
+                    window.location = data.redirect;
+                },
+                error: function(data){
+                    if(data.status == 400){
+                        app.alert('Error: Bad Request');
+                    }
+                    if(data.status == 500){
+                        app.alert('Error: Something Broke, we\'re on it!');
+                    }
+                }
+            });
+        }
+    });
+
+
+
+</script>
+<% end %>

@@ -1,0 +1,65 @@
+.notification {
+  margin-bottom: 1.5rem;
+  box-sizing: border-box;
+  padding: 0.75rem 1rem;
+  border-radius: 0.25rem;
+
+  color: rgba(255, 255, 255, 0.8);
+  background: $blue2016;
+  letter-spacing: 0.04rem;
+
+  a {
+    color: rgba(255, 255, 255, 1.0) !important;
+    font-weight: 600;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &.notice {
+    
+  }
+  &.alert {
+    
+  }
+  &.devise-alert {
+
+  }
+}
+
+.notice.success {
+  color: darken($green2016, 0.1);
+  border-color: $green2016;
+  background: rgba(51, 211, 170, 0.15);
+  text-shadow: none;
+}
+
+.notification-center {
+  position: fixed;
+  z-index: 100000;
+  left: 1rem;
+  bottom: 1rem;
+  opacity: 1.0;
+
+  article {
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 1rem;
+    border-radius: 4px;
+    //opacity: 0.0;
+    //-webkit-transition: opacity 0.4s linear;
+
+    &.visible {
+      //opacity: 1.0;
+      //-webkit-transition: opacity 0.4s linear;
+    }
+
+    p {
+      margin-bottom: 0;
+      i {
+        display: none;
+      }
+    }
+  }
+
+}

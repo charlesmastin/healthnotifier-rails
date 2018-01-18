@@ -1,0 +1,21 @@
+<script id="language-item" type="text/html">
+    <div class="row">
+        <div class="field span3 required">
+            <label class="span3" for="patient-language-code-{{record_order}}">Language</label>
+            <select class="span3 language_code" name="language_code" id="patient-language-code-{{record_order}}" size="1">
+                <option value="">&mdash;</option>`
+                <%= options_for_select(@languageCodes.map {|item| [item[:name], item[:value]] }) %>
+            </select>
+            <span class="error-message" data-for="patient-language-code-{{record_order}}"><br>Please select a language</span>
+        </div>
+        <div class="field span2 required">
+            <label class="span2" for="patient-language-proficiency-{{record_order}}">Proficiency</label>
+            <select class="span2 language_proficiency" name="language_proficiency" id="patient-language-proficiency-{{record_order}}" size="1">
+                <option value="">&mdash;</option>
+                <%= options_for_select(@languageProficiency.map {|item| [item[:name], item[:value]] }) %>
+            </select>
+            <span class="error-message" data-for="patient-language-proficiency-{{record_order}}"><br>Please select a proficiency</span>
+        </div>
+        <%= render :partial => 'components/remove_row_button' %>
+    </div>
+</script>

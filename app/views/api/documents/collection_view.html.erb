@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta name="format-detection" content="telephone=no">
+        <meta name="author" content="LifeQode, Inc.">
+        <title>HealthNotifier</title>
+        <style type="text/css">
+            body {
+              font-family: 'Roboto', 'Helvetica Neue', Helvetica, arial, sans-serif;
+              margin: 1em;
+              background: #eee;
+            }
+            article {
+                box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+                margin: 0 0 20px 0;
+                padding: 0;
+                width: 100%;
+                background: white;
+                min-height: 200px;
+                -webkit-transition: height 0.5s ease-in-out;
+            }
+            article img {
+                margin: 0;
+                line-height: 0;
+                font-size: 0;
+                width: 100%;
+                /*height: auto;*/
+                padding: 0;
+                margin-bottom: -4px;
+            }
+            span.loader {
+                font-size: 3em;
+                font-weight: 300;
+                width: 100px;
+                margin: 0 auto;
+                display: block;
+                color: #ccc;
+                display: none;
+            }
+            article small.part-number {
+                display: block;
+                border-top: 1px solid #ccc;
+                padding: 0.25rem 0 0.25rem 0.5rem;
+                font-size: 0.7rem;
+                webkit-user-select: none;
+            }
+        </style>
+    </head>
+    <body class="document-viewer" id="document-viewer" data-document-uid="<%= @dd.uid %>">
+        <% @dd.document_digitized_files.each_with_index do |digitized_file, i| %>
+        <article id="file-<%= i %>">
+            <img src="<%= @baseurl %>/api/v1/file/retrieve/<%= digitized_file.uid %>?width=1600" />
+            <small class="part-number"><%= (i+1) %> of <%= @dd.document_digitized_files.count %></small>
+            <span class="loader">Loading…</span>
+        </article>
+        <% end %>
+    </body>
+</html>

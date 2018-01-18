@@ -1,0 +1,53 @@
+<div id="popover-patient-actions-<%= patient.uuid %>" class="popover patient-actions">
+    <!-- a title -->
+    <!--<h6><%= patient.name %></h6>-->
+    <ul class="actions">
+        <% if patient.has_current_coverage %>
+        <li><a href="<%= patient_show_path(patient.uuid) %>" class="">Summary</a></li>
+        <li><a href="<%= patient_show_webview_path(patient.uuid, 'public') %>" class="">View LifeSticker</a></li>
+        <% if context == 'detail' %>
+        <li><a href="#" class="xbutton xsmall export-records">Export LifeSticker</a></li>
+        <% end %>
+        <li class="divider"></li>
+        <li><small>Edit LifeSticker</small></li>
+        <li><a href="<%= patient_edit_personal_path(patient.uuid) %>" class="">Personal</a></li>
+        <li><a href="<%= patient_edit_medical_path(patient.uuid) %>" class="">Medical Record</a></li>
+        <li><a href="<%= patient_edit_contacts_path(patient.uuid) %>" class="">Insurance &amp; Care Providers</a></li>
+        <li><a href="<%= patient_edit_emergency_contacts_path(patient.uuid) %>" class="">Emergency Contacts</a></li>
+        <% if context == 'detail' %>
+        <% if current_account.lifesquare_employee? %>
+        <!--<li><a href="#" class="xbutton xsmall import-records">Import Records</a></li>-->
+        <% end %>
+        <% end %>
+        <li class="divider"></li>
+        <li><small>Connections</small></li>
+        <li><a href="<%= patient_show_network_inbound_path(patient.uuid) %>" class="">Shared With You</a></li>
+        <li><a href="<%= patient_show_network_outbound_path(patient.uuid) %>" class="">Your LifeCircle</a></li>
+
+        <% if false %>
+        <% if current_account.lifesquare_employee? %>
+        <li class="divider"></li>
+        <li><small>Advise Me</small></li>
+        <li><a href="<%= care_plans_patient_path(patient.uuid) %>" class="">Get Started</a></li>
+        <% end %>
+        <% end %>
+        <% end %>
+
+        <% if patient.has_expired_coverage %>
+        <li><a href="<%= patient_show_path(patient.uuid) %>" class="">View</a></li>
+        <li><a href="<%= patient_continue_setup_path(patient.uuid) %>" class="">Renew Coverage</a></li>
+        <% end %>
+
+        <!-- onboarding limbo states -->
+        <% if patient.lifesquare_uid_str == '' %>
+        <li><a href="<%= patient_show_path(patient.uuid) %>" class="">View</a></li>
+        <li><a href="<%= patient_continue_setup_path(patient.uuid) %>" class="">Continue Setup</a></li>
+        <% end %>
+
+        <% if context == 'detail' %>
+        <li class="divider"></li>
+        <li><a href="#" class="zbutton zsmall delete-patient">Delete Profile</a></li>
+        <% end %>
+        
+    </ul>
+</div>
