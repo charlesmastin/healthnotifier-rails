@@ -712,7 +712,7 @@ module Api
     end
 
     def notifications
-      # if request.headers["Lifesquare-Client-Version"] == nil
+      # if request.headers["HealthNotifier-Client-Version"] == nil
       render json: {
         :success => true,
         :invites => @account.pending_invites
@@ -801,11 +801,11 @@ module Api
       # TODO: more accurate http responses
 
       # TODO: this table is basically only added for mobile clients with opt-in, it's not a raw tracking table
-      if request.headers["Lifesquare-Client-Version-Name"].present?
-        device.client_version = request.headers["Lifesquare-Client-Version-Name"]
+      if request.headers["HealthNotifier-Client-Version-Name"].present?
+        device.client_version = request.headers["HealthNotifier-Client-Version-Name"]
       end
-      if request.headers["Lifesquare-Client-Version"].present?
-        device.client_build = request.headers["Lifesquare-Client-Version"].to_s # meh meh meh
+      if request.headers["HealthNotifier-Client-Version"].present?
+        device.client_build = request.headers["HealthNotifier-Client-Version"].to_s # meh meh meh
       end
       device.platform = params[:platform]
       
@@ -907,11 +907,11 @@ module Api
         # avoid mass assignment for now
         # unsure if we're going to be feeding in the device_token, of course we are
         # this design requires the burden on the client to sift through records and update, no bueno
-        if request.headers["Lifesquare-Client-Version-Name"].present?
-          device.client_version = request.headers["Lifesquare-Client-Version-Name"]
+        if request.headers["HealthNotifier-Client-Version-Name"].present?
+          device.client_version = request.headers["HealthNotifier-Client-Version-Name"]
         end
-        if request.headers["Lifesquare-Client-Version"].present?
-          device.client_build = request.headers["Lifesquare-Client-Version"].to_s # meh meh meh
+        if request.headers["HealthNotifier-Client-Version"].present?
+          device.client_build = request.headers["HealthNotifier-Client-Version"].to_s # meh meh meh
         end
         if device.save
           render json: {
